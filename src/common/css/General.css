@@ -1,0 +1,218 @@
+.scroll::-webkit-scrollbar-thumb {
+    background: rgba(176, 175, 183, 0.5);
+    border-radius: 15px;
+}
+.scroll::-webkit-scrollbar-track {
+    background: rgba(64, 65, 66, .5);
+}
+.scroll::-webkit-scrollbar-track-piece {
+    background-color: rgba(0, 0, 0, 0.2);
+    -webkit-border-radius: 6px;
+}
+
+.rt {
+    float: right !important;
+}
+.lf {
+    float: left !important;
+}
+.hide {
+    display: none;
+}
+.show {
+    display: block;
+}
+
+.animate {
+    transition: all .25s;
+    -moz-transition: all .25s;
+    -webkit-transition: all .25s;
+}
+.animate-five {
+    transition: all .5s cubic-bezier(.79,.17,.4,.96);
+    -moz-transition: all .5s cubic-bezier(.79,.17,.4,.96);
+    -webkit-transition: all .5s cubic-bezier(.79,.17,.4,.96);
+}
+.animate-os {
+     transition: all 1s cubic-bezier(.79,.17,.4,.96);
+    -moz-transition: all 1s cubic-bezier(.79,.17,.4,.96);
+    -webkit-transition: all 1s cubic-bezier(.79,.17,.4,.96);
+}
+
+.hidden-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/*遮罩层*/
+.mask-layer {
+    position: absolute;
+    z-index: 999;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    right: 0;
+    background: url('~static/img/coverall.png') no-repeat 0 0;
+    background-size: cover;
+    border-radius: 10px;
+    cursor: pointer !important;
+}
+
+
+/*组件过度动画*/
+/*slide*/
+.slide-left-enter-active, .slide-left-leave-active {
+   transition: all 1s;
+}
+.slide-left-enter, .slide-left-leave-to {
+    opacity: 0;
+    transform: translateX(-50%);
+}
+
+/*slide-top*/
+.slide-top-enter-active, .slide-top-leave-active {
+   transition: all 1s;
+}
+.slide-top-enter, .slide-top-leave-to {
+    opacity: 0;
+    transform: translateY(-50%);
+}
+
+/*width*/
+.zoom-enter-active, .zoom-leave-active {
+   transition: all .5s;
+}
+.zoom-enter, .zoom-leave-to {
+    opacity: 0;
+    transform: scale3d(.1, .1, 1);
+}
+
+/*fade*/
+.fade-enter-active, .fade-leave-active {
+   transition: opacity .7s;
+}
+.fade-enter, .fade-leave-to {
+    opacity: 0;
+}
+
+
+/*字体颜色*/
+.White   { color: #fff}
+.Black   { color: #000}
+.Blue    { color: #294d65}
+.Gray    { color: #a4b5b9}
+.Green   { color: #53fdd6}
+.Silver  { color: #e2e8f1}
+.Dark    { color: #9599a0}
+.Blue-ash{color: #d2d5da}
+.Bright-blue {color: #a1d3f5}
+
+input::-webkit-input-placeholder {
+    color: #c3c7c7;
+}
+input::-moz-input-placeholder {
+    color: #c3c7c7;
+}
+input::-ms-input-placeholder {
+    color: #c3c7c7;
+}
+
+/*切换按钮*/
+.toggle-btn {
+    display: block;
+    width: 60px;
+    height: 30px;
+    border-radius: 20px;
+    background: rgba(255,255,255,.1);
+    position: relative;
+    cursor: pointer !important;
+}
+.toggle-btn .move-circle {
+    display: block;
+    position: absolute;
+    height: 26px;
+    width: 26px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.3);
+    left: 2.5px;
+    top:2.5px;
+    cursor: pointer;
+}
+
+/*加载更多*/
+.load-more {
+    width: 100%;
+    height: 40px;
+    margin: 50px 0;
+    text-align: center;
+}
+.load-more span {
+    display: inline-block;
+    height: 40px;
+    line-height: 40px;
+    width: 100px;
+    background: rgba(255,255,255,.1);
+    cursor: pointer;
+}
+.load-more span:hover {
+    background: rgba(255,255,255,.3);
+}
+
+
+/*评论切换按钮*/
+.musicList-title {
+    overflow: hidden;
+    padding: 0 20px;
+    border-bottom: 2px solid #53FDD6;
+}
+.musicList-title span {
+    height: 35px;
+    line-height: 35px;
+    margin-right: 5px;
+    padding: 0 20px;
+    cursor: pointer;
+    background: rgba(255, 255, 255, .1);
+}
+.active-btn-bg {
+    background: -webkit-gradient(linear,left top, right bottom, from(#0094B9), to(#53FDD6)) !important;
+}
+
+
+
+/*留言框*/
+.msg-cotainer {
+    width: 100%;
+    height: 140px;
+    overflow: hidden;
+    padding:20px;
+    background: rgba(255,255,255,.2);
+    margin-top: 20px;
+    border-radius: 3px;
+    border:1px solid rgba(255,255,255,.3);
+    color: #5e6a6d;
+}
+.msg-box {
+    width: 100%;
+    outline: none;
+    font-size: 16px;
+    border-radius: 5px;
+    height: 50px;
+    border:none;
+    padding: 5px;
+}
+.msg-publish-btn {
+    width: 100px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    border-radius: 5px;
+    margin-top: 20px;
+    cursor: pointer !important;
+}
+
+.no-comment {
+    width: 100%;
+    margin-top: 20px;
+    text-align: center;
+}

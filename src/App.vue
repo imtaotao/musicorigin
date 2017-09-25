@@ -1,0 +1,224 @@
+<template>
+<div>
+    <home-main></home-main>
+    <audio-ctr></audio-ctr>
+</div>
+</template>
+<script>
+    // 模板
+    import homeMain  from '@/components/home/homeMain'
+    import audioCtr  from '@/components/audioCtrl'
+    import Queue     from '@/common/js/Queue'
+    import {util}    from '@/common/js/util'
+    import interFace from '@/common/js/audioInterFace'
+    import {mapGetters, mapActions} from 'vuex'
+
+    export default {
+        data () {
+            return {
+                t      : null,        // 自动增加经验的值
+                exTime : 60 * 1000   // 自动增加经验的时间间隔(一分钟)
+
+            }
+        },
+        computed: {
+            ...mapGetters([
+                'host',
+                'phone',
+                'password',
+                'forward',
+                'musicList',
+                'user'
+            ])
+        },
+        methods: {
+            // 播放新音乐（电台）
+            playOneSong (song, position = 0) {
+                if (!song) {alert('该歌曲找不到'); return}
+                
+                this.$store.dispatch('addMusicList', song)
+                this.forward(position)
+            },
+            // 推荐歌单播放
+            playMusicList (id) {
+                if (!id) {alert('该歌单找不到'); return}
+                const {host, forward, $ajax, $store} = this
+
+                // 通过歌单 id 请求歌单数据并播放
+                $ajax.get(host + `/playlist/detail?id=${id}`).then(({data}) => {
+                    if (data.code !== 200) {
+                        console.error(`code is ${data.code}`)
+                        alert('网络不好哦！刷新一下吧')
+                        return
+                    }
+
+                    const {playlist} = data
+                    const {tracks}   = playlist
+
+                    // 跟改歌单，并判断是否加入进，然后开始播放歌曲
+                    $store.dispatch('changeMusicList', tracks)
+                    if (this.musicList.length === 1 && this.musicList[0].id === 0) return
+                    forward(0)
+                })
+            },
+
+            // 默认登录网易云账号
+            defaultNetUser () {
+                const {host, $ajax, phone, password} = this
+                const loginTime                      = localStorage.getItem('loginTime') 
+                                                     
+                if (loginTime) {
+                    if (Date.now() < loginTime + 60 * 3) 
+                        return
+                }
+
+                // 默认登录自己的网易云音乐账号，默认 3 分钟登录一次
+                $ajax.get(host + '/login/refresh')
+                $ajax.get(host + `/login/cellphone?phone=${phone}&password=${password}`)
+                .then(({data}) => {
+                    if (data.code === 415) {
+                        alert('登录频繁')
+                        return
+                    }
+                    if (data.code !== 200) {
+                        alert('默认网易云音乐账号登录失败~~')
+                        return
+                    }
+
+                    alert('默认网易云音乐账号登录成功~~')
+                    // 存一个时间戳
+                    localStorage.setItem('loginTime', Date.now())
+
+                })
+            },
+
+
+            collectFilter (data) {
+                const or      = data.oringeInfo
+                const album   = or.album || or.al
+                const artists = or.artists || or.ar
+                return {
+                    name       : this.user.name,
+                    id         : or.id,
+                    musicName  : or.name,
+                    albumId    : album.id,
+                    albumName  : album.name,
+                    singer     : artists[0].name,
+                    singerId   : artists[0].id,
+                    time       : or.duration || or.dt,
+                    oringeInfo : or,
+                    collect    : data.collect
+                }
+            },
+            // 收藏歌曲
+            collectMusic () {
+                const {host, $ajax, $event} = this
+
+                interFace.collect = (info, callback) => {
+                    if (!this.user._id) return alert('请先登录')
+
+                    Queue.on('listCollect', next => {
+                        if (!info || !info.oringeInfo || info.collect == null) {
+                            alert('歌曲信息获取失败')
+                            return next()
+                        }
+
+                        // mmp  true 是取消收藏，false是收藏
+                        const saveData = this.collectFilter(info)
+
+                        $ajax.post(host + '/collecMusic', saveData).then(({data}) => {
+                            console.log(data)
+                            if (!data) return alert('收藏出错了')
+                            const {msg, code} = data
+                            alert(msg)
+
+                            if (code === -1 || code === 0) return
+
+                            // 如果 data.collect === true 代表取消收藏
+                            if (info.collect) {
+                                this.user.collectMusic.forEach((val, i) => {
+                                    if (val.id === saveData.id) {
+                                        this.user.collectMusic.splice(i, 1)
+                                    }
+                                })
+                            } else {
+                                this.user.collectMusic.push(saveData)
+                            }
+
+                            info.collect = !info.collect
+                            $event.fire('changeUser')
+                            $event.fire('resetCollect')
+                            callback && callback()
+                            next()
+                        })
+                    })
+                }
+            },
+
+            // 在本网站停留三分钟加一点经验
+            addEX () {
+                const {user, host, $ajax, $event, exTime, addEX} = this
+
+                if (!user._id) {
+                    $event.fire('showLogin', true)
+                    return alert('登录涨经验哦~~')
+                }
+      
+                this.t = setTimeout(_ => {
+                    $ajax.get(host + `/addexperience?name=${user.name}`).then(({data}) => {
+                        if (data.code !== 1) return addEX()
+
+                        const {ex, grade, percent} = data.result
+                        this.user.ex      = ex
+                        this.user.percent = percent
+                        this.user.grade   = grade
+
+                        $event.fire('changeUser')
+                        addEX()
+                    })
+                }, exTime)
+            }
+
+        },
+        components: {
+            homeMain,
+            audioCtr
+        },
+        created () {
+            const {
+                $store, $event, forward, playMusicList, addEX,
+                playOneSong, defaultNetUser, collectMusic
+            } = this
+
+            defaultNetUser()
+            addEX()
+            // 歌单播放列表 和 单首歌播放 放到 vuex
+            $store.dispatch('playMusicList', playMusicList)
+            $store.dispatch('playOneSong', playOneSong)
+
+            // 当添加的歌曲已经子啊播放列表的时候
+            $event.on('playPosition', ({data}) => {
+                forward(data)
+            })
+
+            // 修改当前用户信息后
+            $event.on('changeUser', _ => {
+                const copyUser = JSON.parse(JSON.stringify(this.user))
+                copyUser.pwd   = null
+                localStorage.setItem('user', JSON.stringify(copyUser))
+            })
+
+            this.$event.on('login', _ => {
+                if (this.t) {
+                    clearTimeout(this.t)
+                    this.t = null  
+                }
+                setTimeout(_ => addEX())
+            })
+            collectMusic()
+        }
+    }
+</script>
+<style>
+    
+</style>
