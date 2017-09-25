@@ -246,7 +246,6 @@ app.use("/user/record", require("./router/user_playrecord"))
 // 本地接口
 selfRouter(app)
 
-// const port = process.env.PORT || 3000
 const port = 8081
 
 app.listen(port, () => {

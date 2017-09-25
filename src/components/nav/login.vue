@@ -93,7 +93,7 @@
 		},
 		computed: {
 			...mapGetters([
-				'localhost'
+				'host'
 			])
 		},
 		methods: {
@@ -123,10 +123,10 @@
 
 			// 登录函数
 			login () {
-				const {check, loginUP, $ajax, $event, localhost} = this
+				const {check, loginUP, $ajax, $event, host} = this
 				if (!check(loginUP)) return
 
-				$ajax.post(localhost + '/login', loginUP).then(({data}) => {
+				$ajax.post(host + '/login', loginUP).then(({data}) => {
 					if (!data.data) {
 						alert(data.msg)
 						return
@@ -142,10 +142,10 @@
 
 			//注册函数
 			rigist () {
-				const {check, rigistUP, $ajax, localhost} = this
+				const {check, rigistUP, $ajax, host} = this
 				if (!check(rigistUP)) return
 
-				$ajax.post(localhost + '/rigist', rigistUP).then(({data}) => {
+				$ajax.post(host + '/rigist', rigistUP).then(({data}) => {
 					alert(data.msg)
 					if (data.msg === '注册成功') {
 						this.loginCl()

@@ -22,7 +22,6 @@ export default {
     computed: {
     	...mapGetters([
             'host',
-            'localhost',
             'getPlayOrder',
             'switchDelay',
             'volume',
@@ -74,11 +73,11 @@ export default {
         },
         //开始播放
         startPlay(id, url, duration, callback) {
-            const {getPlayOrder, localhost, setPlayOrder, lyric, $store, $event} = this
+            const {getPlayOrder, host, setPlayOrder, lyric, $store, $event} = this
 
             let audio = new audioctrl(16, duration)
             const ajax = new musicHttp({
-                url: `${this.localhost}/getMusic`,
+                url: `${this.host}/getMusic`,
                 data: {url},
                 method: 'get',
                 dataType: 'arraybuffer',

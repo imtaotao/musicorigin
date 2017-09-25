@@ -78,7 +78,6 @@
 			...mapGetters([
 	    		'host',
 	    		'isLoading',
-	    		'localhost',
 	    		'nowPlayId',
 	    		'nowPlayInfo',
 	    		'bigAnimate',

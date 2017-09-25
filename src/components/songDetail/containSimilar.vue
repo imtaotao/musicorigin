@@ -37,7 +37,6 @@
 		computed: {
 			...mapGetters([
 	    		'host',
-	    		'localhost',
 	    		'nowPlayId',
 	    		'playOneSong'
 	    	])

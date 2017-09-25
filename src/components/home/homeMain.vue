@@ -177,7 +177,7 @@
 			...mapGetters([
 	    		'isLoading',
 	    		'nowPlayId',
-	    		'localhost',
+	    		'host',
 	    		'shrinkAnimate',
 	    		'nowSkin',
 	    		'user'
@@ -264,10 +264,10 @@
 				!this.nickChangeBar && this.submitNick()
 			},
 			submitNick () {
-				const {$ajax, $store, $event, localhost, inputNick, user} = this
+				const {$ajax, $store, $event, host, inputNick, user} = this
 				if (!inputNick || inputNick === this.user.nickname) return
 
-				$ajax.post(localhost + '/nickname', {nickname: inputNick, name: user.name})
+				$ajax.post(host + '/nickname', {nickname: inputNick, name: user.name})
 				.then(({data}) => {
 					if (data.msg) {
 						alert(data.msg)
@@ -290,7 +290,7 @@
 		        fd.append("userfile", file)
 		        fd.append("name", this.user.name)
 
-		        this.$ajax.post(this.localhost + '/upPic', fd).then(({data}) => {
+		        this.$ajax.post(this.host + '/upPic', fd).then(({data}) => {
 		        	if (data.msg) {
 		        		alert(data.msg)
 		        		return
