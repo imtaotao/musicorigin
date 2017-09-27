@@ -74,6 +74,9 @@
 			})
 			getData(true)
 		},
+		beforeDesdroy () {
+			this.$event.off('songDetailReset')
+		},
 		components: {
 			commentList
 		}

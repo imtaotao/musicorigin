@@ -259,11 +259,6 @@
 		created () {
 			const {setDate, setLyr, $event} = this
 
-			$event.off('startNewMusic')
-			$event.off('nowPlayTime')
-			$event.off('playChange')
-			$event.off('loopPlayOver')
-
 			$event.on('startNewMusic', _ => {
 				setDate(true)
 				$event.fire('songDetailReset')
@@ -296,7 +291,12 @@
 			$('.all-container').style['overflow']   = 'hidden'
 		},
 		beforeDestroy () {
-			this.$event.off('songDetailReset')
+			const {$event} = this
+			$event.off('startNewMusic')
+			$event.off('nowPlayTime')
+			$event.off('playChange')
+			$event.off('loopPlayOver')
+			$event.off('songDetailReset')
 		},
 		components: {
 			comment,

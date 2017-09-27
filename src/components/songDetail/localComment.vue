@@ -52,7 +52,7 @@
 	    	])
 		},
 		methods: {
-			resetData () {
+			resetData (init) {
 				this.msgText      = ''
 				this.replyTitle   = ''
 				this.bgColor      = '#fff'
@@ -62,7 +62,7 @@
 				this.total        = 0
 				this.commentCount = null
 
-				this.getData()
+				!init && this.getData()
 			},
 			loadMore () {
 				this.Paging++
@@ -132,7 +132,7 @@
 				this.replyTitle = ''
 
 				$ajax.post(host + '/musicComments', data).then(({data}) => {
-					console.log(data)
+					// console.log(data)
 					alert(data.msg)
 					if (data.msg.includes('失败')) return this.reply = false
 
@@ -161,8 +161,14 @@
 		},
 		created () {
 			const {$event, getData, resetData} = this
-			this.$event.on('songLoaclComment', _ => getData(true), true)
+			this.$event.on('songLoaclComment', _ => {
+				resetData(true)
+				getData(true)
+			}, true)
 			this.$event.on('songDetailReset',  _ => resetData())
+		},
+		beforeDesdroy () {
+			this.$event.off('songLoaclComment')
 		},
 		components: {
 			commentList

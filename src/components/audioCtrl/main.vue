@@ -191,7 +191,10 @@
                 childProcessFun: null,
 
                 // 歌词设置变量
-                translateY: 0
+                translateY: 0,
+
+                // 每次歌曲都有一个随机字符
+                progressStr: util.randomStr
             }
         },
         computed: {
@@ -312,8 +315,10 @@
                 interFace.forward(id, info.duration, () => {
                     this.playConfig()
                 }, isHave => {
-                    console.log(isHave)
-                    isHave === false && this.next()
+                    this.$store.dispatch('changeSwitchDelay', true)
+                    if (isHave === false) {
+                        alert('该歌曲可能因为版权问题已下架，请播放下一首')
+                    }
                 })
             },
             // 基本操作
@@ -373,7 +378,9 @@
                     this.playConfig()
                 }, isHave => {
                     this.$store.dispatch('changeSwitchDelay', true)
-                    isHave === false && this.next()
+                    if (isHave === false) {
+                        alert('该歌曲可能因为版权问题已下架，请播放下一首')
+                    }
                 })
             },
             // 播放暂停
@@ -463,7 +470,9 @@
                                 this.playConfig()
                             }, isHave => {
                                 setTimeout(() => this.$store.dispatch('changeSwitchDelay', true), this.switchDelay.time)
-                                isHave === false && this.next()
+                                if (isHave === false) {
+                                    alert('该歌曲可能因为版权问题已下架，请播放下一首')
+                                }
                             })
                             setTimeout(() => nowPlay.add())
                             return
@@ -565,9 +574,13 @@
                 }
             },
             setProgress () {
+                const str = this.progressStr
                 // 进度条
                 if (this.audioAjax) {
                     this.audioAjax.progress = (res, loaded) => {
+                        // 判断是否已经切换歌曲，避免状态混乱
+                        if (str !== this.progressStr) return
+
                         const width = this.audioAjax.procent(loaded)
                         this.loadProgress = width > 100 ? 100 : width
                     }
@@ -588,6 +601,7 @@
             // 切换歌曲且播放开始后需要做的操作
             playConfig () {
                 this.playStopStatus = true
+                this.progressStr    = util.randomStr
                 this.setOrder(this.getPlayOrder)  // 设置播放顺序
                 this.setProgress()
                 this.setTimeProgress()

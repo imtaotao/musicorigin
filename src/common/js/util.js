@@ -23,7 +23,7 @@ export const util = {
 	},
 
 	randomStr () {
-		return this.random(999999999) + this.random(999999999)
+		return Date.now() + this.random(999999999) + this.random(999999999)
 	},
 
 	toggle (el, className) {
@@ -335,5 +335,23 @@ export const util = {
 			})
 		})
 		return arr
+	},
+
+
+	// 针对不同的浏览器给与不同的提示
+	prompt () {
+		if (this.isChrome) return
+
+		// 如果是 safari
+		if (this.isSafari) {
+			return alert ('本网站不兼容Safari，为了更好的用户体验，请您用Chrome浏览器访问')
+		}
+
+		if (this.isIE || this.isIE9) {
+			return alert('本网站不兼容IE，就这样！！！')
+		}
+
+		alert ('为了更好的用户体验，请您用Chrome浏览器访问')
 	}
+
 }

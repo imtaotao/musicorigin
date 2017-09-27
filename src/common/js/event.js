@@ -10,7 +10,8 @@ class Events {
 			const arr = this.listener[type]
 
 			// 如果是深度注册，一个观察者允许一个函数存在
-			if (regOnce === 'deep' && arr) return
+			if (arr && regOnce === 'deep' && arr.length) return
+
 			// 如果有只注册一次的条件，就判断是否已经存在
 			if (regOnce && arr) {
 				for (let j = 0; j < arr.length; j++) {

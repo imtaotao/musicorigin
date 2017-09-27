@@ -1,6 +1,4 @@
-# audioctrl
-
-> A Vue.js project
+# 个人音乐网站
 
 ## Build Setup
 

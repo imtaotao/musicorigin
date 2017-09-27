@@ -134,7 +134,7 @@ export default {
         // 得到歌曲url 和 歌词
         getUrlLrc () {
             const randomStr = this.randomStr
-            return (id, duration, callback, isHave) => {
+            return (id, duration, callback, isHave) => {  
                 this.$ajax.get(this.host + `/music/url?id=${id}`).then(({data}) => {
                     // 如果因为网速问题导致冲突就 return
                     if (randomStr !== this.randomStr) return
@@ -187,7 +187,6 @@ export default {
             setTimeout(() => {
                 $store.dispatch('changeSwitchDelay', true)
             }, switchDelay.time)
-
             // 请求歌曲 url，歌词
            getUrlLrc()(id, duration, callback, isHave)
         }

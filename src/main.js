@@ -47,9 +47,12 @@ order(Vue)
 Vue.use(event)
 Vue.use(Loading)
 Vue.use(top)
+
+window.originAlert = window.alert
 util.resetAlert()
 util.timeFormat()
 util.verifyBrowser()
+setTimeout(_ => util.prompt(), 4000)
 
 new Vue({
     el: '#app',
