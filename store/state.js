@@ -87,5 +87,8 @@ export default {
 	})(),
 
 	// 登录函数
-	login           : _ => {}
+	login           : _ => {},
+
+	// 音乐下载
+	download        : _ => {}
 }
