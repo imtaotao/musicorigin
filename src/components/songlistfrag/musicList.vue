@@ -21,10 +21,10 @@
    </div>
 </template>
 <script>
-	import Vue 		   from 'vue'
-	import {util}	   from '@/common/js/util'
-	import tableList   from './musicListTable'
-	import commentList from './musicListComment'
+	import Vue 		    from 'vue'
+	import {util}	    from '@/common/js/util'
+	import tableList    from './musicListTable'
+	import commentList  from './musicListComment'
 	import localComment from './localComment'
 	import {mapGetters, mapActions} from 'vuex'
 	const {conver} = util
@@ -67,15 +67,12 @@
 				Vue.set(this.listBtnText, 0, `歌曲列表（${list.length || 0}）`)
 				Vue.set(this.listBtnText, 1, `云音乐评论（${count || 0}）`)
 
-
-
 				// 根据歌曲id获得
 				list.forEach(val => {
 					// 获得当前歌曲是否已经被收藏
-					const collect = JSON.stringify(this.user.collectMusic).indexOf(val.id) > 0 
-																						   ? true 
-																						   : false
-
+					const collect = JSON.stringify(this.user.collectMusic)
+					.indexOf(val.id) > 0 ? true : false
+					
 					this.listArr.push({
 						id 		   : val.id,
 						name 	   : val.name,

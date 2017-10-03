@@ -38,7 +38,8 @@
 			...mapGetters([
 				'host',
 	    		'user',
-	    		'forward'
+	    		'forward',
+	    		'download'
 	    	]),
 	    	filterUser () {
 	    		// 在已收藏列表中，所有的歌曲都应该是收藏状态
@@ -55,8 +56,17 @@
 					this.forward(0)
 				})
 			},
+			downloadAll () {
+				const list = this.user.collectMusic
+				this.$event.fire('downclick', list.length)
+				list.forEach(song => {
+					const {id, musicName, oringeInfo} = song
+					this.download(id, musicName, oringeInfo)
+				})
+			},
 			titleClick (key) {
 				key === '全部播放' && this.playAll()
+				key === '全部下载' && this.downloadAll()
 			}
 		},
 		components: {

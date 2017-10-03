@@ -59,7 +59,8 @@
                 'host',
                 'playMusicList',
                 'listId',
-                'user'
+                'user',
+                'download'
             ]),
             collect : {
             	get () {
@@ -106,6 +107,7 @@
 			operateClick (key) {
 				key === '播放全部' && this.playMusicList(this.listId)
 				key === '收藏'    && this.collectList()
+				key === '下载全部' && this.downAll()
 			},
 			// 收藏歌单
 			collectList () {
@@ -152,11 +154,33 @@
 						next()
 					})
 				})
-			}
+			},
+
+			// 下载全部
+			downAll () {
+				const {host, $ajax, listId, download, $event} = this
+				if (!listId) {alert('该歌单找不到'); return}
+                
+                // 通过歌单 id 请求歌单数据并播放
+                $ajax.get(host + `/playlist/detail?id=${listId}`).then(({data}) => {
+                    if (data.code !== 200) {
+                        console.error(`code is ${data.code}`)
+                         return alert('网络不好哦！刷新一下吧')
+                    }
+
+                    const {tracks}   = data.playlist
+                    
+                   	$event.fire('downclick', tracks.length)
+                   	tracks.forEach(val => {
+                   		const {id, name} = val
+                   		download(id, name, val)
+                   	})
+                })
+			},
+
 		},
 		created () {
 			this.$event.on('playlistintro', ({data}) => {
-				console.log(112)
 				let tag    = ''
 				const tags = data.tags
 

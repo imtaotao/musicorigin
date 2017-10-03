@@ -135,5 +135,24 @@ export default {
 	// 登录函数
 	login (state, fun) {
 		state.login = fun
+	},
+
+	// 音乐下载
+	download (state, fun) {
+		state.download = fun
+	},
+
+	// 下载队列
+	downQueue (state, data) {
+		state.downQueue.push(data)
+	},
+
+	// 队列出栈
+	downUnshift (state, randomStr) {
+		state.downQueue.forEach((val, i) => {
+			if (val.randomStr === randomStr) {
+				state.downQueue.splice(i, 1)
+			}
+		})
 	}
 }

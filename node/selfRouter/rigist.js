@@ -47,6 +47,7 @@ module.exports = function (app) {
 					昵称
 					收藏歌曲
 					收藏歌单
+					下载过的歌曲信息
 				*/
 				const data = {
 					name,
@@ -58,7 +59,8 @@ module.exports = function (app) {
 					nickname     : '昵称',
 					birthday     : Date.now(),
 					collectMusic : [],
-					collectList  : []
+					collectList  : [],
+					downList     : []
 					
 				}
 

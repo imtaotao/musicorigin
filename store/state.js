@@ -82,7 +82,8 @@ export default {
 			ex           : 0,
 			percent      : 0,
 			collectList  : [],
-			collectMusic : []
+			collectMusic : [],
+			downList     : []
 		}
 	})(),
 
@@ -90,5 +91,8 @@ export default {
 	login           : _ => {},
 
 	// 音乐下载
-	download        : _ => {}
+	download        : _ => {},
+
+	// 下载队列
+	downQueue       : []
 }

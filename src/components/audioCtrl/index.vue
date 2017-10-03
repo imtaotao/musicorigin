@@ -145,6 +145,7 @@ export default {
                     // 再拿到音频文件的歌词
                     this.$ajax.get(this.host + `/lyric?id=${id}`).then(({data}) => {
                         this.setLrc(data, () => {
+                            console.log(url)
                             this.startPlay(id, url, duration, callback)
                         })
                     })

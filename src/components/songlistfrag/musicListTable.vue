@@ -21,7 +21,8 @@
 					:class="key.collect ? 'icon-collect2-list' : 'icon-collect1-list'"
 					v-ripple
 					@click='collect(i)'></i>
-					<i class="downLoad" v-ripple></i>
+					<i class="downLoad" v-ripple 
+					@click='downclick(key.id, key.name, key.oringeInfo)'></i>
 				</li>
 				<li v-for='(item, i) in 4' class="lf list-li">
 					<span :class="i !== 0 ? 'Gray' : 'White'">{{getCell(i, key)}}</span>
@@ -32,6 +33,8 @@
 </template>
 
 <script>
+	import Queue     from '@/common/js/Queue'
+	import down      from '@/common/js/download'
 	import {mapGetters, mapActions} from 'vuex'
 	import interFace from '@/common/js/audioInterFace'
 
@@ -45,6 +48,8 @@
 		computed: {
 			 ...mapGetters([
 	            'host',
+	            'user',
+	            'download',
 	            'listId',
 	            'playOneSong',
 	            'musicList',
@@ -77,6 +82,10 @@
 				interFace.collect(this.listArr[i], _ => {
 					this.resetCollect(this.musicList)
 				})
+			},
+			downclick (id, name, info) {
+				this.$event.fire('downclick', 1)
+				this.download(id, name, info)
 			}
 		}
 	}

@@ -10,7 +10,9 @@ const interfaceName = [
 	'./collectMusic',		// 歌曲收藏
 	'./allComments',		// 歌单歌曲评论
 	'./getComments',        // 获取歌单歌曲评论
-	'./addexperience'	    // 增加经验
+	'./addexperience',	    // 增加经验
+	'./download',	        // 下载音乐
+	'./alrDownLoad'         // 已经下载过的音乐
 ]
 
 module.exports = function (app) {

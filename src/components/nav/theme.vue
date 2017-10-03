@@ -128,6 +128,7 @@
 						this.randomStr = null
 					}
 				})
+				this.$emit('update:showSkin', false)
 			},
 
 			// 按钮开关
@@ -150,13 +151,11 @@
 						const j     = random(0, skin[i].length - 1)
 
 						// 渐变
-						
 						this.choseskin(i, j, true)
 						setTimeout(_ => {
 							this.autoToggleSkin()()
-						}, 1000)
+						}, 250)
 						
-					
 					}, this.interval)
 				}
 			},
@@ -173,7 +172,7 @@
 				setTimeout(_ => {
 					callback()
 					img.style.opacity = 1
-				}, 1000)
+				}, 250)
 			}
 		},
 		created () {

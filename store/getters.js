@@ -124,5 +124,11 @@ export default {
 	},
 	login (state) {
 		return state.login
+	},
+	download (state) {
+		return state.download
+	},
+	downQueue (state) {
+		return state.downQueue
 	}
 }

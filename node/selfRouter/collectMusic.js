@@ -11,14 +11,14 @@ module.exports = function (app) {
 		if (
 			!name       || 
 			!musicName  ||
-			!id         || 
-			!albumId    ||
 			!albumName  ||
 			!oringeInfo ||
 			!singer     ||
-			!singerId   ||
-			!time       ||
-			collect == null
+			time     == null ||
+			id       == null || 
+			albumId  == null ||
+			singerId == null ||
+			collect  == null
 		) {
 			res.send(JSON.stringify({msg: '参数错误', code: -1}))
 			next()

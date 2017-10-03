@@ -24,6 +24,8 @@
 </template>
 
 <script>
+	import down      from '@/common/js/download'
+	import Queue     from '@/common/js/Queue'
 	import {mapGetters, mapActions} from 'vuex'
 	import musicList from './musicList'
 
@@ -46,6 +48,7 @@
 				'host',
 				'forward',
 				'user',
+				'download',
 				'resetCollect'
 			])
 		},
@@ -61,9 +64,12 @@
 				forward(0)
 			},
 			downAll () {
+				this.musicList.forEach(song => {
+					const {id, name, oringeInfo} = song
 
+					this.download(id, name, oringeInfo)
+				})
 			},
-
 			reset (name) {
 				this.name       = name
 				this.loadCount  = null,

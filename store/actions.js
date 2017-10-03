@@ -196,5 +196,16 @@ export default {
     // 登录函数
     login ({state, commit}, fun) {
         commit('login', fun)
+    },
+    // 音乐下载函数
+    download ({state, commit}, fun) {
+        commit('download', fun)
+    },
+    // 下载队列
+    downQueue ({state, commit}, data) {
+        commit('downQueue', data)
+    },
+    downUnshift ({state, commit}, randomStr) {
+        commit('downUnshift', randomStr)
     }
 }

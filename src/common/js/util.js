@@ -23,7 +23,7 @@ export const util = {
 	},
 
 	randomStr () {
-		return Date.now() + this.random(999999999) + this.random(999999999)
+		return Date.now() + this.random(9999999) + this.random(999999999)
 	},
 
 	toggle (el, className) {
@@ -352,6 +352,17 @@ export const util = {
 		}
 
 		alert ('为了更好的用户体验，请您用Chrome浏览器访问')
-	}
+	},
 
+	down (url, filename, callback) {
+		if (!url) return
+		const node = document.createElement('a')
+			
+		node.href     = url
+		node.download = filename
+		
+		node.click()
+		setTimeout(_ => callback && callback())
+
+	}
 }

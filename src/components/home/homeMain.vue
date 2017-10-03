@@ -5,7 +5,7 @@
 			<loading v-if='isLoading'></loading>
 			<transition name='zoom'>
 				<div class="mainpage-box" v-if='!songDetail'>
-					<div class="bg-pic animate-os" :style='{background: bgStyle()}'></div>
+					<div class="bg-pic animate" :style='{background: bgStyle()}'></div>
 					<!-- 左边栏 -->
 					<aside class="lf" id="js_aside">
 						<!-- 个人登录信息 -->
@@ -63,6 +63,14 @@
 											<i :class='getIcon(item.title, key.name)' 
 											v-ripple='"#0094B9"'></i>
 											<span>{{key.name}}</span>
+
+											<!-- 下载 -->
+											<span 
+											class='down-icon rt animate-os'
+											v-if='key.name === "下载音乐"'
+											:class='showDown ? "show-down" : ""'>
+											+ {{downlength}}
+											</span>
 										</router-link>
 								</ul>
 							</div>
@@ -170,7 +178,13 @@
 				inputNick     : null,
 
 				// 昵称修改条的显示
-				nickChangeBar : false
+				nickChangeBar : false,
+
+				// 显示下载提示
+				showDown      : false,
+
+				// 当前的下载数量
+				downlength    : 1
 			}
 		},
 		computed: {
@@ -298,6 +312,15 @@
 		        	this.user.pic = data
 		        	this.$event.fire('changeUser')
 		        })
+			},
+
+			// 显示下载提示框
+			downPrompt (num = 1) {
+				this.showDown = true
+				this.downlength = num
+				setTimeout(_ => {
+					this.showDown   = false
+				}, 1000)
 			}
 		},
 		watch: {
@@ -307,7 +330,7 @@
 		},
 		created () {
 			// 滑动按钮
-			const {$event, goUp} = this
+			const {$event, goUp, login, downPrompt} = this
 			$event.on('scrollTop', _ => goUp())
 
 			// 选择主题
@@ -337,8 +360,11 @@
 			})
 
 			// 登录界面
-			this.$event.fire('showLogin', this.showLogin)
-			this.$event.on('login', ({data}) => this.login(data))
+			$event.fire('showLogin', this.showLogin)
+			$event.on('login', ({data}) => login(data))
+
+			// 下载信息
+			$event.on('downclick', ({data}) => downPrompt(data))
 		},
 		components: {
 			navCom,
@@ -652,5 +678,24 @@
 	.list-name {
 		display: inline-block;
 		width: 100px;
+	}
+
+	/*下载按钮颜色*/
+	.down-icon {
+		display: inline-block;
+		width: 40px;
+		font-size: 15px;
+		height: 25px;
+		color: #53FDD6;
+		font-weight: bold;
+		text-align: center;
+		line-height: 25px;
+		margin-right: 10px;
+		opacity: 0;
+		transform: translateY(-20px);
+	}
+	.show-down {
+		opacity: 1;
+		transform: translateY(0);
 	}
 </style>

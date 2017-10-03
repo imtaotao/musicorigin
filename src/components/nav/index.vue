@@ -25,7 +25,7 @@
 		</ul>
 
 		<!-- 皮肤窗口 -->
-		<theme-box class='theme-box' :showSkin='showSkin'></theme-box>
+		<theme-box class='theme-box' :showSkin.sync='showSkin'></theme-box>
 	</div>
 </template>
 

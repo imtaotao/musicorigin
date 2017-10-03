@@ -6,6 +6,7 @@
 </template>
 <script>
     // 模板
+    import down      from '@/common/js/download'
     import homeMain  from '@/components/home/homeMain'
     import audioCtr  from '@/components/audioCtrl'
     import Queue     from '@/common/js/Queue'
@@ -91,8 +92,6 @@
 
                 })
             },
-
-
             collectFilter (data) {
                 const or      = data.oringeInfo
                 const album   = or.album || or.al
@@ -177,8 +176,76 @@
                         addEX()
                     })
                 }, exTime)
-            }
+            },
 
+            // 下载歌曲
+            downMusic (id, name = Date.now(), song) {
+                if (!id) return alert ('未获取到数据~')
+                const {$store, $event, download, downsave} = this
+
+                // 每次下载都有一个下载实例
+                const downInstance = new down(name)
+                $store.dispatch('downQueue', downInstance)
+
+                Queue.on('down', next => {
+                    download(id, name, procent => {
+                        downInstance.procent = procent
+                    }).then(fail => {
+                        // 下载完毕后删除当前数据，继续下载
+                        $store.dispatch('downUnshift', downInstance.randomStr)
+
+                        !fail && downsave(song)
+                        next()
+                    })
+                })
+            },
+            downsave (info) {
+                const {$ajax, $event, user, host} = this
+                if (!user._id) return
+
+                info.downTime = Date.now()
+                $ajax.post(host + '/alrdownload', {name: user.name, info})
+                .then(({data}) => {
+                    if (data.code !== 1) return alert('下载信息保存异常')
+
+                    // 实时更新
+                    this.user.downList.push(info)
+                    $event.fire('changeUser')
+                })
+            },
+            download (id, name = util.randomStr(), callback) {
+                if (!id) return alear('暂无数据~')
+                const {$ajax, host, $store} = this
+
+                return new Promise((resolve, reject) => {
+                    // 先获取音乐的 url
+                    $ajax.get(host + `/music/url?id=${id}`).then(({data}) => {
+                        const insertData = data.data
+                        if (!insertData) return alert('暂无数据~')
+
+                        const url = insertData[0].url
+                        if (!url) {
+                            resolve(true)
+                            return alert('该歌曲可能因为版权问题，不能下载~')
+                        }
+
+                        $ajax({
+                            url          : host + `/download?url=${url}`,
+                            responseType : 'blob',
+                            onDownloadProgress ({loaded, total}) {
+                                $store.dispatch('hideLoading')
+                                const procent = loaded / total
+                                callback && callback(procent)
+                            }
+                        }).then(({data})=> {
+                            const objectURL = URL.createObjectURL(data)
+                            const suffix    = url.match(/\.[^\.]+$/)
+                            const filename  = name + (suffix ? suffix[0] : '.mp3')
+                            util.down(objectURL, filename, resolve)
+                        })
+                    })
+                })
+            }
         },
         components: {
             homeMain,
@@ -187,7 +254,7 @@
         created () {
             const {
                 $store, $event, forward, playMusicList, addEX,
-                playOneSong, defaultNetUser, collectMusic
+                playOneSong, defaultNetUser, collectMusic, downMusic
             } = this
 
             defaultNetUser()
@@ -195,6 +262,7 @@
             // 歌单播放列表 和 单首歌播放 放到 vuex
             $store.dispatch('playMusicList', playMusicList)
             $store.dispatch('playOneSong', playOneSong)
+            $store.dispatch('download', downMusic)
 
             // 当添加的歌曲已经子啊播放列表的时候
             $event.on('playPosition', ({data}) => {
