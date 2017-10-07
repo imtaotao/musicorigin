@@ -5,6 +5,9 @@ export default {
 	localhost (state) {
 		return state.localhost
 	},
+	showContainer (state) {
+		return state.showContainer
+	},
 	host (state) {
 		return state.host
 	},
@@ -95,6 +98,11 @@ export default {
 
 			return nowInfo
 		}
+	},
+
+	// 当前是否自动切换皮肤
+	autoSwith (state) {
+		return state.autoSwith
 	},
 
 	// 当前皮肤

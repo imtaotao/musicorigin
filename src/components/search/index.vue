@@ -4,7 +4,7 @@
 			<p class='search-main-title'>
 				<span class='Gray'>搜索</span>
 				<span class='White'>{{name}}</span>
-				<span class='Gray'>{{total}}首</span>
+				<span class='Gray'>结果有{{total}}条</span>
 			</p>
 
 			<ul class='title-ul'>

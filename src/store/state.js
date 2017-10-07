@@ -7,6 +7,9 @@ export default {
 	phone           : 15211133566,
 	password		: 'chentao1994',
 
+	// 整个界面的切换
+	showContainer   : true,
+
 	// 加载图标
 	loadingShow		: false,
 
@@ -60,6 +63,9 @@ export default {
 	// 当前歌曲 id
 	nowPlayId		: null,
 
+	// 当前是否自动切换皮肤
+	autoSwith       : true,
+	
 	// 当前皮肤
 	nowSkin			: null,
 

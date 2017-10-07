@@ -11,16 +11,19 @@
 			</li>
 			
 			<li>
-				<span class="shrink-box" title="缩小窗口" v-ripple></span>
+				<span class="shrink-box" @click='shrinkBox' title="缩小窗口" v-ripple>
+				</span>
 			</li>
 			<li>
 				<span class="streamline-box" title="精简模式" v-ripple @click='streamline'></span>
 			</li>
 			<li>
-				<span class="skin-box" title="换皮肤" v-ripple @click='showSkin = !showSkin'></span>
+				<span class="skin-box" title="换皮肤" v-ripple @click='showSkin = !showSkin'>
+				</span>
 			</li>
 			<li>
-				<span class="login-btn" title="登录" v-ripple @click='loginToggle'></span>
+				<span class="login-btn" title="登录" v-ripple @click='loginToggle'>
+				</span>
 			</li>
 		</ul>
 
@@ -44,9 +47,14 @@
 				showLogin : false
 			}
 		},
+		computed: {
+			...mapGetters([
+				'shrinkAnimate'
+			])
+		},
 		methods: {
 			streamline () {
-				alert('这个功能我还没有实现 /(ㄒoㄒ)/~~')
+				alert('精简模式暂未实现~~')
 			},
 			search () {
 				const name = $('#search').value
@@ -62,6 +70,11 @@
 				// 显示搜索页面
 				this.$router.push('/search/' + name)
 				
+			},
+			// 缩小主界面，显示可视化的地方
+			shrinkBox () {
+				this.shrinkAnimate()
+				this.$store.dispatch('showContainer', false)
 			}
 		},
 		created () {

@@ -5,6 +5,9 @@ export default {
 	changeLoading (state, isChange) {
 		state.loadingShow = isChange
 	},
+	showContainer (state, boole) {
+        state.showContainer = boole
+    },
 	// 更改歌曲列表
 	addMusicList (state, data) {
 		// 如果歌曲列表没有歌曲，清除默认提示语句
@@ -110,6 +113,11 @@ export default {
 	},
 	bigAnimate (state, fun) {
 		state.bigAnimate = fun
+	},
+
+	// 当前是否自动切换皮肤
+	autoSwith (state, autoSwith) {
+		state.autoSwith = autoSwith
 	},
 
 	// 当前皮肤

@@ -19,6 +19,8 @@ function logicDeal (req, res, next, dbName) {
 	const {name, id, text, reply, nickname, avatarUrl} = req.body
 	if (
 		!name 		  || 
+		!nickname     ||
+		!avatarUrl    ||
 		!id 		  || 
 		text  == null || 
 		reply == null
@@ -34,7 +36,7 @@ function logicDeal (req, res, next, dbName) {
 }
 
 // 普通评论
-function ordinary (dbName, {res, name, id, text, next}) {
+function ordinary (dbName, {res, name, id, text, nickname, avatarUrl, next}) {
 	// 连接歌单评论的数据库
 	mongo(dbName, (err, db) => {
 		if (!dealErr(err, res, next, db)) return
@@ -45,6 +47,8 @@ function ordinary (dbName, {res, name, id, text, next}) {
 		const data = {
 			name,
 			text,
+			nickname,
+			avatarUrl,
 			time  : Date.now(),
 			reply : []
 		}
@@ -60,7 +64,7 @@ function ordinary (dbName, {res, name, id, text, next}) {
 }
 
 // 回复评论
-function replyComment (dbName, {res, name, id, reply, text, next}) {
+function replyComment (dbName, {res, name, id, reply, text, nickname, avatarUrl, next}) {
 	// 需要查找三个位置
 	// 当前评论所在的集合（歌曲）
 	// 当前集合中的具体评论位置
@@ -81,10 +85,13 @@ function replyComment (dbName, {res, name, id, reply, text, next}) {
 				return
 			}
 
+			console.log(comInfo)
 			// 插入回复数据
 			const data = {
 				name,
 				text,
+				nickname,
+				avatarUrl,
 				time  : Date.now(),
 				reply : [comInfo]
 			}

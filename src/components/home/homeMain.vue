@@ -1,134 +1,139 @@
 <template>
 	<div>
 		<!-- 总体容器 -->
-		<div class="all-container animate-five">
-			<loading v-if='isLoading'></loading>
-			<transition name='zoom'>
-				<div class="mainpage-box" v-if='!songDetail'>
-					<div class="bg-pic animate" :style='{background: bgStyle()}'></div>
-					<!-- 左边栏 -->
-					<aside class="lf" id="js_aside">
-						<!-- 个人登录信息 -->
-						<div class="sigle-tab-box user-info">
-							<p class="tab-title">个人信息</p>
-							<div class="person-info">
-								<div class="pic-box">
-									<input 
-									type="file" 
-									class="hide-input" 
-									title="上传个人头像"
-									id='upPic'
-									@change='upPic'>
-									<div class="border-cicle"></div>
-									<img :src="user.pic" width="80" height="80">
-								</div>
-								
-								<div @click.self='changeNick' class='user-nick'>
-									<span title="修改昵称" 
-									@click.self='changeNick'>{{user.nickname}}</span>
-									<div class='change-nick animate' 
-									:class='nickChangeBar ? "" : "hide-bar"'>
-										<div class='nick-corners'></div>
-										<input type='text' v-model='inputNick' 
-										@keyup.enter='submitNick'>
+		<transition name='long-fade'>
+			<div class="all-container animate-five" v-if='showContainer'>
+				<loading v-if='isLoading'></loading>
+				<transition name='zoom'>
+					<div class="mainpage-box" v-if='!songDetail'>
+						<div class="bg-pic animate" :style='{background: bgStyle()}'></div>
+						<!-- 左边栏 -->
+						<aside class="lf" id="js_aside">
+							<!-- 个人登录信息 -->
+							<div class="sigle-tab-box user-info">
+								<p class="tab-title">个人信息</p>
+								<div class="person-info">
+									<div class="pic-box">
+										<input 
+										type="file" 
+										class="hide-input" 
+										title="上传个人头像"
+										id='upPic'
+										@change='upPic'>
+										<div class="border-cicle"></div>
+										<img :src="user.pic" width="80" height="80">
 									</div>
+									
+									<div @click.self='changeNick' class='user-nick'>
+										<span title="修改昵称" 
+										@click.self='changeNick'>{{user.nickname}}</span>
+										<div class='change-nick animate' 
+										:class='nickChangeBar ? "" : "hide-bar"'>
+											<div class='nick-corners'></div>
+											<input type='text' v-model='inputNick' 
+											@keyup.enter='submitNick'>
+										</div>
+									</div>
+									<p class='user-grade'>{{user.grade}}</p>
+									<!-- 经验条 -->
+									<div class="experience-bar">
+				                        <span></span>
+				                        <span 
+				                        class='animate-os' 
+				                        :style='{width: exprocent(user.percent)}'>
+				                        	<i class="show-box animate">
+				                        		<div class="sharp-corners"></div>
+				                        		{{user.ex}}/{{exprocent(user.percent)}}
+				                        	</i>
+				                        </span>
+				                    </div>
 								</div>
-								<p class='user-grade'>{{user.grade}}</p>
-								<!-- 经验条 -->
-								<div class="experience-bar">
-			                        <span></span>
-			                        <span 
-			                        class='animate-os' 
-			                        :style='{width: exprocent(user.percent)}'>
-			                        	<i class="show-box animate">
-			                        		<div class="sharp-corners"></div>
-			                        		{{user.ex}}/{{exprocent(user.percent)}}
-			                        	</i>
-			                        </span>
-			                    </div>
 							</div>
-						</div>
-						<!-- 歌单部分 -->
-						<div class="list-box">
-							<div class="sigle-tab-box" v-for='item in leftLum'>
-								<p class="tab-title" v-if='item.title'>{{item.title}}</p>
-								<ul>
-									<router-link
-										:to='key.url' 
-										v-for="key in item.content" 
-										tag='li'
-										class='tab-btn'
-										v-show='showColumn(key.name)'
-										>
-											<i :class='getIcon(item.title, key.name)' 
-											v-ripple='"#0094B9"'></i>
-											<span>{{key.name}}</span>
+							<!-- 歌单部分 -->
+							<div class="list-box">
+								<div class="sigle-tab-box" v-for='item in leftLum'>
+									<p class="tab-title" v-if='item.title'>{{item.title}}</p>
+									<ul>
+										<router-link
+											:to='key.url' 
+											v-for="key in item.content" 
+											tag='li'
+											class='tab-btn'
+											v-show='showColumn(key.name)'
+											>
+												<i :class='getIcon(item.title, key.name)' 
+												v-ripple='"#0094B9"'></i>
+												<span>{{key.name}}</span>
 
-											<!-- 下载 -->
-											<span 
-											class='down-icon rt animate-os'
-											v-if='key.name === "下载音乐"'
-											:class='showDown ? "show-down" : ""'>
-											+ {{downlength}}
-											</span>
-										</router-link>
-								</ul>
-							</div>
+												<!-- 下载 -->
+												<span 
+												class='down-icon rt animate-os'
+												v-if='key.name === "下载音乐"'
+												:class='showDown ? "show-down" : ""'>
+												+ {{downlength}}
+												</span>
+											</router-link>
+									</ul>
+								</div>
 
-							<!-- 歌单列表 -->
-							<div class="sigle-tab-box">
-								<p class="tab-title">收藏的歌单</p>
-								<ul>
-									<router-link
-										:to='"/collectList/" + key.id' 
-										v-for='key in user.collectList'
-										tag='li'
-										class='tab-btn'
-										>
-											<i class='musicList' v-ripple='"#0094B9"'></i>
-											<span 
-											class='hidden-text list-name' 
-											:title='key.listName'>
-												{{key.listName}}
-											</span>
-										</router-link>
-								</ul>
+								<!-- 歌单列表 -->
+								<div class="sigle-tab-box">
+									<p class="tab-title">收藏的歌单</p>
+									<ul>
+										<router-link
+											:to='"/collectList/" + key.id' 
+											v-for='key in user.collectList'
+											tag='li'
+											class='tab-btn'
+											>
+												<i class='musicList' v-ripple='"#0094B9"'></i>
+												<span 
+												class='hidden-text list-name' 
+												:title='key.listName'>
+													{{key.listName}}
+												</span>
+											</router-link>
+									</ul>
+								</div>
 							</div>
+						</aside>
+						<!-- 右边栏 -->
+						<div class="right-box rt animate">
+							<go-up class='go-top' v-show='showGoUp'></go-up>
+							<!-- tab 栏 -->
+							<nav>
+								<nav-com></nav-com>
+								<div class="border-bottom"></div>
+							</nav>
+							<transition :name="transition" mode="out-in">
+								<router-view 
+								class="right-content-details" 
+								v-scrollTop='scroll'>
+								</router-view>
+							</transition>
 						</div>
-					</aside>
-					<!-- 右边栏 -->
-					<div class="right-box rt animate">
-						<go-up class='go-top' v-show='showGoUp'></go-up>
-						<!-- tab 栏 -->
-						<nav>
-							<nav-com></nav-com>
-							<div class="border-bottom"></div>
-						</nav>
-						<transition :name="transition" mode="out-in">
-							<router-view 
-							class="right-content-details" 
-							v-scrollTop='scroll'>
-							</router-view>
-						</transition>
 					</div>
-				</div>
-			</transition>
-			<!-- 当前播放歌曲详情 -->
-			<transition name='zoom'>
-				<songDetail 
-				v-if='songDetail' 
-				class='song-detail' 
-				:songDetail.sync='songDetail'></songDetail>
-			</transition>
+				</transition>
+				<!-- 当前播放歌曲详情 -->
+				<transition name='zoom'>
+					<songDetail 
+					v-if='songDetail' 
+					class='song-detail' 
+					:songDetail.sync='songDetail'></songDetail>
+				</transition>
 
-			<!-- 登录窗口 -->
-			<login-box class='login-box'></login-box>
-		</div>
+				<!-- 登录窗口 -->
+				<login-box class='login-box'></login-box>
+			</div>
+
+			<visualizer v-if='!showContainer'></visualizer>
+		</transition>
 	</div>
 </template>
 
 <script>
 	import audio  	  from '@/components/audioCtrl'
+	import visualizer from '@/components/visualizer'
 	import navCom 	  from '@/components/nav'
 	import songDetail from '@/components/songDetail'
 	import loginBox   from '@/components/nav/login'
@@ -194,7 +199,8 @@
 	    		'host',
 	    		'shrinkAnimate',
 	    		'nowSkin',
-	    		'user'
+	    		'user',
+	    		'showContainer'
 	    	]),
 
 	    	// 是否显示歌曲详情页面
@@ -270,10 +276,8 @@
 
 			// 跟改昵称
 			changeNick () {
-				if (!this.user._id) {
-					alert('请您先登录')
-					return
-				}
+				if (!this.user._id) return alert('请您先登录')
+					
 				this.nickChangeBar = !this.nickChangeBar
 				!this.nickChangeBar && this.submitNick()
 			},
@@ -283,11 +287,8 @@
 
 				$ajax.post(host + '/nickname', {nickname: inputNick, name: user.name})
 				.then(({data}) => {
-					if (data.msg) {
-						alert(data.msg)
-						return
-					}
-
+					if (data.msg) return alert(data.msg)
+						
 					this.user.nickname = data.nickname
 					this.nickChangeBar = false
 					$event.fire('changeUser')
@@ -297,6 +298,10 @@
 
 			// 上传头像
 			upPic () {
+				if (!this.user._id) {
+					this.$event.fire('showLogin', true)
+					return alert('请先登录~')
+				}
 				const file = util.$('#upPic').files[0]
 				if (!file) return
 				
@@ -305,10 +310,8 @@
 		        fd.append("name", this.user.name)
 
 		        this.$ajax.post(this.host + '/upPic', fd).then(({data}) => {
-		        	if (data.msg) {
-		        		alert(data.msg)
-		        		return
-		        	}
+		        	if (data.msg) return alert(data.msg)
+		        	
 		        	this.user.pic = data
 		        	this.$event.fire('changeUser')
 		        })
@@ -316,10 +319,10 @@
 
 			// 显示下载提示框
 			downPrompt (num = 1) {
-				this.showDown = true
+				this.showDown   = true
 				this.downlength = num
 				setTimeout(_ => {
-					this.showDown   = false
+					this.showDown = false
 				}, 1000)
 			}
 		},
@@ -339,12 +342,12 @@
 				const type  = data.url ? 'url' : 'rgb'
 
 				if (type === 'url') {
-					this.bgValue = true
+					this.bgValue   = true
 					this.skinValue = data.url
 				}
 
 				if (type === 'rgb') {
-					this.bgValue = false
+					this.bgValue   = false
 					this.skinValue = data.rgb
 				}
 			})
@@ -369,7 +372,8 @@
 		components: {
 			navCom,
 			songDetail,
-			loginBox
+			loginBox,
+			visualizer
 		}
 	}
 </script>

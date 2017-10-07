@@ -66,7 +66,6 @@
 				nowBtn    : 0,
 				active 	  : [0, 6],
 				titleText : ['主题', '纯色'],
-				autoSwith : true,
 				randomStr : null,
 				interval  : 20000,
 
@@ -107,7 +106,8 @@
 		},
 		computed: {
 			...mapGetters([
-	    		'nowSkin'
+	    		'nowSkin',
+	    		'autoSwith'
 	    	])
 		},
 		methods: {
@@ -124,7 +124,7 @@
 					$store.dispatch('nowSkin', [this.skin[i][j], this.active])
 					$event.fire('choseskin')
 					if (!auto) {
-						this.autoSwith = false
+						$store.dispatch('autoSwith', false)
 						this.randomStr = null
 					}
 				})
@@ -133,7 +133,7 @@
 
 			// 按钮开关
 			toggleSwith () {
-				this.autoSwith = !this.autoSwith
+				this.$store.dispatch('autoSwith', !this.autoSwith)
 				
 				if (this.autoSwith) {
 					this.randomStr = util.randomStr()

@@ -164,7 +164,8 @@
                 }
       
                 this.t = setTimeout(_ => {
-                    $ajax.get(host + `/addexperience?name=${user.name}`).then(({data}) => {
+                    $ajax.get(host + `/addexperience?name=${user.name}`)
+                    .then(({data}) => {
                         if (data.code !== 1) return addEX()
 
                         const {ex, grade, percent} = data.result

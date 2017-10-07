@@ -128,8 +128,12 @@
 	            }, 20)})
 			},
 	        bigAnimate (dom = $('.Shrink-box')) {
-	        	const bigDom = $('.audio-controls')
-	        	const width  = parseInt(getComputedStyle($('.all-container')).width)
+	        	const bigDom    = $('.audio-controls')
+	        	const container = $('.all-container')
+	        	const width     = container ? parseInt(getComputedStyle(container).width)
+	        	                            : document.body.clientWidth * 0.85
+
+
 				dom.animate({
 					opacity: 0
 				}, 500, function () {
@@ -193,7 +197,6 @@
 		width: 130px;
 		height: 130px;
 		border-radius: 50%;
-		/*background: #171C26;*/
 		background: rgba(79, 79, 79, 0.5);
 		overflow: hidden;
 		box-shadow: 0 2px 10px 0 rgba(0,0,0,.7);

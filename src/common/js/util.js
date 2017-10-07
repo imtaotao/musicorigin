@@ -334,6 +334,7 @@ export const util = {
 				id           : val._id
 			})
 		})
+		console.log(arr)
 		return arr
 	},
 
@@ -344,14 +345,14 @@ export const util = {
 
 		// 如果是 safari
 		if (this.isSafari) {
-			return alert ('本网站不兼容Safari，为了更好的用户体验，请您用Chrome浏览器访问')
+			return alert('本网站不兼容Safari，为了更好的用户体验，请您用Chrome浏览器访问', 5000)
 		}
 
 		if (this.isIE || this.isIE9) {
-			return alert('本网站不兼容IE，就这样！！！')
+			return originAlert('本网站不兼容IE，就这样！！！')
 		}
 
-		alert ('为了更好的用户体验，请您用Chrome浏览器访问')
+		alert('为了更好的用户体验，请您用Chrome浏览器访问', 5000)
 	},
 
 	down (url, filename, callback) {

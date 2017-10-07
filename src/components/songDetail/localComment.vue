@@ -122,6 +122,8 @@
 				// 发送请求
 				const data = {
 					name      : user.name,
+					nickname  : user.nickname,
+					avatarUrl : user.pic,
 					text      : text,
 					id        : nowPlayId,
 					reply     : reply
@@ -137,8 +139,6 @@
 					if (data.msg.includes('失败')) return this.reply = false
 
 					// 添加数据
-					data.doc.nickname  = user.nickname
-					data.doc.avatarUrl = user.pic
 					this.comments.unshift(filter([data.doc])[0])
 					this.reply = false
 				})

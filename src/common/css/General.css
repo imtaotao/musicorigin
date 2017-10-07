@@ -90,9 +90,17 @@
 
 /*fade*/
 .fade-enter-active, .fade-leave-active {
-   transition: opacity .7s;
+   transition: opacity .5s;
 }
 .fade-enter, .fade-leave-to {
+    opacity: 0;
+}
+
+/*音频可视化切换*/
+.long-fade-enter-active, .long-fade-leave-active {
+   transition: opacity 2s;
+}
+.long-fade-enter, .long-fade-leave-to {
     opacity: 0;
 }
 

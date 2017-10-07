@@ -5,6 +5,9 @@ export default {
 	hideLoading ({state, commit}) {
 		commit('changeLoading', false)
 	},
+    showContainer ({state, commit}, boole) {
+        commit('showContainer', boole)
+    },
     addMusicList ({state, commit}, data) {
         // 得到歌曲图片等信息
         const album     = data.album              || data.al
@@ -173,6 +176,11 @@ export default {
     },
     bigAnimate ({state, commit}, fun) {
         commit('bigAnimate', fun)
+    },
+
+    // 当前是否自动切换皮肤
+    autoSwith ({state, commit}, autoSwith) {
+       commit('autoSwith', autoSwith)
     },
 
     // 当前皮肤
