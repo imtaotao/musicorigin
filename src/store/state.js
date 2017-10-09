@@ -1,7 +1,7 @@
 export default {
 	// 接口地址
-	host			: 'http://localhost:8081',
-	// host			: 'http://39.108.72.180:8081/',
+	// host			: 'http://localhost:8081',
+	host			: 'http://39.108.72.180:8081/',
 
 	// 默认登录的网易云音乐账号
 	phone           : 15211133566,

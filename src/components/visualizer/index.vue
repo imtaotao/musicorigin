@@ -1,7 +1,8 @@
 <template>
 	<div class='visualizer-container'>
 		<img :src="nowInfo.picUrl" width='800' height='800'>
-		<div class='visualizer-area'>
+		<div class='visualizer-area' 
+		:style='{background: "rgba(7,17,77,"+ brightness +")"}'>
 			<p class='shinkctrl-main-btn rt'>
 				<span class='rt animate-five'
 				 @click='btnClick(key, i)' 
@@ -9,6 +10,14 @@
 				 v-for='(key, i) in btnText'>{{key}}
 				</span>
 			</p>
+
+			<div class="brightness-box rt">
+                <span class="brightness-bg"></span>
+                <span class="brightness-progress"
+                @input='input($event)'>
+                    <i class="dots" v-drag></i>
+                </span>
+            </div>
 			<transition name='fade' mode="out-in">
 				<vis-view v-if='showVis'></vis-view>
 				<vis-lyric v-else></vis-lyric>
@@ -27,8 +36,9 @@
 	export default {
 		data () {
 			return {
-				btnText: ['进入主页面', '可视化'],
-				showVis: true
+				btnText    : ['进入主页面', '可视化'],
+				showVis    : true,
+				brightness : 0.75
 			}
 		},
 		computed: {
@@ -60,7 +70,11 @@
 				this.showVis = !this.showVis
 				const text = this.btnText[1] === '可视化' ? '歌词' : '可视化'
 				Vue.set(this.btnText, 1, text)
-			}
+			},
+			// 背景透明度
+	    	input (e) {
+	    		this.brightness = e.currentTarget.value || 0
+	    	}
 		},
 		components: {
 			visView,
@@ -112,4 +126,30 @@
 		background: rgba(255, 255, 255, 0.15);
 		color: rgba(255, 255, 255, 0.5);
 	}
+
+	.brightness-box {
+		position: relative;
+        top: 13px;
+		width: 120px;
+		height: 20px;
+		z-index: 99;
+	}
+	.brightness-box span {
+        position: absolute;
+        left: 0;
+        top: 7.5px;
+        height: 5px;
+        border-radius: 10px;
+    }
+    .brightness-bg {
+        width: 100%;
+        background: #4f5360;
+    }
+    .brightness-progress {
+    	width: 75%;
+        background: -webkit-gradient(linear,left top, right bottom, from(#a1f1a3), to(#3974d5));
+    }
+    .brightness-box .doc {
+    	margin-left: -10px;
+    }
 </style>

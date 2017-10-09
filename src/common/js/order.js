@@ -1,5 +1,6 @@
 import ripple from './ripple'
 import banner from './banner'
+import drag   from '@/common/js/progress'
 import {util} from '@/common/js/util'
 import Ev     from '@/common/js/event'
 const event = Ev.install()
@@ -11,6 +12,15 @@ export default function (Vue) {
 			const color    = binding.value || '#fff'
 			const instance = new ripple(el, color)
 			instance.init()
+		}
+	})
+
+	// 滑动条指令
+	Vue.directive('drag', {
+		inserted (el, binding) {
+			const direct = binding.value || 'X'
+			const bar    = new drag(el, 'X')
+            bar.init()
 		}
 	})
 
