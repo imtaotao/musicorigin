@@ -19,7 +19,11 @@
 		</div>
 
 		<!-- 歌曲列表 -->
-		<music-list :showMusicList='filterUser' :alrcollect='true'></music-list>
+		<music-list 
+		:showMusicList='filterUser' 
+		:alrcollect='true' 
+		class='like-music-list'>
+		</music-list>
 	</div>
 </template>
 
@@ -112,6 +116,10 @@
 	.info-main .title-ul {
 		width: 100%;
 		overflow:hidden;
+	}
+	
+	.like-music-list {
+		margin-bottom: 50px;
 	}
 
 	.info-main  .title-ul li {

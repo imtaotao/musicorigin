@@ -75,7 +75,7 @@ export default {
         startPlay(id, url, duration, callback) {
             const {getPlayOrder, host, setPlayOrder, lyric, $store, $event} = this
 
-            let audio = new audioctrl(16, duration)
+            let audio = new audioctrl(128, duration)
             const ajax = new musicHttp({
                 url: `${this.host}/getMusic`,
                 data: {url},

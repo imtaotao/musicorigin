@@ -45,7 +45,7 @@ class ripplesMove {
 			centerY, opacity, color, distance, diminished
 		} = this.param
 
-		ctx.clearRect(0, 0, width, height )
+		ctx.clearRect(0, 0, width, height)
 		ctx.beginPath()
 		ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI, false)
 		ctx.globalAlpha = Number(opacity.toFixed(5))

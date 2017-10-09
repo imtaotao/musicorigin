@@ -283,7 +283,7 @@
                         this.equaAnimate = true
                         this.HZData = data
                         // 去除动画，重新添加事件
-                        setTimeout(() => {
+                        setTimeout(_ => {
                             this.equaAnimate = false
                             $('.equalizer-barBox .equalizer-dots').forEach(val => {
                                 const nowBar = new drag(val, 'Y')
@@ -312,7 +312,7 @@
                 nowPlay.add()
                 this.nowPlay = id
                 this.nowInfo = info
-                interFace.forward(id, info.duration, () => {
+                interFace.forward(id, info.duration, _ => {
                     this.playConfig()
                 }, isHave => {
                     this.$store.dispatch('changeSwitchDelay', true)
@@ -341,7 +341,7 @@
                 console.log(index)
                 this.infoData(this.musicList[nowIndex])
                 // 添加水波纹和接口
-                setTimeout(() => nowPlay.add())
+                setTimeout(_ => nowPlay.add())
             },
             next () {
                 if (!this.switchDelay.judge || !this.throwErr()) return
@@ -357,7 +357,7 @@
                 // 切换id 和 歌曲图片
                 this.infoData(this.musicList[nowIndex])
                 // 添加水波纹和接口
-                setTimeout(() => nowPlay.add())
+                setTimeout(_ => nowPlay.add())
             },
             // 更改数据
             infoData (current) {
@@ -374,7 +374,7 @@
                     duration:   current.musicInfo[3]
                 }
                  
-                interFace.forward(current.id, current.musicInfo[3], () => { // 切换歌曲
+                interFace.forward(current.id, current.musicInfo[3], _ => { // 切换歌曲
                     this.playConfig()
                 }, isHave => {
                     this.$store.dispatch('changeSwitchDelay', true)
@@ -398,7 +398,7 @@
 
                 interFace.play(this.playStopStatus)
                 // 延时恢复
-                setTimeout(() => store.dispatch('changePlayDelay', true),playDelay.time)
+                setTimeout(_ => store.dispatch('changePlayDelay', true),playDelay.time)
             },
             loop () {
                this.toggleHeight('playOrderSwitch')
@@ -407,7 +407,7 @@
             volume (e) {
                 if (!this.volumeSwitch) {
                     var volumeBar = new drag($('.volume-dots'), 'Y')
-                    setTimeout(() => volumeBar.init(), 300)
+                    setTimeout(_ => volumeBar.init(), 300)
                 }
 
                 this.toggleHeight('volumeSwitch')
@@ -421,7 +421,7 @@
                 if (!this.equalizerSwitch) {
                     $('.equalizer-barBox .equalizer-dots').forEach(val => {
                         const nowBar = new drag(val, 'Y')
-                        setTimeout(() => nowBar.init(), 300)
+                        setTimeout(_ => nowBar.init(), 300)
                     })
                 }
                 this.toggleHeight('equalizerSwitch')
@@ -452,7 +452,7 @@
                     let j = i
                     this.deleteMusic.open = true
                     this.musicList[j].deletes = true
-                    setTimeout(() => {
+                    setTimeout(_ => {
                         if (j > (this.musicList.length - 1)) return
                         // 改变当前数据
                         this.musicList.splice(j, 1)
@@ -466,20 +466,20 @@
                                 name:       current.musicInfo[1],
                                 duration:   current.musicInfo[3]
                             }
-                            interFace.forward(current.id, current.musicInfo[3], () => { // 继续播放
+                            interFace.forward(current.id, current.musicInfo[3], _ => { // 继续播放
                                 this.playConfig()
                             }, isHave => {
-                                setTimeout(() => this.$store.dispatch('changeSwitchDelay', true), this.switchDelay.time)
+                                setTimeout(_ => this.$store.dispatch('changeSwitchDelay', true), this.switchDelay.time)
                                 if (isHave === false) {
                                     alert('该歌曲可能因为版权问题已下架，请播放下一首')
                                 }
                             })
-                            setTimeout(() => nowPlay.add())
+                            setTimeout(_ => nowPlay.add())
                             return
                         }
                         // 延时恢复
-                        setTimeout(() => this.$store.dispatch('changeSwitchDelay', true), this.switchDelay.time)
-                        setTimeout(() => nowPlay.add())   
+                        setTimeout(_ => this.$store.dispatch('changeSwitchDelay', true), this.switchDelay.time)
+                        setTimeout(_ => nowPlay.add())   
                     }, 200) 
                 }  
             },
@@ -559,12 +559,12 @@
                 switch (key) {
                     case '顺序' :
                         if (!audio) return
-                        audio.playOver = () => this.next()
+                        audio.playOver = _ => this.next()
                        break
                     case '随机' :
                         if (!audio) return
                         const random = util.random(0, this.musicList.length)
-                        audio.playOver = () => {
+                        audio.playOver = _ => {
                             const nowMusic = this.musicList[random]
                             this.nowPlay = nowMusic.id
                             // 只需要改id, 因为调用的 next  在next中 id++, info 也会相应更换
@@ -591,7 +591,7 @@
                 if (!getAudio) return
 
                 // 开始新的进度条
-                $store.dispatch('changeMainProgress', () => {return setInterval(() => {
+                $store.dispatch('changeMainProgress', _ => {return setInterval(_ => {
                     const time  = getAudio.getTime()
                     const width = (time * 1000 / getAudio.duration) * 100
                     $('.bar-play').style.width = (width > 100 ? 100 : width) + '%'
@@ -666,7 +666,7 @@
                     case '顺序' :
                         store.dispatch('changePlayOrder', '顺序')
                         if (!audio) return
-                        audio.playOver = () => this.next()
+                        audio.playOver = _ => this.next()
                         audio.loop(false)
                        break
                     case '单曲' :
@@ -678,7 +678,7 @@
                         const random = util.random(0, this.musicList.length)
                         store.dispatch('changePlayOrder', '随机')
                         if (!audio) return
-                        audio.playOver = () => {
+                        audio.playOver = _ => {
                             const nowMusic = this.musicList[random]
                             this.nowPlay = nowMusic.id
                             // 只需要改id, 因为调用的 next  在next中 id++, info 也会相应更换
@@ -688,8 +688,8 @@
                     break
                 }
             }
-            interFace.playInput = () => {
-                store.dispatch('changeMainProgress', () => {return null})
+            interFace.playInput = _ => {
+                store.dispatch('changeMainProgress', _ => {return null})
             }
             interFace.playChange = precent => {
                 const {getAudio, setTimeProgress, $event} = this
@@ -713,7 +713,7 @@
             store.dispatch('shrinkAnimate', this.shrinkAnimate)
 
             // 注册歌词事件
-            this.$event.on('lyrics', () => this.translateY = 0)
+            this.$event.on('lyrics', _ => this.translateY = 0)
         },
         components: {
             shinkCtrl

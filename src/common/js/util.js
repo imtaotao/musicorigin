@@ -365,5 +365,9 @@ export const util = {
 		node.click()
 		setTimeout(_ => callback && callback())
 
+	},
+
+	isArr (arr) {
+		return Object.prototype.toString.call(arr) === '[object Array]'
 	}
 }

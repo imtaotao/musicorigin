@@ -181,8 +181,10 @@ export default class audio {
 	// 得到可视化的资源
 	getVisualizer () {
 		const analyser = this.nowstatus.analyser
-		let arr = new Uint8Array( analyser.frequencyBinCount )
-		analyser.getByteFrequencyData( arr )
+		if (!analyser) return []
+		
+		let arr = new Uint8Array(analyser.frequencyBinCount)
+		analyser.getByteFrequencyData(arr)
 		return arr
 	}
 
@@ -196,7 +198,7 @@ export default class audio {
 
 	// 合并 arraybuffer
 	concatArrayBuffer (...args) {
-		if (args.length === 1 ) return args[0]
+		if (args.length === 1) return args[0]
 		function isValidArray(val) {
 			return /Int(8|16|32)Array|Uint(8|8Clamped|16|32)Array|Float(32|64)Array|ArrayBuffer/gi.test({}.toString.call(val))
 		}

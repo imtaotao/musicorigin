@@ -3,28 +3,32 @@
 		<img :src="nowInfo.picUrl" width='800' height='800'>
 		<div class='visualizer-area'>
 			<p class='shinkctrl-main-btn rt'>
-				<span class='rt animate'
-				 @click='btnClick(key)' 
+				<span class='rt animate-five'
+				 @click='btnClick(key, i)' 
 				 v-ripple="'#53FDD6'"
 				 v-for='(key, i) in btnText'>{{key}}
 				</span>
 			</p>
-			<div class='visualizer-box'>
-				
-			</div>
-			<div class='lyrics-box'></div>
+			<transition name='fade' mode="out-in">
+				<vis-view v-if='showVis'></vis-view>
+				<vis-lyric v-else></vis-lyric>
+			</transition>
 		</div>
 	</div>
 </template>
 
 <script>
+	import Vue from 'vue'
+	import visView from './view'
+	import visLyric from './lyric'
 	import {util} from '@/common/js/util'
 	import {mapGetters, mapActions} from 'vuex'
 
 	export default {
 		data () {
 			return {
-				btnText: ['进入主页面', '可视化', '歌词']
+				btnText: ['进入主页面', '可视化'],
+				showVis: true
 			}
 		},
 		computed: {
@@ -42,17 +46,25 @@
 	    	}
 		},
 		methods: {
-			btnClick (key) {
+			btnClick (key, i) {
 				key === '进入主页面' && this.bigPage()
+				i === 1 && this.toggle()
 			},
 			// 放大界面
 			bigPage () {
 				this.$store.dispatch('showContainer', true)
 				this.bigAnimate()
+			},
+			// 切换
+			toggle () {
+				this.showVis = !this.showVis
+				const text = this.btnText[1] === '可视化' ? '歌词' : '可视化'
+				Vue.set(this.btnText, 1, text)
 			}
 		},
-		created () {
-			console.log(this.nowInfo)
+		components: {
+			visView,
+			visLyric
 		}
 	}
 </script>
@@ -65,7 +77,7 @@
 	}
 	.visualizer-area {
 		position: absolute;
-		background: rgba(255,255,255,.6);
+		background: rgba(7,17,77,.7);
 		width: 100%;
 		height: 100%;
 		padding: 50px 150px;
@@ -75,11 +87,13 @@
 		position: absolute;
 		width: 100%;
 		height: 100%;
-		filter: blur(40px);
+		filter: blur(30px);
 		z-index: 1;
 	}
 	.shinkctrl-main-btn {
 		width: 100%;
+		position: relative;
+		z-index: 99;
 	}
 	.shinkctrl-main-btn span {
 		display: inline-block;
@@ -89,12 +103,13 @@
 		width: 100px;
 		line-height: 25px;
 		text-align: center;
-		color: #fff;
+		color: rgba(255, 255, 255, 0.3);
 		cursor: pointer;
 		border-radius: 3px;
-		background: rgba(79, 79, 79, 0.1);
+		background: rgba(255, 255, 255, 0.05);
 	}
 	.shinkctrl-main-btn span:hover {
-		background: rgba(79, 79, 79, 0.3);
+		background: rgba(255, 255, 255, 0.15);
+		color: rgba(255, 255, 255, 0.5);
 	}
 </style>
