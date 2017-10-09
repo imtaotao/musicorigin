@@ -77,7 +77,7 @@
 	}
 	.visualizer-area {
 		position: absolute;
-		background: rgba(7,17,77,.7);
+		background: rgba(7,17,77,1);
 		width: 100%;
 		height: 100%;
 		padding: 50px 150px;

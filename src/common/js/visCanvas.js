@@ -310,16 +310,14 @@ class setOff {
 	}
 
 	init () {
-		const lineOne      = [[280, 70],  [470, 70]]
+		const lineOne      = [[280, 80],  [515, 80]]
 		const lineTwo      = [[330, 120], [550, 120], [620, 55], [850, 55]]
 		const lineThree    = [[580, 90],  [635, 130], [700, 130]]
-		const lineFour     = [[350, 220], [380, 220]]
-		const lineFive     = [[380, 220], [650, 220]]
+		const lineFour     = [[350, 220], [380, 220], [650, 220]]
 		const lineSix      = [[650, 220], [700, 220]]
 		const lineSeven    = [[400, 220], [500, 165], [850, 165]]
-		const lineEight    = [[425, 220], [530, 250], [620, 250]]
-		const lineNine     = [[620, 250], [800, 250]]
-		const lineTen      = [[310, 310], [820, 310]]
+		const lineEight    = [[425, 220], [530, 250], [620, 250], [850, 250]]
+		const lineTen      = [[310, 310], [850, 310]]
 		const lineEleven   = [[335, 290], [400, 290]]
 		const lineTwelve   = [[380, 310], [420, 270], [670, 270]]
 		const lineThirteen = [[480, 310], [500, 290], [550, 290]]
@@ -327,12 +325,11 @@ class setOff {
 
 		const arr     = [
 			lineOne, lineTwo, lineThree, lineFour, lineSix,
-			lineSeven, lineNine, lineTen, lineEleven, lineTwelve,
-			lineThirteen, lineFourteen
+			lineSeven, lineTen, lineEleven, lineTwelve,
+			lineThirteen, lineFourteen, lineEight
 		]
-		const boldArr = [lineFive, lineEight]
+
 		arr.forEach(val => this.oneLine(val))
-		boldArr.forEach(val => this.oneLine(val, 4, 0.4))
 
 		// 绘制圆圈
 		const num          = 40
@@ -361,7 +358,13 @@ class setOff {
 		width = 2, opacity = 0.2, cicleWidth = 5, ctx, style = color[0]
 	) {
 		!ctx && ({ctx} = this)
-		console.log(ctx, style)
+
+		if (style === true) {
+			var style = this.ctx.createLinearGradient(startX, startY, endX, endY)
+			style.addColorStop(0 , 'rgba(0,0,0,0)')
+			style.addColorStop(1 , coluColor[0])
+		}
+
 		ctx.beginPath()
 		ctx.moveTo(startX, startY)
 		ctx.lineTo(endX, endY)
@@ -408,11 +411,102 @@ class animateLine extends setOff {
 
 		this.ctx      = canvas.getContext('2d')
 		this.t        = null
+		this.oneX     = 330
+		this.twoX     = 310
+		this.threeX   = 425
+		this.fourX    = 400
+		this.add      = 2
 		this.init()
 	}
 
 	init () {
-		this.oneLine([0,100], [20,40], 3, 0.3, 3, this.ctx, color[1])
+		// 线条
+		const style = true
+		this.ctx.clearRect(0, 0, 900, 450)
+		this.oneX   += this.add
+		this.twoX   += this.add * 1.2
+		this.threeX += this.add * 0.7
+		this.fourX  += this.add * 0.4
+
+		// 动画
+		requestAnimationFrame(_ => {
+			this.init()
+			this.oneLine(this.getOP(), 5, 0.4, 4, this.ctx,  style)
+			this.oneLine(this.getTP(), 5, 0.2, 5, this.ctx,  style)
+			this.oneLine(this.getTHP(), 6, 0.4, 5, this.ctx, style)
+			this.oneLine(this.getFP(), 5, 0.4, 5, this.ctx,  style)
+		})
+	}
+
+    // 得到线条运动公式
+	getOP () {
+		if (this.oneX >= 950)  this.oneX = 330
+		const oneX = this.oneX + 30
+		const y1   = this.positionOne(this.oneX)
+		const y2   = this.positionOne(oneX)
+		return [[this.oneX, y1], [oneX, y2]]
+	}
+
+	getTP () {
+		if (this.twoX >= 950) this.twoX = 330
+		return [[this.twoX, 310], [this.twoX + 120, 310]]
+	}
+
+	getTHP () {
+		if (this.threeX > 950) this.threeX = 425
+		const threeX = this.threeX + 40
+		const y1     = this.positionThree(this.threeX)
+		const y2     = this.positionThree(threeX)
+		return [[this.threeX ,y1], [threeX, y2]]
+	}
+
+    getFP () {
+    	if (this.fourX > 950) this.fourX = 400
+    	const fourX  = this.fourX + 35
+    	const y1     = this.positionFour(this.fourX)
+		const y2     = this.positionFour(fourX)
+		return [[this.fourX ,y1], [fourX, y2]]
+    }
+
+	// 第一条线的运动公式
+	positionOne (x) {
+		// const position = [[330, 120], [550, 120], [620, 55], [850, 55]]
+		const one     = x => {return 120}    // y轴不变
+		const two     = x => {
+			const k = 65 / -70
+			const b = 120 - (550 * k)
+			return k * x + b
+		}
+		const three   =  x => {return 55} 
+		const formula = x < 550 ? one : x < 620 ? two : three
+
+		return formula(x)
+	}
+
+	positionThree (x) {
+		// const position = [[425, 220], [530, 250], [620, 250], [800, 250]]
+		const one      = x => {
+			const k = 2 / 7
+			const b = 220 - (k * 425)
+			return k * x + b
+		}
+		const two      = x => {return 250}
+		const formula  = x < 530 ? one : two
+
+		return formula(x)
+	}
+
+	positionFour (x) {
+		// const position = [[400, 220], [500, 165], [850, 165]]
+		const one      = x => {
+			const k = - 11 / 20
+			const b = 220 - (k * 400)
+			return k * x + b
+		}
+		const two      = x => {return 165}
+		const formula  = x < 500 ? one : two
+
+		return formula(x)
 	}
 
 	clearAnimate () {

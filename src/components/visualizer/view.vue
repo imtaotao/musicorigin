@@ -5,7 +5,7 @@
 		<canvas id='topColumnar' width='900' height='450'></canvas>
 		<canvas id='bottomColumnar' width='900' height='450'></canvas>
 		<canvas id='setOff' width='900' height='450'></canvas>
-		<canvas id='lineAnimate' width='900' height='450'></canvas>
+		<canvas id='lineAnimate' width='850' height='450'></canvas>
 		<canvas id='setOffTwo' width='400' height='400' class='rotate-animate'></canvas>
 	</div>
 </template>
@@ -51,7 +51,7 @@
 					this.visualizer
 				)
 				
-			// const line = new setOff(util.$('#setOff'), util.$('#setOffTwo'))
+			const line = new setOff(util.$('#setOff'), util.$('#setOffTwo'))
 			const anLine = new animateLine(util.$('#lineAnimate'))
 
 			this.canvasInstance = [cicleLine, visC, top, bottom, line, anLine]
@@ -82,13 +82,16 @@
 		width: 400px !important;
 		height: 400px !important;
 	}
-	#setOff, #setOffTwo, #visCicle {
+	#lineAnimate {
+		width: 850px !important;
+	}
+	#setOff, #setOffTwo, #visCicle, #lineAnimate {
 		z-index: 2;
 	}
 	#cicleCanvas {
 		z-index: 1;
 	}
-	#topColumnar, #lineAnimate {
+	#topColumnar {
 		z-index: 3;
 	}
 	#bottomColumnar {
