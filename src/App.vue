@@ -1,5 +1,10 @@
 <template>
 <div>
+    <div class='git-url animate' :class='showTip ? "" : "hidden-git"'>
+        本网站介绍以及源码，
+        <a :href='gitUrl' target='_blank'>点这~</a>
+        <span @click='showTip = false'>x</span>
+    </div>
     <home-main></home-main>
     <audio-ctr></audio-ctr>
 </div>
@@ -17,6 +22,8 @@
     export default {
         data () {
             return {
+                gitUrl : 'https://github.com/imtaotao/musicorigin',
+                showTip: true,
                 t      : null,        // 自动增加经验的值
                 exTime : 60 * 1000   // 自动增加经验的时间间隔(一分钟)
 
@@ -289,5 +296,38 @@
     }
 </script>
 <style>
-    
+    .git-url {
+        position: relative;
+        top:2px;
+        overflow: hidden;
+        width: 220px;
+        height: 30px;
+        border-radius: 3px;
+        padding: 8px 12px;
+        left: calc(50% - 110px);
+        font-size: 12px;
+        color: #7e8c8d;
+        text-align: center;
+    }
+    .hidden-git {
+        left: 80% !important;
+        opacity: 0;
+    }
+    .git-url a {
+        color: #666;
+    }
+    .git-url span {
+        float: right;
+        display: inline-block;
+        width: 15px;
+        height: 15px !important;
+        font-size: 13px;
+        vertical-align: top;
+        height: 10px;
+        color: #fff;
+        background: rgba(100, 108, 125, 1);
+        border-radius: 50%;
+        margin-top: -1px;
+        cursor: pointer;
+    }
 </style>
