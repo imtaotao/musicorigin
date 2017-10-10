@@ -312,6 +312,8 @@
     .hidden-git {
         left: 80% !important;
         opacity: 0;
+        width: 0;
+        padding: 0;
     }
     .git-url a {
         color: #666;
