@@ -1,6 +1,6 @@
 <template>
 <div>
-    <div class='git-url animate' :class='showTip ? "" : "hidden-git"'>
+    <div class='git-url animate hidden-text' :class='showTip ? "" : "hidden-git"'>
         本网站介绍以及源码，
         <a :href='gitUrl' target='_blank'>点这~</a>
         <span @click='showTip = false'>x</span>
@@ -319,7 +319,6 @@
         color: #666;
     }
     .git-url span {
-        float: right;
         display: inline-block;
         width: 15px;
         height: 15px !important;
@@ -329,7 +328,8 @@
         color: #fff;
         background: rgba(100, 108, 125, 1);
         border-radius: 50%;
-        margin-top: -1px;
+        margin-top: -2px;
+        margin-left: 5px;
         cursor: pointer;
     }
 </style>
