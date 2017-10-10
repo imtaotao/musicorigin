@@ -147,8 +147,8 @@
 					const {skin, autoSwith} = this
 					setTimeout(_ => {
 						if (randomStr !== this.randomStr || !this.autoSwith) return
-						const i     = random(0, skin.length - 1)
-						const j     = random(0, skin[i].length - 1)
+						const i = random(0, skin.length - 1)
+						const j = random(0, skin[i].length - 1)
 
 						// 渐变
 						this.choseskin(i, j, true)
