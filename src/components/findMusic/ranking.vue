@@ -140,6 +140,9 @@
 
 						progress += 100
 						progress === allProgress && (this.isloading = true)
+					}).catch(err => {
+						console.log(err)
+						this.isloading  = true
 					})
 	    		}
 	    	}

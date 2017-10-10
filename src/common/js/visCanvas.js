@@ -233,11 +233,11 @@ class topColumnar {
 	
 		// 画柱子
 		for (let i = 0; i < num; i++) {
-			ctx.roundRect(x + singleW * index, y - singleH * i, singleW * 0.5, singleH * 0.8, 3)
+			ctx.roundRect(x + singleW * index, y - singleH * i, singleW * 0.45, singleH * 0.8, 3)
 			.fill()
 		}
 		const lastY = y - singleH * num + (singleH * 0.8 - lastH)
-		ctx.roundRect(x + singleW * index, lastY, singleW * 0.5, lastH, 2).fill()
+		ctx.roundRect(x + singleW * index, lastY, singleW * 0.45, lastH, 2).fill()
 	}
 
 	clearAnimate () {
@@ -313,8 +313,7 @@ class setOff {
 		const lineOne      = [[280, 80],  [515, 80]]
 		const lineTwo      = [[330, 120], [550, 120], [620, 55], [850, 55]]
 		const lineThree    = [[580, 90],  [635, 130], [700, 130]]
-		const lineFour     = [[350, 220], [380, 220], [650, 220]]
-		const lineSix      = [[650, 220], [700, 220]]
+		const lineFour     = [[350, 220], [380, 220], [650, 220], [700, 220]]
 		const lineSeven    = [[400, 220], [500, 165], [850, 165]]
 		const lineEight    = [[425, 220], [530, 250], [620, 250], [850, 250]]
 		const lineTen      = [[310, 310], [850, 310]]
@@ -324,7 +323,7 @@ class setOff {
 		const lineFourteen = [[425, 310], [445, 330], [750, 330]]
 
 		const arr     = [
-			lineOne, lineTwo, lineThree, lineFour, lineSix,
+			lineOne, lineTwo, lineThree, lineFour,
 			lineSeven, lineTen, lineEleven, lineTwelve,
 			lineThirteen, lineFourteen, lineEight
 		]
@@ -355,14 +354,14 @@ class setOff {
 	// 单条线
 	drawLine (
 		startX, startY, endX, endY, 
-		width = 2, opacity = 0.2, cicleWidth = 5, ctx, style = color[0]
+		width = 2, opacity = 0.1, cicleWidth = 5, ctx, style = color[0]
 	) {
 		!ctx && ({ctx} = this)
 
 		if (style === true) {
 			var style = this.ctx.createLinearGradient(startX, startY, endX, endY)
-			style.addColorStop(0 , 'rgba(0,0,0,0)')
-			style.addColorStop(1 , coluColor[0])
+			style.addColorStop(0, 'rgba(0,0,0,0)')
+			style.addColorStop(1, coluColor[1])
 		}
 
 		ctx.beginPath()
@@ -415,6 +414,9 @@ class animateLine extends setOff {
 		this.twoX     = 310
 		this.threeX   = 425
 		this.fourX    = 400
+		this.fiveX    = 380
+		this.sixX     = 425
+		this.sevenX   = 350 
 		this.add      = 2
 		this.init()
 	}
@@ -427,14 +429,20 @@ class animateLine extends setOff {
 		this.twoX   += this.add * 1.2
 		this.threeX += this.add * 0.7
 		this.fourX  += this.add * 0.4
+		this.fiveX  += this.add * 0.6
+		this.sixX   += this.add * 0.5
+		this.sevenX += this.add * 0.4
 
 		// 动画
 		requestAnimationFrame(_ => {
 			this.init()
-			this.oneLine(this.getOP(), 5, 0.4, 4, this.ctx,  style)
-			this.oneLine(this.getTP(), 5, 0.2, 5, this.ctx,  style)
-			this.oneLine(this.getTHP(), 6, 0.4, 5, this.ctx, style)
-			this.oneLine(this.getFP(), 5, 0.4, 5, this.ctx,  style)
+			this.oneLine(this.getOP(), 5, 0.4, 4,  this.ctx, style)
+			this.oneLine(this.getTP(), 5, 0.2, 5,  this.ctx, style)
+			this.oneLine(this.getTHP(), 6, 0.5, 5, this.ctx, style)
+			this.oneLine(this.getFP(), 5, 0.5, 5,  this.ctx, style)
+			this.oneLine(this.getFIP(), 5, 0.4, 5, this.ctx, style)
+			this.oneLine(this.getSP(), 5, 0.4, 5,  this.ctx, style)
+			this.oneLine(this.getSEP(), 4, 0.4, 4, this.ctx, style)
 		})
 	}
 
@@ -462,13 +470,34 @@ class animateLine extends setOff {
 
     getFP () {
     	if (this.fourX > 950) this.fourX = 400
-    	const fourX  = this.fourX + 35
-    	const y1     = this.positionFour(this.fourX)
-		const y2     = this.positionFour(fourX)
+    	const fourX = this.fourX + 35
+    	const y1    = this.positionFour(this.fourX)
+		const y2    = this.positionFour(fourX)
 		return [[this.fourX ,y1], [fourX, y2]]
     }
 
-	// 第一条线的运动公式
+    getFIP () {
+    	if (this.fiveX > 640) this.fiveX = 380
+    	const fiveX = this.fiveX + 30
+    	const y1    = this.positionFive(this.fiveX)
+		const y2    = this.positionFive(fiveX)
+		return [[this.fiveX ,y1], [fiveX, y2]]
+    }
+
+    getSP () {
+    	if (this.sixX > 710) this.sixX = 380
+    	const sixX = this.sixX + 40
+    	const y1   = this.positionSix(this.sixX)
+		const y2   = this.positionSix(sixX)
+		return [[this.sixX ,y1], [sixX, y2]]
+    }
+
+    getSEP () {
+    	if (this.sevenX > 650) this.sevenX = 350
+    	return [[this.sevenX, 220], [this.sevenX + 100, 220]]
+    }
+
+	// 线的运动公式
 	positionOne (x) {
 		// const position = [[330, 120], [550, 120], [620, 55], [850, 55]]
 		const one     = x => {return 120}    // y轴不变
@@ -506,6 +535,30 @@ class animateLine extends setOff {
 		const two      = x => {return 165}
 		const formula  = x < 500 ? one : two
 
+		return formula(x)
+	}
+
+	positionFive (x) {
+		// [[380, 310], [420, 270], [670, 270]]
+		const one     = x => {
+			const k = -1
+			const b = 690
+			return k * x + b
+		}
+		const two     = x => {return 270}
+		const formula = x < 420 ? one : two
+		return formula(x)
+	}
+
+	positionSix (x) {
+		// [[425, 310], [445, 330], [750, 330]]
+		const one     = x => {
+			const k = 1
+			const b = -115
+			return k * x + b
+		}
+		const two     = x => {return 330}
+		const formula = x < 445 ? one : two
 		return formula(x)
 	}
 

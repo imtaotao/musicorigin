@@ -11,7 +11,7 @@
 			</li>
 			
 			<li>
-				<span class="shrink-box" @click='shrinkBox' title="缩小窗口" v-ripple>
+				<span class="shrink-box" @click='shrinkBox' title="可视化窗口" v-ripple>
 				</span>
 			</li>
 			<li>
