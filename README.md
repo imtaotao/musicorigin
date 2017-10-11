@@ -3,7 +3,7 @@
 
 ## 网站兼容性，暂考虑chrome、firefox、safari三端
 ``` bash
-+ 1.Chrome 完全兼容
++1.Chrome 完全兼容
 + 2.Firefox 对歌曲下载暂不兼容，但是后续考虑在firefox下补全下载功能
 + 3.Safari 因为webaudioapi的差异性，导致无法兼容歌曲分段传输
 ```
@@ -15,8 +15,8 @@
 + 2.点击昵称可以进行昵称更改
 + 3.登录后在本网站停留一分钟增加一点经验
 
-# serve with hot reload at localhost:8080
-npm run dev
+# 发现音乐
+
 
 # build for production with minification
 npm run build
