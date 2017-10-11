@@ -108,6 +108,7 @@
 				key === '播放全部' && this.playMusicList(this.listId)
 				key === '收藏'    && this.collectList()
 				key === '下载全部' && this.downAll()
+				key === '分享'    && alert('分享功能暂未实现~😯~')
 			},
 			// 收藏歌单
 			collectList () {

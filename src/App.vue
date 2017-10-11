@@ -345,6 +345,7 @@
         left: 80% !important;
         opacity: 0;
         width: 0;
+        height: 0;
         padding: 0;
     }
     .git-url a {

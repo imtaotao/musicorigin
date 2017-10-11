@@ -354,7 +354,7 @@ class setOff {
 	// 单条线
 	drawLine (
 		startX, startY, endX, endY, 
-		width = 2, opacity = 0.1, cicleWidth = 5, ctx, style = color[0]
+		width = 2, opacity = 0.2, cicleWidth = 5, ctx, style = color[0]
 	) {
 		!ctx && ({ctx} = this)
 
@@ -551,7 +551,7 @@ class animateLine extends setOff {
 	}
 
 	positionSix (x) {
-		// [[425, 310], [445, 330], [750, 330]]
+		// [[425, 310], [445, 340], [750, 340]]
 		const one     = x => {
 			const k = 1
 			const b = -115
