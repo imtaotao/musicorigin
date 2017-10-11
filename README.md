@@ -24,7 +24,7 @@
 ##### node项目主要代码 node 目录
 > 1. 本地用户信息，音频分段加载等相关代码主要存放于 node/selfRouter
 > 2. 网易云信息获取代码主要存放于 node/router [(相关api文档来自这里)](https://binaryify.github.io/NeteaseCloudMusicApi)
-> 3. 所用的技术细节，可以加Q详细谈：996955311
+> 3. 所用技术细节，可以加Q详谈：996955311
 
 
 
@@ -79,7 +79,7 @@
 
 
 
-## 如果运行项目（本地需要nodeJS 和 mongodb）
+## 如何让项目跑起来（本地需要nodeJS 和 mongodb）
 > 1. 下载源码
 > 2. npm i 安装依赖
 > 3. npm run app 启动本地后台服务器
@@ -89,4 +89,4 @@
 
 
 ## 个人作品（暂时只有一个放到了线上，后续会慢慢都放到git上）
-> 1. 学习node的时候写的一个简单扒站小功能，[**点这**](https://www.npmjs.com/package/cavaliers)
+> 1. 在学习node的时候写的一个简单扒站小功能，[**点这**](https://www.npmjs.com/package/cavaliers)
