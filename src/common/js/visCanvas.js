@@ -320,7 +320,7 @@ class setOff {
 		const lineEleven   = [[335, 290], [400, 290]]
 		const lineTwelve   = [[380, 310], [420, 270], [670, 270]]
 		const lineThirteen = [[480, 310], [500, 290], [550, 290]]
-		const lineFourteen = [[425, 310], [445, 330], [750, 330]]
+		const lineFourteen = [[425, 310], [445, 340], [750, 340]]
 
 		const arr     = [
 			lineOne, lineTwo, lineThree, lineFour,
@@ -557,7 +557,7 @@ class animateLine extends setOff {
 			const b = -115
 			return k * x + b
 		}
-		const two     = x => {return 330}
+		const two     = x => {return 340}
 		const formula = x < 445 ? one : two
 		return formula(x)
 	}

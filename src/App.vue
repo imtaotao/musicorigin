@@ -36,6 +36,7 @@
                 'password',
                 'forward',
                 'musicList',
+                'changeMusicList',
                 'user'
             ])
         },
@@ -84,6 +85,7 @@
                 $ajax.get(host + '/login/refresh')
                 $ajax.get(host + `/login/cellphone?phone=${phone}&password=${password}`)
                 .then(({data}) => {
+                    console.log(data)
                     if (data.code === 415) {
                         alert('登录频繁')
                         return
@@ -96,9 +98,38 @@
                     alert('默认网易云音乐账号登录成功~~')
                     // 存一个时间戳
                     localStorage.setItem('loginTime', Date.now())
-
+                    this.defaultMusicList(data.account.id)
                 })
             },
+
+            // 获得默认的网易云账号收藏歌曲，作为默认的歌曲列表
+            defaultMusicList (userId) {
+                if (!userId) return
+
+                const {$ajax, host, $store} = this
+                // 得到用户信息
+                $ajax.get(host + `/user/playlist?uid=${userId}`)
+                .then(({data}) => {
+                    const collectlistId = data.playlist[0].id
+                    $ajax(host + `/playlist/detail?id=${collectlistId}`)
+                    .then(({data}) => {
+                        if (data.code !== 200) return
+                        localStorage.setItem(
+                            'defaultPlayList', 
+                            JSON.stringify(data.playlist.tracks)
+                        )
+                        $store.dispatch('changeMusicList', data.playlist.tracks)
+                    })
+                })
+            },
+
+            defaultPlayList () {
+                const playlist = localStorage.getItem('defaultPlayList')
+                if (!playlist) return
+
+                this.$store.dispatch('changeMusicList', JSON.parse(playlist))
+            },
+
             collectFilter (data) {
                 const or      = data.oringeInfo
                 const album   = or.album || or.al
@@ -261,7 +292,7 @@
         },
         created () {
             const {
-                $store, $event, forward, playMusicList, addEX,
+                $store, $event, forward, playMusicList, addEX, defaultPlayList,
                 playOneSong, defaultNetUser, collectMusic, downMusic
             } = this
 
@@ -292,6 +323,7 @@
                 setTimeout(_ => addEX())
             })
             collectMusic()
+            defaultPlayList()
         }
     }
 </script>

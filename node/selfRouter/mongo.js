@@ -11,7 +11,7 @@ const setting = {
 }
 
 // mongodb 连接 url
-//'mongodb://localhost:27017/runoob'
+//'mongodb://localhost:27017/database'
 
 
 // 使用 connect 方法连接到服务器
