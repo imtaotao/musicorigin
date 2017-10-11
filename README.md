@@ -84,3 +84,8 @@
 > 3. npm run app 启动本地后台服务器
 > 4. npm run dev 启动Vue测试服务器
 > 5. 开启 mongodb 数据库
+
+
+
+## 个人作品（暂时只有一个放到了线上，后续会慢慢都放到git上）
+> 1. 学习node的时候写的一个简单扒站小功能，[**点这**](https://www.npmjs.com/package/cavaliers)
