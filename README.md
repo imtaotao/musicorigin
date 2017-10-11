@@ -86,8 +86,6 @@
 ```
 
 ### node项目主要代码 node 目录
-``` bash
- 1. 本地用户信息，音频分段加载等相关代码主要存放于 node/selfRouter
- 2. 网易云信息获取代码主要存放于 node/router [(相关api文档来自这里)](https://binaryify.github.io/NeteaseCloudMusicApi)
-```
+> 1. 本地用户信息，音频分段加载等相关代码主要存放于 node/selfRouter
+> 2. 网易云信息获取代码主要存放于 node/router [(相关api文档来自这里)](https://binaryify.github.io/NeteaseCloudMusicApi)
 
