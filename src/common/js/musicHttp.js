@@ -72,7 +72,7 @@ export default  class musicHttp {
 	getAllHead () {
 		const headObj = {}
 		const header = this.xhr.getAllResponseHeaders()
-		if (!header) { console.warn('没有响应头'); return }
+		if (!header) { console.warn('没有响应头'); return alert('网络不好，请刷新重试~')}
 		const regBefore = /.+?(?=:)/g
 
 		header.split('\n').forEach(val => {

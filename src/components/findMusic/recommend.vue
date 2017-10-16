@@ -346,20 +346,15 @@
 		overflow:hidden;
 	}
 	.songList-content {
-		width: 180px;
+		width: 30%;
 		margin-top: 20px;
-		margin-right: calc(20% - 180px);
-	}
-	.songList-content:nth-child(5n + 1) {
-		margin-left: calc(10% - 90px);
-	}
-	.songList-content:nth-child(5n) {
-		margin-right: calc(10% - 90px);
+		margin-right: 3%;
 	}
 	.play-count {
 		display: inline-block;
 		position: absolute;
 		width: 65%;
+		width: 180px;
 		height: 20px;
 		top: 0;
 		right:0;
@@ -439,7 +434,7 @@
 		opacity: 1;
 	}
 	.song-list-description {
-		width: 100%;
+		width: 180px;
 		margin:5px 0;
 	}
 	.song-list-description a {

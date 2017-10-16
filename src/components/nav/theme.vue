@@ -68,6 +68,7 @@
 				titleText : ['主题', '纯色'],
 				randomStr : null,
 				interval  : 20000,
+				timeout   : null,
 
 				// 主题纯色
 				skin	  : [
@@ -145,7 +146,7 @@
 				const randomStr = this.randomStr
 				return _ => {
 					const {skin, autoSwith} = this
-					setTimeout(_ => {
+					this.timeout = setTimeout(_ => {
 						if (randomStr !== this.randomStr || !this.autoSwith) return
 						const i = random(0, skin.length - 1)
 						const j = random(0, skin[i].length - 1)
@@ -184,6 +185,12 @@
 			// 自动换肤
 			this.randomStr = util.randomStr()
 			this.autoToggleSkin()()
+		},
+		beforeDestroy () {
+			if (this.timeout) {
+				clearTimeout(this.timeout)
+				this.timeout = null
+			}
 		}
 	}
 </script>
