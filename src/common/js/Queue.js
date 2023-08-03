@@ -22,7 +22,6 @@ export default {
 		if (!this.fx[type].open) {
 			if (Object.keys(this.fx[type]).length === 1) {
 				this.fx[type] = null
-				// console.log(`${type}：队列结束`)
 				return
 			}
 

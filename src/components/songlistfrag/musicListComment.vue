@@ -73,7 +73,6 @@
 						alert('暂时没有评论哦~ (○｀ 3′○)')
 						return
 					}
-					console.log(data)
 
 					init && (this.hotComments  = data.hotComments)				  // 精彩评论	
 					this.comments     = this.comments.concat(data.comments)		  // 所有评论

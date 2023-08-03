@@ -12,7 +12,6 @@ module.exports = function (app) {
 
 		// getUrl(id, (err, url) => {
 			// if (err) {
-			// 	console.log(err)
 			// 	res.send(JSON.stringify({msg: '服务器发生错误'}))
 			// 	return next()
 			// }

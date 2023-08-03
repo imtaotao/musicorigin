@@ -63,7 +63,6 @@ class neteaseCloud {
 
 module.exports = function (app) {
 	app.get('/getMusic', (req, res) => {
-		// console.log(req.query)
 		musicurl = req.query.url
 		const range = req.headers.range
 		if ( !range ) return
@@ -72,8 +71,7 @@ module.exports = function (app) {
 			const header = partil.resposeHead(Reuestres.headers)	// 响应头
 			const status = Reuestres.statusCode						// 状态码
 
-			// console.log( status )
-			// console.log( header )
+		
 			if( status === 403 ) {
 				res.writeHead( 403 )
 				res.end( '服务器拒绝访问' )

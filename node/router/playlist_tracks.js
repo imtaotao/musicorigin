@@ -7,7 +7,6 @@ router.get("/", (req, res) => {
   const pid = req.query.pid
   const tracks = req.query.tracks
   const cookie = req.get('Cookie') ? req.get('Cookie') : ''
-  // console.log('COOKIESS', cookie)
   const data = {
     "op": op,
     "pid": pid,

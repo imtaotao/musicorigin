@@ -1,7 +1,7 @@
 @font-face {
   font-family: 'icomoon';
-  src:  url('fonts/icomoon.eot?q3ppxg');
-  src:  url('fonts/icomoon.eot?q3ppxg#iefix') format('embedded-opentype'),
+  src: url('fonts/icomoon.eot?q3ppxg');
+  src: url('fonts/icomoon.eot?q3ppxg#iefix') format('embedded-opentype'),
     url('fonts/icomoon.ttf?q3ppxg') format('truetype'),
     url('fonts/icomoon.woff?q3ppxg') format('woff'),
     url('fonts/icomoon.svg?q3ppxg#icomoon') format('svg');
@@ -9,7 +9,8 @@
   font-style: normal;
 }
 
-[class^="icon-"], [class*=" icon-"] {
+[class^='icon-'],
+[class*=' icon-'] {
   /* use !important to prevent issues with browser extensions that change fonts */
   font-family: 'icomoon' !important;
   speak: none;
@@ -25,82 +26,82 @@
 }
 
 .icon-collect:before {
-  content: "\e900";
+  content: '\e900';
   color: #fff;
 }
 .icon-collect1-list:before {
-  content: "\e901";
-  color: rgba(255,255,255,.4);
+  content: '\e901';
+  color: rgba(255, 255, 255, 0.4);
 }
 .icon-collect2:before {
-  content: "\e902";
+  content: '\e902';
   color: #fff;
 }
 .icon-collect2-list:before {
-  content: "\e903";
-  color: rgba(255,255,255,.4);
+  content: '\e903';
+  color: rgba(255, 255, 255, 0.4);
 }
 .icon-delete:before {
-  content: "\e904";
-  color: rgba(255,255,255,.4);
+  content: '\e904';
+  color: rgba(255, 255, 255, 0.4);
 }
 .icon-Equalizer:before {
-  content: "\e905";
+  content: '\e905';
   color: #fff;
 }
 .icon-Loop:before {
-  content: "\e906";
+  content: '\e906';
   color: #fff;
 }
 .icon-Next-Track:before {
-  content: "\e907";
+  content: '\e907';
   color: #fff;
 }
 .icon-Pause:before {
-  content: "\e908";
+  content: '\e908';
   color: #fff;
 }
 .icon-Play:before {
-  content: "\e909";
+  content: '\e909';
   color: #fff;
 }
 .icon-Playlist:before {
-  content: "\e90a";
+  content: '\e90a';
   color: #fff;
 }
 .icon-Previous-track:before {
-  content: "\e90b";
+  content: '\e90b';
   color: #fff;
 }
 .icon-Randommdpi:before {
-  content: "\e90c";
+  content: '\e90c';
   color: #fff;
 }
 .icon-Shrink:before {
-  content: "\e90d";
+  content: '\e90d';
   color: #fff;
 }
 .icon-shrink_collect_1:before {
-  content: "\e90e";
+  content: '\e90e';
   color: #fff;
 }
 .icon-shrink_Enlarge:before {
-  content: "\e90f";
+  content: '\e90f';
   color: #fff;
 }
 .icon-shrink_Last:before {
-  content: "\e910";
+  content: '\e910';
   color: #fff;
 }
 .icon-shrink_Next:before {
-  content: "\e911";
+  content: '\e911';
   color: #fff;
 }
 .icon-Single-cyclemdpi:before {
-  content: "\e912";
+  content: '\e912';
   color: #fff;
 }
 .icon-Volume:before {
-  content: "\e913";
+  content: '\e913';
   color: #fff;
 }

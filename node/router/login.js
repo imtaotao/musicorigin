@@ -14,7 +14,6 @@ router.get("/", (req, res) => {
     'rememberLogin': 'true',
     'clientToken':"1_jVUMqWEPke0/1/Vu56xCmJpo5vP1grjn_SOVVDzOc78w8OKLVZ2JH7IfkjSXqgfmh"
   }
-  console.log(email,req.query.password);
   
   createWebAPIRequest(
     'music.163.com',
@@ -23,7 +22,6 @@ router.get("/", (req, res) => {
     data,
     cookie,
     (music_req, cookie) => {
-      console.log(music_req)
       res.set({
         'Set-Cookie': cookie,
       })

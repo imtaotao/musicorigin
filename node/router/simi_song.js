@@ -16,7 +16,6 @@ router.get("/", (req, res) => {
     data,
     cookie,
     music_req => {
-      console.log(cookie, 'simi')
       res.send(music_req)
     },
     err => res.status(502).send('fetch error')

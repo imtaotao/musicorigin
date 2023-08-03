@@ -18,7 +18,6 @@ router.get("/", (req, res) => {
     cookie,
     music_req => {
       res.send(music_req)
-      console.log(Object.keys(JSON.parse(music_req).result))
     },
     err => res.status(502).send('fetch error')
   )

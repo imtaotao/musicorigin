@@ -334,7 +334,6 @@ export const util = {
 				id           : val._id
 			})
 		})
-		console.log(arr)
 		return arr
 	},
 
