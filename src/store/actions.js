@@ -1,13 +1,16 @@
 export default {
   showLoading({ state, commit }) {
-    commit('changeLoading', true);
+    commit("changeLoading", true);
   },
+
   hideLoading({ state, commit }) {
-    commit('changeLoading', false);
+    commit("changeLoading", false);
   },
+
   showContainer({ state, commit }, boole) {
-    commit('showContainer', boole);
+    commit("showContainer", boole);
   },
+
   addMusicList({ state, commit }, data) {
     // 得到歌曲图片等信息
     const album = data.album || data.al;
@@ -18,7 +21,7 @@ export default {
       JSON.stringify(collectId).indexOf(data.id) > 0 ? true : false;
 
     if (duration > 1000 * 60 * 15) {
-      alert('该资源过大');
+      alert("该资源过大");
       return;
     }
 
@@ -30,23 +33,25 @@ export default {
       picUrl: album.picUrl,
       singerId: artists[0].id,
       oringeInfo: data,
-      musicInfo: ['', data.name, artists[0].name, duration, '', ''],
+      musicInfo: ["", data.name, artists[0].name, duration, "", ""],
     };
 
-    commit('addMusicList', info);
+    commit("addMusicList", info);
   },
+
   removeMusic({ state, commit }, id) {
-    commit('removeMusic', id);
+    commit("removeMusic", id);
   },
+
   changeMusicList({ state, commit }, data) {
     /*
-        歌曲 id  id
-        歌曲名字 name
-        歌曲时长 duration
-        歌曲头像 album.picUrl
-        歌手名字 album.name
-        歌手id   album.id
-        */
+    歌曲 id  id
+    歌曲名字 name
+    歌曲时长 duration
+    歌曲头像 album.picUrl
+    歌手名字 album.name
+    歌手id   album.id
+    */
     const info = [];
     const ids = [];
     const collectId = state.user.collectMusic || [];
@@ -71,15 +76,15 @@ export default {
         picUrl: album.picUrl,
         singerId: artists[0].id,
         oringeInfo: val,
-        musicInfo: ['', val.name, artists[0].name, duration, '', ''],
+        musicInfo: ["", val.name, artists[0].name, duration, "", ""],
       });
     });
     // 如果顾虑后为一个空数组，就不继续进行了
     if (!info.length) {
-      alert('该歌单所有资源不符合播放要求');
+      alert("该歌单所有资源不符合播放要求");
       return;
     }
-    commit('changeMusicList', info);
+    commit("changeMusicList", info);
   },
 
   // 登录成功后改变当前用户的收藏状态
@@ -92,113 +97,129 @@ export default {
       val.collect = collectId.indexOf(val.id) > 0 ? true : false;
     });
   },
+
   changePlayOrder({ state, commit }, order) {
-    commit('changePlayOrder', order);
+    commit("changePlayOrder", order);
   },
+
   changeAudio({ state, commit }, audio) {
-    commit('changeAudio', audio);
+    commit("changeAudio", audio);
   },
+
   changeAudioAjax({ state, commit }, ajax) {
-    commit('changeAudioAjax', ajax);
+    commit("changeAudioAjax", ajax);
   },
+
   changePlayDelay({ state, commit }, judge) {
-    commit('changePlayDelay', judge);
+    commit("changePlayDelay", judge);
   },
+
   changeSwitchDelay({ state, commit }, judge) {
-    commit('changeSwitchDelay', judge);
+    commit("changeSwitchDelay", judge);
   },
+
   changeVolume({ state, commit }, volume) {
-    commit('changeVolume', volume);
+    commit("changeVolume", volume);
   },
+
   changeMainProgress({ state, commit }, mainProgress) {
-    commit('changeMainProgress', mainProgress);
+    commit("changeMainProgress", mainProgress);
   },
+
   changeShinkProgress({ state, commit }, shinkProgress) {
-    commit('changeShinkProgress', shinkProgress);
+    commit("changeShinkProgress", shinkProgress);
   },
 
   // 快进后退的方法
   changeNext({ state, commit }, next) {
-    commit('changeNext', next);
+    commit("changeNext", next);
   },
+
   changeForward({ state, commit }, forward) {
-    commit('changeForward', forward);
+    commit("changeForward", forward);
   },
+
   changePlayStop({ state, commit }, playStop) {
-    commit('changePlayStop', playStop);
+    commit("changePlayStop", playStop);
   },
+
   changeCollectMusic({ state, commit }, collectMusic) {
-    commit('changeCollectMusic', collectMusic);
+    commit("changeCollectMusic", collectMusic);
   },
 
   // 歌词
   changelyric({ state, commit }, lyric) {
-    commit('changelyric', lyric);
+    commit("changelyric", lyric);
   },
 
   // 歌单播放函数（@param: id）
   playMusicList({ state, commit }, fun) {
-    commit('playMusicList', fun);
+    commit("playMusicList", fun);
   },
 
   // 单首歌曲播放
   playOneSong({ state, commit }, fun) {
-    commit('playOneSong', fun);
+    commit("playOneSong", fun);
   },
 
   // 当前歌单 id
   musicListId({ state, commit }, id) {
-    commit('musicListId', id);
+    commit("musicListId", id);
   },
 
   nowPlayId({ state, commit }, id) {
-    commit('nowPlayId', id);
+    commit("nowPlayId", id);
   },
 
   // 放大 缩小控件的函数
   shrinkAnimate({ state, commit }, fun) {
-    commit('shrinkAnimate', fun);
+    commit("shrinkAnimate", fun);
   },
+
   bigAnimate({ state, commit }, fun) {
-    commit('bigAnimate', fun);
+    commit("bigAnimate", fun);
   },
 
   // 当前是否自动切换皮肤
   autoSwith({ state, commit }, autoSwith) {
-    commit('autoSwith', autoSwith);
+    commit("autoSwith", autoSwith);
   },
 
   // 当前皮肤
   nowSkin({ state, commit }, skin) {
-    commit('nowSkin', skin);
+    commit("nowSkin", skin);
   },
 
   // 当前播放歌词的时间
   nowLyrPosition({ state, commit }, position) {
-    commit('nowLyrPosition', position);
+    commit("nowLyrPosition", position);
   },
 
   showRouter({ state, commit }, bool) {
-    commit('showRouter', bool);
+    commit("showRouter", bool);
   },
 
   // 用户信息
   user({ state, commit }, user) {
-    commit('user', user);
+    commit("user", user);
   },
+
   // 登录函数
   login({ state, commit }, fun) {
-    commit('login', fun);
+    commit("login", fun);
   },
+
   // 音乐下载函数
   download({ state, commit }, fun) {
-    commit('download', fun);
+    commit("download", fun);
   },
+
   // 下载队列
   downQueue({ state, commit }, data) {
-    commit('downQueue', data);
+    commit("downQueue", data);
   },
+
   downUnshift({ state, commit }, randomStr) {
-    commit('downUnshift', randomStr);
+    commit("downUnshift", randomStr);
   },
 };

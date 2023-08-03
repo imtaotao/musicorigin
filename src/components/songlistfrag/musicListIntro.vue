@@ -40,43 +40,46 @@
     </div>
   </div>
 </template>
+
 <script>
-import Queue from '@/common/js/Queue';
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters } from "vuex";
+import Queue from "@/common/js/Queue";
 
 export default {
   data() {
     return {
       introInfo: {
-        name: '暂无歌单名',
-        createTime: '20xx-xx-xx',
-        playCount: '0',
+        name: "暂无歌单名",
+        createTime: "20xx-xx-xx",
+        playCount: "0",
         picUrl: null,
       },
-      operate: ['播放全部', '收藏', '分享', '下载全部'],
+      operate: ["播放全部", "收藏", "分享", "下载全部"],
       tagDis: [
-        { name: '标签：', dis: '暂无' },
-        { name: '简介：', dis: '暂无' },
+        { name: "标签：", dis: "暂无" },
+        { name: "简介：", dis: "暂无" },
       ],
-
       // 判断是收藏还是取消收藏
       collectVale: null,
     };
   },
+
   computed: {
-    ...mapGetters(['host', 'playMusicList', 'listId', 'user', 'download']),
+    ...mapGetters(["host", "playMusicList", "listId", "user", "download"]),
+
     collect: {
       get() {
         // 如果是第一次进入判断是否已经收藏
         if (this.collectVale === null) this.resetCollect();
-
         return this.collectVale;
       },
+
       set(newVal) {
         this.collectVale = newVal;
       },
     },
   },
+
   methods: {
     // 登录成功后重新判断当前页面收藏清空，因为可能切换账号了
     resetCollect() {
@@ -92,25 +95,28 @@ export default {
       }
       this.collectVale = false;
     },
+
     getClass(i) {
       switch (i) {
         case 0:
-          return 'play-all';
+          return "play-all";
         case 1:
-          return !this.collect ? 'collect-list-false' : 'collect-list-true';
+          return !this.collect ? "collect-list-false" : "collect-list-true";
         case 2:
-          return 'share-it';
+          return "share-it";
         case 3:
-          return 'down-all';
+          return "down-all";
       }
     },
+
     // 四个操作按钮
     operateClick(key) {
-      key === '播放全部' && this.playMusicList(this.listId);
-      key === '收藏' && this.collectList();
-      key === '下载全部' && this.downAll();
-      key === '分享' && alert('分享功能暂未实现~😯~');
+      key === "播放全部" && this.playMusicList(this.listId);
+      key === "收藏" && this.collectList();
+      key === "下载全部" && this.downAll();
+      key === "分享" && alert("分享功能暂未实现~😯~");
     },
+
     // 收藏歌单
     collectList() {
       const {
@@ -125,17 +131,17 @@ export default {
       } = this;
 
       if (!user._id) {
-        alert('请先登录');
-        $event.fire('showLogin', true);
+        alert("请先登录");
+        $event.fire("showLogin", true);
         return;
       }
-      if (!listId || introInfo.name === '暂无歌单名') {
-        return alert('收藏失败');
+      if (!listId || introInfo.name === "暂无歌单名") {
+        return alert("收藏失败");
       }
 
-      Queue.on('listCollect', (next) => {
+      Queue.on("listCollect", (next) => {
         $ajax
-          .post(host + '/listCollect', {
+          .post(host + "/listCollect", {
             name: user.name,
             id: listId,
             listName: introInfo.name,
@@ -161,7 +167,7 @@ export default {
             }
 
             this.collect = !this.collect;
-            $event.fire('changeUser');
+            $event.fire("changeUser");
             next();
           });
       });
@@ -171,7 +177,7 @@ export default {
     downAll() {
       const { host, $ajax, listId, download, $event } = this;
       if (!listId) {
-        alert('该歌单找不到');
+        alert("该歌单找不到");
         return;
       }
 
@@ -179,12 +185,10 @@ export default {
       $ajax.get(host + `/playlist/detail?id=${listId}`).then(({ data }) => {
         if (data.code !== 200) {
           console.error(`code is ${data.code}`);
-          return alert('网络不好哦！刷新一下吧');
+          return alert("网络不好哦！刷新一下吧");
         }
-
         const { tracks } = data.playlist;
-
-        $event.fire('downclick', tracks.length);
+        $event.fire("downclick", tracks.length);
         tracks.forEach((val) => {
           const { id, name } = val;
           download(id, name, val);
@@ -192,39 +196,41 @@ export default {
       });
     },
   },
+
   created() {
-    this.$event.on('playlistintro', ({ data }) => {
-      let tag = '';
+    this.$event.on("playlistintro", ({ data }) => {
+      let tag = "";
       const tags = data.tags;
 
       if (tags.length) {
-        tags.forEach((val) => (tag += val + ' / '));
+        tags.forEach((val) => (tag += val + " / "));
         tag = tag.slice(0, tag.length - 2);
       } else {
-        tag = typeof tags === 'object' ? null : tags;
+        tag = typeof tags === "object" ? null : tags;
       }
 
-      this.tagDis[0].dis = tag || '暂无';
-      this.tagDis[1].dis = data.description || '暂无';
-
+      this.tagDis[0].dis = tag || "暂无";
+      this.tagDis[1].dis = data.description || "暂无";
       this.introInfo.name = data.name;
-      this.introInfo.createTime = new Date(data.createTime).format('-', true);
+      this.introInfo.createTime = new Date(data.createTime).format("-", true);
       this.introInfo.picUrl = data.coverImgUrl;
       this.introInfo.playCount =
         data.playCount > 100000
-          ? parseInt(data.playCount / 10000) + '万'
+          ? parseInt(data.playCount / 10000) + "万"
           : data.playCount;
     });
 
-    this.$event.on('loginSuccess', (_) => this.resetCollect());
+    this.$event.on("loginSuccess", (_) => this.resetCollect());
   },
+
   beforeDestroy() {
     // 销毁注册的事件
-    this.$event.off('playlistintro');
-    this.$event.off('loginSuccess');
+    this.$event.off("playlistintro");
+    this.$event.off("loginSuccess");
   },
 };
 </script>
+
 <style>
 .intro-box {
   overflow: hidden;
@@ -300,26 +306,26 @@ export default {
 
 /*小图标*/
 .play-all {
-  background: url('~static/pageimg/play-all.png') no-repeat;
+  background: url("~static/pageimg/play-all.png") no-repeat;
 }
 .collect-list-false {
-  background: url('~static/pageimg/collect-list-false.png') no-repeat;
+  background: url("~static/pageimg/collect-list-false.png") no-repeat;
 }
 .collect-list-true {
-  background: url('~static/pageimg/collect-list-true.png') no-repeat;
+  background: url("~static/pageimg/collect-list-true.png") no-repeat;
 }
 .share-it {
-  background: url('~static/pageimg/share-it.png') no-repeat;
+  background: url("~static/pageimg/share-it.png") no-repeat;
 }
 .down-all {
-  background: url('~static/pageimg/down-all.png') no-repeat;
+  background: url("~static/pageimg/down-all.png") no-repeat;
 }
 
 .play-count {
   display: inline-block;
   height: 10px;
   width: 10px;
-  background: url('~static/pageimg/playCount.png') no-repeat;
+  background: url("~static/pageimg/playCount.png") no-repeat;
   margin-right: 10px;
 }
 .tag-dis {

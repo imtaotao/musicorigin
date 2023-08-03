@@ -59,14 +59,16 @@
 </template>
 
 <script>
-import comment from './comment';
-import containSimilar from './containSimilar';
-import { mapGetters, mapActions } from 'vuex';
-import { util } from '@/common/js/util';
+import { mapGetters } from "vuex";
+import { util } from "@/common/js/util";
+import comment from "./comment";
+import containSimilar from "./containSimilar";
+
 const { $ } = util;
 
 export default {
-  props: ['songDetail'],
+  props: ["songDetail"],
+
   data() {
     return {
       lyricsShowH: 380,
@@ -75,26 +77,26 @@ export default {
       preAllDis: 0,
       nowAnimateStr: null,
       LyrFirst: true, // 第一进来或者快进后退操作
-      bgUrl: 'static/img/music.jpg',
+      bgUrl: "static/img/music.jpg",
       playInfo: {},
       lyricContent: null,
       lyricCopy: null,
-
       // 滚轮页面滑动的距离
       translateY: 0,
     };
   },
   computed: {
     ...mapGetters([
-      'host',
-      'isLoading',
-      'nowPlayId',
-      'nowPlayInfo',
-      'bigAnimate',
-      'lyric',
-      'getAudio',
-      'nowLyrPosition',
+      "host",
+      "isLoading",
+      "nowPlayId",
+      "nowPlayInfo",
+      "bigAnimate",
+      "lyric",
+      "getAudio",
+      "nowLyrPosition",
     ]),
+
     // 深拷贝歌词
     copyLyric() {
       return JSON.parse(JSON.stringify(this.lyric));
@@ -102,23 +104,22 @@ export default {
 
     // 歌词框显示
     lyricStyle() {
-      let style = { height: this.lyricsShowH + 'px' };
-
+      let style = { height: this.lyricsShowH + "px" };
       if (util.isFirefox) {
-        style.height = '300px';
-        style.overflow = 'hidden';
+        style.height = "300px";
+        style.overflow = "hidden";
       }
-
       return style;
     },
   },
+
   methods: {
     // 隐藏当前页面
     hide() {
-      this.$emit('update:songDetail', false);
+      this.$emit("update:songDetail", false);
       setTimeout((_) => this.bigAnimate(), 450);
-      $('.all-container').style['overflow-x'] = 'hidden';
-      $('.all-container').style['overflow'] = 'none';
+      $(".all-container").style["overflow-x"] = "hidden";
+      $(".all-container").style["overflow"] = "none";
     },
 
     // 设置数据
@@ -133,28 +134,23 @@ export default {
     setLyr() {
       const audio = this.getAudio;
       const lyric = this.copyLyric;
-
       // 未播放的时候
       if (!lyric || !audio) {
-        this.lyricContent = [{ time: 0, lyr: '......' }];
+        this.lyricContent = [{ time: 0, lyr: "......" }];
         return;
       }
       if (!lyric.oriLrc) {
-        this.lyricContent = [{ time: 0, lyr: '当前音乐为纯音乐，敬请欣赏' }];
+        this.lyricContent = [{ time: 0, lyr: "当前音乐为纯音乐，敬请欣赏" }];
         return;
       }
-
       const oriLrc = lyric.oriLrc.content;
-
       if (!oriLrc) {
-        this.lyricContent = [{ time: 0, lyr: '当前音乐暂无歌词' }];
+        this.lyricContent = [{ time: 0, lyr: "当前音乐暂无歌词" }];
         return;
       }
-      if (lyric.cnLrc) this.lyric.cnLrc.content[0].lyr = '';
-
+      if (lyric.cnLrc) this.lyric.cnLrc.content[0].lyr = "";
       this.nowAnimateStr = util.randomStr();
       this.scrollLyr(this.nowLyrPosition);
-
       this.lyricContent = oriLrc;
     },
 
@@ -166,12 +162,11 @@ export default {
         !this.lyric.cnLrc ||
         !this.lyric.oriLrc.content ||
         !this.lyric.cnLrc.content
-      )
+      ) {
         return;
-
+      }
       this.lyricCopy = [];
       const { oriLrc, cnLrc } = this.lyric;
-
       // 开始匹配
       oriLrc.content.forEach((ori, i) => {
         let lyr = null;
@@ -185,11 +180,11 @@ export default {
     // 歌词滑动
     scrollLyr(i) {
       const { lyricsShowH, preIndex, nowLyrPosition } = this;
-      const container = $('.lyrics-show');
+      const container = $(".lyrics-show");
       if (!container) return;
 
       const insertBox = container.firstElementChild;
-      const insertBoxH = parseInt(util.getAttr(insertBox, 'height'));
+      const insertBoxH = parseInt(util.getAttr(insertBox, "height"));
       // 判断是否出现滚动条
       if (insertBoxH <= lyricsShowH) return;
       const lyrList = insertBox.children;
@@ -206,12 +201,12 @@ export default {
         this.LyrFirst = false;
         this.allDis = 0;
         for (let j = 0; j < i - 1; j++) {
-          const nowPlayHeight = parseInt(util.getAttr(lyrList[j], 'height'));
+          const nowPlayHeight = parseInt(util.getAttr(lyrList[j], "height"));
           this.allDis += nowPlayHeight + 20;
         }
       }
 
-      const nowPlayHeight = parseInt(util.getAttr(lyrList[i], 'height'));
+      const nowPlayHeight = parseInt(util.getAttr(lyrList[i], "height"));
       this.preAllDis = this.allDis;
       this.allDis += nowPlayHeight + 20;
 
@@ -231,26 +226,25 @@ export default {
         });
       };
       i >= 1 && t(this.allDis);
-
       // 保存上一次的index
       this.preIndex = this.nowLyrPosition;
     },
 
     // 重置参数
     resetCfg() {
-      const container = $('.lyrics-show');
+      const container = $(".lyrics-show");
       this.LyrFirst = true;
       this.allDis = 0;
       this.preIndex = 0;
-      this.$store.dispatch('nowLyrPosition', 0);
+      this.$store.dispatch("nowLyrPosition", 0);
       container && (container.scrollTop = 0);
     },
 
     // 滑动事件
     exceptDom(el, e) {
       // 排除页面上的两个滑动区域
-      const lyrDom = $('.main-content *');
-      const comment = $('.song-comment-box *');
+      const lyrDom = $(".main-content *");
+      const comment = $(".song-comment-box *");
 
       for (let i = 0; i < lyrDom.length; i++) {
         if (e.target === lyrDom[i]) return false;
@@ -259,52 +253,53 @@ export default {
         if (e.target === comment[i]) return false;
       }
     },
+
     mousewheel(el, e) {
       e.direction ? (this.translateY = 0) : (this.translateY = -100);
     },
   },
+
   created() {
     const { setDate, setLyr, $event } = this;
-
-    $event.on('startNewMusic', (_) => {
+    $event.on("startNewMusic", (_) => {
       setDate(true);
-      $event.fire('songDetailReset');
+      $event.fire("songDetailReset");
     }); // 歌词开始播放新音乐
-    $event.on('nowPlayTime', (_) => setLyr()); // 每次切换歌词
-    $event.on('playChange', (_) => (this.LyrFirst = true)); // 快进后退操作
-    $event.on('loopPlayOver', (_) => this.resetCfg());
+    $event.on("nowPlayTime", (_) => setLyr()); // 每次切换歌词
+    $event.on("playChange", (_) => (this.LyrFirst = true)); // 快进后退操作
+    $event.on("loopPlayOver", (_) => this.resetCfg());
     setDate();
   },
 
-  // dom生成后
+  // dom 生成后
   mounted() {
     const i = this.nowLyrPosition;
-    const container = $('.lyrics-show');
+    const container = $(".lyrics-show");
     if (i == null || !container) return;
-
     const insertBox = container.firstElementChild;
-    const insertBoxH = parseInt(util.getAttr(insertBox, 'height'));
+    const insertBoxH = parseInt(util.getAttr(insertBox, "height"));
     if (insertBoxH > this.lyricsShowH) {
       const lyrList = insertBox.children;
       let scroll = 0;
       for (let j = 0; j < i - 1; j++) {
-        const nowPlayHeight = parseInt(util.getAttr(lyrList[j], 'height'));
+        const nowPlayHeight = parseInt(util.getAttr(lyrList[j], "height"));
         scroll += nowPlayHeight + 20;
       }
       container.scrollTop = scroll;
     }
-
-    $('.all-container').style['overflow-x'] = 'none';
-    $('.all-container').style['overflow'] = 'hidden';
+    $(".all-container").style["overflow-x"] = "none";
+    $(".all-container").style["overflow"] = "hidden";
   },
+
   beforeDestroy() {
     const { $event } = this;
-    $event.off('startNewMusic');
-    $event.off('nowPlayTime');
-    $event.off('playChange');
-    $event.off('loopPlayOver');
-    $event.off('songDetailReset');
+    $event.off("startNewMusic");
+    $event.off("nowPlayTime");
+    $event.off("playChange");
+    $event.off("loopPlayOver");
+    $event.off("songDetailReset");
   },
+
   components: {
     comment,
     containSimilar,

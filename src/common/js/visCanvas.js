@@ -1,4 +1,4 @@
-import { util } from './util.js';
+import { util } from "./util.js";
 
 CanvasRenderingContext2D.prototype.roundRect = function (x, y, w, h, r) {
   w < 2 * r && (r = w / 2)(h < 2 * r) && (r = h / 2);
@@ -16,8 +16,8 @@ CanvasRenderingContext2D.prototype.roundRect = function (x, y, w, h, r) {
 // 画圆
 const allwidth = 900,
   allheight = 450,
-  color = ['#3974d5', '#a1f1a3'],
-  coluColor = ['#77f97b', '#419ff1'];
+  color = ["#3974d5", "#a1f1a3"],
+  coluColor = ["#77f97b", "#419ff1"];
 
 class cicle {
   constructor(canvas, time) {
@@ -29,7 +29,7 @@ class cicle {
     this.opacity = 0.5;
     this.count = 0;
     this.time = time;
-    this.ctx = canvas.getContext('2d');
+    this.ctx = canvas.getContext("2d");
     this.t = null;
     this.init();
   }
@@ -59,10 +59,10 @@ class cicle {
   font() {
     const { ctx, x, y, time } = this;
 
-    ctx.fillStyle = '#a1f1a3';
-    ctx.font = 'normal 25px 微软雅黑';
-    ctx.textBaseline = 'middle';
-    ctx.textAlign = 'center';
+    ctx.fillStyle = "#a1f1a3";
+    ctx.font = "normal 25px 微软雅黑";
+    ctx.textBaseline = "middle";
+    ctx.textAlign = "center";
     ctx.fillText(time(), x, y);
   }
 
@@ -101,7 +101,7 @@ class visCicle {
       };
     this.num = num;
     this.radius = 50;
-    this.ctx = canvas.getContext('2d');
+    this.ctx = canvas.getContext("2d");
     this.angle = Math.PI / (num / 2);
     this.t = null;
     this.init();
@@ -172,7 +172,7 @@ class visCicle {
     }
 
     ctx.lineWidth = width;
-    ctx.lineJoin = 'round';
+    ctx.lineJoin = "round";
     ctx.stroke();
   }
 
@@ -196,7 +196,7 @@ class topColumnar {
         return [];
       };
     this.num = num;
-    this.ctx = canvas.getContext('2d');
+    this.ctx = canvas.getContext("2d");
     this.t = null;
     this.init();
   }
@@ -241,7 +241,7 @@ class topColumnar {
           y - singleH * i,
           singleW * 0.45,
           singleH * 0.8,
-          3,
+          3
         )
         .fill();
     }
@@ -269,7 +269,7 @@ class bottomColumnar {
         return [];
       };
     this.num = num;
-    this.ctx = canvas.getContext('2d');
+    this.ctx = canvas.getContext("2d");
     this.t = null;
     this.init();
   }
@@ -313,8 +313,8 @@ class setOff {
     this.canvas = canvas;
     this.x = 250;
     this.y = 200;
-    this.ctx = canvas.getContext('2d');
-    this.ctxTwo = canvasTwo.getContext('2d');
+    this.ctx = canvas.getContext("2d");
+    this.ctxTwo = canvasTwo.getContext("2d");
     this.init();
   }
 
@@ -414,7 +414,7 @@ class setOff {
         opacity,
         cicleWidth,
         ctx,
-        style,
+        style
       );
     }
   }
@@ -429,13 +429,13 @@ class setOff {
     opacity = 0.2,
     cicleWidth = 5,
     ctx,
-    style = color[0],
+    style = color[0]
   ) {
     !ctx && ({ ctx } = this);
 
     if (style === true) {
       var style = this.ctx.createLinearGradient(startX, startY, endX, endY);
-      style.addColorStop(0, 'rgba(0,0,0,0)');
+      style.addColorStop(0, "rgba(0,0,0,0)");
       style.addColorStop(1, coluColor[1]);
     }
 
@@ -448,7 +448,7 @@ class setOff {
 
     // 样式
     ctx.lineWidth = width;
-    ctx.lineJoin = 'round';
+    ctx.lineJoin = "round";
     ctx.stroke();
     ctx.closePath();
 
@@ -483,7 +483,7 @@ class animateLine extends setOff {
     super();
     if (!canvas) return;
 
-    this.ctx = canvas.getContext('2d');
+    this.ctx = canvas.getContext("2d");
     this.t = null;
     this.oneX = 330;
     this.twoX = 310;

@@ -28,19 +28,19 @@
 </template>
 
 <script>
-import commentList from '@/components/songlistfrag/commentDetail';
-import { mapGetters, mapActions } from 'vuex';
-import { util } from '@/common/js/util';
+import { mapGetters } from "vuex";
+import { util } from "@/common/js/util";
+import commentList from "@/components/songlistfrag/commentDetail";
+
 const { filter, $ } = util;
 
 export default {
   data() {
     return {
-      bgColor: '#fff',
-      msgText: '',
-      replyTitle: '',
+      bgColor: "#fff",
+      msgText: "",
+      replyTitle: "",
       reply: false,
-
       // 评论内容
       Paging: 0,
       comments: [],
@@ -48,20 +48,21 @@ export default {
       commentCount: 0,
     };
   },
+
   computed: {
-    ...mapGetters(['host', 'user', 'nowPlayId']),
+    ...mapGetters(["host", "user", "nowPlayId"]),
   },
+
   methods: {
     resetData(init) {
-      this.msgText = '';
-      this.replyTitle = '';
-      this.bgColor = '#fff';
+      this.msgText = "";
+      this.replyTitle = "";
+      this.bgColor = "#fff";
       this.reply = false;
       this.Paging = 0;
       this.comments = [];
       this.total = 0;
       this.commentCount = null;
-
       !init && this.getData();
     },
 
@@ -74,26 +75,23 @@ export default {
       // 如果删除了 ‘回复xxx：’这几个字就代表不是回复某人了，算是正常的评论
       if (!this.msgText.includes(this.replyTitle)) {
         this.reply = false;
-        this.replyTitle = '';
+        this.replyTitle = "";
       }
     },
 
     getData(init) {
       const { host, nowPlayId, Paging, $ajax, $event } = this;
-
       $ajax
         .get(host + `/getMusicComments?id=${nowPlayId}&offset=${Paging * 20}`)
         .then((data) => {
           if (data.status !== 200) {
-            return alert('获取评论失败');
+            return alert("获取评论失败");
           }
           const result = data.data;
-
           if (init) {
             this.total = result.count;
-            $event.fire('songLocal', result.count);
+            $event.fire("songLocal", result.count);
           }
-
           this.comments = this.comments.concat(filter(result.result));
           this.commentCount += result.result.length;
         });
@@ -113,22 +111,19 @@ export default {
         $ajax,
         nowPlayId,
       } = this;
-
       if (!user._id) {
-        this.$event.fire('showLogin', true);
-        return alert('请先登录');
+        this.$event.fire("showLogin", true);
+        return alert("请先登录");
       }
+      const text = msgText.replace(replyTitle, "");
 
-      const text = msgText.replace(replyTitle, '');
-
-      if (!nowPlayId) return alert('获取歌单数据出错，请刷新重试吧~');
-      if (!text) return alert('写点东西再发表吧，内容不能为空哦~');
+      if (!nowPlayId) return alert("获取歌单数据出错，请刷新重试吧~");
+      if (!text) return alert("写点东西再发表吧，内容不能为空哦~");
       if (text.length > 200) {
-        return alert('最多只允许200字的评论哦~');
+        return alert("最多只允许200字的评论哦~");
       }
-
-      this.bgColor = '#b4b5b5';
-      setTimeout((_) => (this.bgColor = '#fff'), 250);
+      this.bgColor = "#b4b5b5";
+      setTimeout((_) => (this.bgColor = "#fff"), 250);
 
       // 发送请求
       const data = {
@@ -139,15 +134,12 @@ export default {
         id: nowPlayId,
         reply: reply,
       };
-
       // 恢复默认状态
-      this.msgText = '';
-      this.replyTitle = '';
-
-      $ajax.post(host + '/musicComments', data).then(({ data }) => {
+      this.msgText = "";
+      this.replyTitle = "";
+      $ajax.post(host + "/musicComments", data).then(({ data }) => {
         alert(data.msg);
-        if (data.msg.includes('失败')) return (this.reply = false);
-
+        if (data.msg.includes("失败")) return (this.reply = false);
         // 添加数据
         this.comments.unshift(filter([data.doc])[0]);
         this.reply = false;
@@ -156,11 +148,11 @@ export default {
 
     answer(id, name, nickname) {
       if (!this.user._id) {
-        this.$event.fire('showLogin', true);
-        return alert('请先登录');
+        this.$event.fire("showLogin", true);
+        return alert("请先登录");
       }
-      if (!id) return alert('没有得到当前评论数据，请刷新后重试~');
-      const songComment = $('.song-comment');
+      if (!id) return alert("没有得到当前评论数据，请刷新后重试~");
+      const songComment = $(".song-comment");
       songComment && (songComment.scrollTop = 0);
 
       const repTitle = `回复${nickname}：`;
@@ -173,19 +165,20 @@ export default {
   created() {
     const { $event, getData, resetData } = this;
     this.$event.on(
-      'songLoaclComment',
+      "songLoaclComment",
       (_) => {
         resetData(true);
         getData(true);
       },
-      true,
+      true
     );
-    this.$event.on('songDetailReset', (_) => resetData());
+    this.$event.on("songDetailReset", (_) => resetData());
   },
 
   beforeDesdroy() {
-    this.$event.off('songLoaclComment');
+    this.$event.off("songLoaclComment");
   },
+
   components: {
     commentList,
   },

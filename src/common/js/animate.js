@@ -3,13 +3,13 @@
   var matrix3d = {
     // 工具函数，拼接成matrix3d字符串
     mtxSplice: function (arr) {
-      var newMatrix = 'matrix3d(';
+      var newMatrix = "matrix3d(";
 
       arr.forEach(function (val, i) {
-        newMatrix += i != arr.length - 1 ? val + ',' : val;
+        newMatrix += i != arr.length - 1 ? val + "," : val;
       });
 
-      return (newMatrix += ')');
+      return (newMatrix += ")");
     },
     translate3d: function (matrix, x, y, z) {
       var c12 =
@@ -241,7 +241,7 @@
 
       if (!endProp) return;
       // 判断是否是颜色（拿到的值会自动转化为rgb小写）
-      if (endProp.includes('rgb')) return this.colorRgba(endProp);
+      if (endProp.includes("rgb")) return this.colorRgba(endProp);
 
       return this.isNum(parseInt(endProp))
         ? parseInt(endProp)
@@ -257,7 +257,7 @@
 
         //动态改变元素css属性值
         this.elem.style[this.key] =
-          this.key === ('opacity' || 'zIndex') ? this.now : this.now + 'px';
+          this.key === ("opacity" || "zIndex") ? this.now : this.now + "px";
       } else if (this.start.length > 4) {
         // transfrom的情况
         var result = this.changeProp(this.transform, percent),
@@ -275,7 +275,7 @@
         }
 
         var colorList = this.changeColor(this.start, end, percent),
-          now = 'rgba(' + colorList.join(',') + ')';
+          now = "rgba(" + colorList.join(",") + ")";
 
         this.elem.style[this.key] = now;
       }
@@ -310,7 +310,7 @@
         // 如果不是数组
         if (!this.isArr(prop[k])) {
           // 如果是scale，就是另外一种处理
-          if (!!k.includes('scale')) {
+          if (!!k.includes("scale")) {
             copy[k] = (prop[k] - 1) * this.swing(percent) + 1;
           } else {
             copy[k] = prop[k] * this.swing(percent);
@@ -320,7 +320,7 @@
         // 如果length为2
         // 用 apply 和 ...[] 都可以，暂时不想改了
         else if (prop[k].length == 2) {
-          if (!!k.includes('scale')) {
+          if (!!k.includes("scale")) {
             copy[k][0] = (prop[k][0] - 1) * this.swing(percent) + 1;
             copy[k][1] = (prop[k][1] - 1) * this.swing(percent) + 1;
           } else {
@@ -331,7 +331,7 @@
 
         // 如果length为3
         else if (prop[k].length == 3) {
-          if (!!k.includes('scale')) {
+          if (!!k.includes("scale")) {
             copy[k][0] = (prop[k][0] - 1) * this.swing(percent) + 1;
             copy[k][1] = (prop[k][1] - 1) * this.swing(percent) + 1;
             copy[k][2] = (prop[k][2] - 1) * this.swing(percent) + 1;
@@ -362,7 +362,7 @@
       let s;
       if (t == 0) return b;
       if ((t /= d) == 1) return b + c;
-      if (typeof p == 'undefined') p = d * 0.3;
+      if (typeof p == "undefined") p = d * 0.3;
       if (!a || a < Math.abs(c)) {
         a = c;
         s = p / 4;
@@ -384,17 +384,17 @@
     // 截取成数组
     getTransform: function (transform) {
       if (!transform) {
-        console.warn('transform is not defined');
+        console.warn("transform is not defined");
         return;
       }
 
       var matrix = transform,
-        dimension = 'matrix(';
+        dimension = "matrix(";
 
-      matrix === 'none' &&
-        (matrix = 'matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1)');
-      matrix.indexOf('3d') > -1 && (dimension = 'matrix3d(');
-      matrix = matrix.replace(dimension, '').replace(')', '').split(',');
+      matrix === "none" &&
+        (matrix = "matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1)");
+      matrix.indexOf("3d") > -1 && (dimension = "matrix3d(");
+      matrix = matrix.replace(dimension, "").replace(")", "").split(",");
 
       // 2d和3d的兼容处理
       if (matrix.length < 7) {
@@ -421,11 +421,11 @@
     },
 
     isArr: function (val) {
-      return Object.prototype.toString.call(val) === '[object Array]';
+      return Object.prototype.toString.call(val) === "[object Array]";
     },
     isNum: function (val) {
       return (
-        Object.prototype.toString.call(val) === '[object Number]' && !isNaN(val)
+        Object.prototype.toString.call(val) === "[object Number]" && !isNaN(val)
       );
     },
 
@@ -474,7 +474,7 @@
       if (color && reg.test(color)) {
         // 先转化为六位的颜色值
         if (color.length === 4) {
-          var colorNew = '#';
+          var colorNew = "#";
           for (var i = 1; i < 4; i++) {
             colorNew += color.slice(i, i + 1).concat(color.slice(i, i + 1));
           }
@@ -484,16 +484,16 @@
         //处理六位的颜色值（'0x'代表的就是十六进制）
         var colorChange = [];
         for (var i = 1; i < 7; i += 2) {
-          colorChange.push(parseInt('0x' + color.slice(i, i + 2)));
+          colorChange.push(parseInt("0x" + color.slice(i, i + 2)));
         }
 
         colorChange.push(opacity);
         return colorChange;
       }
 
-      if (color.includes('rgb')) {
-        var prefix = color.includes('rgba') ? 'rgba(' : 'rgb(';
-        color = color.replace(prefix, '').replace(')', '').split(',');
+      if (color.includes("rgb")) {
+        var prefix = color.includes("rgba") ? "rgba(" : "rgb(";
+        color = color.replace(prefix, "").replace(")", "").split(",");
 
         for (var i = 0; i < color.length; i++) {
           color[i] = Number(color[i]);
@@ -538,7 +538,7 @@
       // 只有存在而且包含0，所以要用全等
       if (!!filterProp[key] || filterProp[key] === 0) {
         elem.animateOption.tweens.push(
-          new tweens(filterProp[key], key, elem.animateOption),
+          new tweens(filterProp[key], key, elem.animateOption)
         );
       }
     }
@@ -549,7 +549,7 @@
         // 保证剩余的时间不会小于0
         remaining = Math.max(
           0,
-          elem.animateOption.startTime + elem.animateOption.time - currentTime,
+          elem.animateOption.startTime + elem.animateOption.time - currentTime
         ),
         temp = remaining / elem.animateOption.time || 0,
         percent = 1 - temp;
@@ -578,10 +578,10 @@
 
     for (var key in copy) {
       if (
-        key.includes('rotate') ||
-        key.includes('scale') ||
-        key.includes('translate') ||
-        key.includes('skew')
+        key.includes("rotate") ||
+        key.includes("scale") ||
+        key.includes("translate") ||
+        key.includes("skew")
       ) {
         // 先拷贝过来
         copy.transform[key] = copy[key];

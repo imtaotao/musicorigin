@@ -12,7 +12,7 @@ class ripplesMove {
     const canvas = this.createCanvas(dom);
     const opacity = 1;
     const color = this.color;
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext("2d");
     const radius = 0;
     const centerX = event.offsetX;
     const centerY = event.offsetY;
@@ -71,13 +71,13 @@ class ripplesMove {
   }
 
   createCanvas(dom) {
-    const canvas = document.createElement('canvas');
+    const canvas = document.createElement("canvas");
     dom.appendChild(canvas);
-    canvas.style.width = '100%';
-    canvas.style.height = '100%';
+    canvas.style.width = "100%";
+    canvas.style.height = "100%";
     canvas.width = canvas.offsetWidth;
     canvas.height = canvas.offsetHeight;
-    canvas.style.position = 'absolute';
+    canvas.style.position = "absolute";
     canvas.style.left = 0;
     canvas.style.top = 0;
     return canvas;
@@ -87,12 +87,12 @@ class ripplesMove {
 // 初始化操作
 export default class ripples {
   constructor(scope, color) {
-    if (this.typeOf(scope) === '[object String]') {
+    if (this.typeOf(scope) === "[object String]") {
       scope = document.querySelector(scope);
     } else if (
-      this.typeOf(scope) !== '[object HTMLElement]' &&
-      this.typeOf(scope) !== '[object HTMLLIElement]' &&
-      this.typeOf(scope) !== '[object HTMLSpanElement]' &&
+      this.typeOf(scope) !== "[object HTMLElement]" &&
+      this.typeOf(scope) !== "[object HTMLLIElement]" &&
+      this.typeOf(scope) !== "[object HTMLSpanElement]" &&
       scope !== document
     )
       return;
@@ -101,13 +101,13 @@ export default class ripples {
   }
 
   init() {
-    const color = this.color || 'rgba(255,255,255,.3)';
+    const color = this.color || "rgba(255,255,255,.3)";
     const clickCb = (this.CB = this.press());
-    this.scope.addEventListener('click', clickCb, false);
+    this.scope.addEventListener("click", clickCb, false);
   }
 
   remove() {
-    this.scope.removeEventListener('click', this.CB, false);
+    this.scope.removeEventListener("click", this.CB, false);
   }
 
   press() {
@@ -115,7 +115,7 @@ export default class ripples {
     return function (e) {
       const color = self.color;
       let target = e.target;
-      if (target.nodeName === 'CANVAS') {
+      if (target.nodeName === "CANVAS") {
         target = target.parentElement;
       }
       self.position(target);
@@ -123,12 +123,14 @@ export default class ripples {
       instance.move();
     };
   }
+
   position(dom) {
     const position = getComputedStyle(dom).position;
-    if (position === 'static') {
-      dom.style.position = 'relative';
+    if (position === "static") {
+      dom.style.position = "relative";
     }
   }
+
   typeOf(val) {
     return Object.prototype.toString.call(val);
   }

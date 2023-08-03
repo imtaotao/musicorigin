@@ -20,7 +20,7 @@ export default class audio {
 
     // 创建三个状态
     this.oldstatus = {}; // 过去状态
-    this.futurestatus = { filterstatus: 'init' }; // 未来状态
+    this.futurestatus = { filterstatus: "init" }; // 未来状态
     this.nowstatus = { filter: {} }; // 当前状态
   }
 
@@ -55,7 +55,7 @@ export default class audio {
 
   // 得到音量控制对象
   crtGainNode() {
-    return this.ac[this.ac.createGain ? 'createGain' : 'createGainNode']();
+    return this.ac[this.ac.createGain ? "createGain" : "createGainNode"]();
   }
 
   // 得到均衡器对象
@@ -66,7 +66,7 @@ export default class audio {
   // 滤波器
   crtFilter(hertz, gainValue) {
     const ra = this.ac.createBiquadFilter();
-    ra.type = 'peaking';
+    ra.type = "peaking";
     ra.Q.value = 10;
     ra.frequency.value = hertz;
     ra.gain.value = gainValue || 0;
@@ -105,7 +105,7 @@ export default class audio {
         nowstatus[node].connect(self.ac.destination);
       } else {
         // 在 buffersouce 前面提前连接好滤波器的节点
-        if (node === 'buffersouce') {
+        if (node === "buffersouce") {
           let preNode = nowstatus[arr[i - 1]];
 
           self.Hertz.forEach((HZ) => {
@@ -129,8 +129,8 @@ export default class audio {
 
     const souce = this.nowstatus.buffersouce;
     time == null
-      ? souce[souce.start ? 'start' : 'noteOn'](0)
-      : souce[souce.start ? 'start' : 'noteOn'](0, time);
+      ? souce[souce.start ? "start" : "noteOn"](0)
+      : souce[souce.start ? "start" : "noteOn"](0, time);
 
     this.volume();
     this.filter(this.futurestatus.filterstatus);
@@ -138,7 +138,7 @@ export default class audio {
   }
   sourceStop() {
     this.nowstatus.buffersouce[
-      this.nowstatus.buffersouce ? 'stop' : 'noteOff'
+      this.nowstatus.buffersouce ? "stop" : "noteOff"
     ]();
     return this;
   }
@@ -199,11 +199,11 @@ export default class audio {
   }
 
   isaudiobuffer(buffer) {
-    return Object.prototype.toString.call(buffer) === '[object AudioBuffer]';
+    return Object.prototype.toString.call(buffer) === "[object AudioBuffer]";
   }
 
   isarraybuffer(buffer) {
-    return Object.prototype.toString.call(buffer) === '[object ArrayBuffer]';
+    return Object.prototype.toString.call(buffer) === "[object ArrayBuffer]";
   }
 
   // 合并 arraybuffer
@@ -211,7 +211,7 @@ export default class audio {
     if (args.length === 1) return args[0];
     function isValidArray(val) {
       return /Int(8|16|32)Array|Uint(8|8Clamped|16|32)Array|Float(32|64)Array|ArrayBuffer/gi.test(
-        {}.toString.call(val),
+        {}.toString.call(val)
       );
     }
 
@@ -299,7 +299,7 @@ export default class audio {
     !this.duration && (this.duration = duration);
 
     // 调用回调
-    if (typeof this.decodeOver === 'function') {
+    if (typeof this.decodeOver === "function") {
       this.decodeOver.call(this);
     } else {
       this.decodeOver.forEach((fun) => {
@@ -355,25 +355,25 @@ export default class audio {
 
   getParm(name) {
     switch (name) {
-      case 'init':
+      case "init":
         return [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-      case 'slowSong': // 慢歌
+      case "slowSong": // 慢歌
         return [5, 4, 2, 0, -2, 0, 3, 6, 7, 8];
-      case 'jazz': // 爵士
+      case "jazz": // 爵士
         return [0, 0, 0, 5, 5, 5, 0, 3, 4, 5];
-      case 'classical': // 古典
+      case "classical": // 古典
         return [0, 0, 0, 0, 0, 0, -6, -6, -6, -8];
-      case 'blues': // 蓝调
+      case "blues": // 蓝调
         return [3, 6, 8, 3, -2, 0, 4, 7, 9, 10];
-      case 'dance': // 舞曲
+      case "dance": // 舞曲
         return [7, 6, 3, 0, 0, -4, -6, -6, 0, 0];
-      case 'popular': // 流行
+      case "popular": // 流行
         return [4, 2, 0, -3, -6, -6, -3, 0, 1, 3];
-      case 'electronicMusic': // 电子乐
+      case "electronicMusic": // 电子乐
         return [6, 5, 0, -5, -4, 0, 6, 8, 8, 7];
-      case 'rocking': // 摇滚
+      case "rocking": // 摇滚
         return [7, 4, -4, 7, -2, 1, 5, 7, 9, 9];
-      case 'rural': // 乡村
+      case "rural": // 乡村
         return [5, 6, 2, -5, 1, 1, -5, 3, 8, 5];
     }
   }
@@ -394,7 +394,7 @@ export default class audio {
     // // 根据 old 状态判断资源片段阶段的播放是否结束
     !!this.oldstatus ? this.transition() : this.newSource();
 
-    this.connectNode(['gainNode', 'analyser', 'buffersouce']);
+    this.connectNode(["gainNode", "analyser", "buffersouce"]);
     this.souceStart(time);
     this.nowstatus.buffersouce.loopStart = 0;
     // 每一次快进后退都有一个随机标识码
@@ -436,7 +436,7 @@ export default class audio {
       }
 
       self.transition();
-      self.connectNode(['gainNode', 'analyser', 'buffersouce']);
+      self.connectNode(["gainNode", "analyser", "buffersouce"]);
       if (!!self.forwardMusicEnd.end) {
         self.originLoop();
         return;
@@ -471,7 +471,7 @@ export default class audio {
       }
 
       self.transition();
-      self.connectNode(['gainNode', 'analyser', 'buffersouce']);
+      self.connectNode(["gainNode", "analyser", "buffersouce"]);
       if (!!self.musicEnd.end) {
         self.originLoop();
         return;
@@ -542,7 +542,7 @@ export default class audio {
   /* --------------------- buffer处理 ------------------------- */
   init(arraybuffer) {
     if (!this.isarraybuffer(arraybuffer)) {
-      console.err('必须以 arraybuffer 类型传入');
+      console.err("必须以 arraybuffer 类型传入");
       return;
     }
 
@@ -550,7 +550,7 @@ export default class audio {
     this.decodeFile(arraybuffer).then(([audio, buffer]) => {
       audio.futures(buffer);
       audio.transition((node) => {
-        audio.connectNode(['gainNode', 'analyser', 'buffersouce']);
+        audio.connectNode(["gainNode", "analyser", "buffersouce"]);
         audio.souceStart();
       });
       audio.ac.source.onended = audio.musicEnd();
@@ -560,7 +560,7 @@ export default class audio {
   // 后续的分段传输只是补充 buffer
   continue(arraybuffer, end) {
     if (!this.isarraybuffer(arraybuffer)) {
-      console.err('必须以 arraybuffer 类型传入');
+      console.err("必须以 arraybuffer 类型传入");
       return;
     }
 

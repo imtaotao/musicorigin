@@ -5,7 +5,6 @@
         <span class="Gray">{{ key }}</span>
       </li>
     </ul>
-
     <ul
       v-for="(key, i) in showMusicList"
       class="music-list-content"
@@ -35,26 +34,29 @@
 </template>
 
 <script>
-import { util } from '@/common/js/util';
-import interFace from '@/common/js/audioInterFace';
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters } from "vuex";
+import { util } from "@/common/js/util";
+import interFace from "@/common/js/audioInterFace";
 
 export default {
-  props: ['showMusicList', 'alrcollect'],
+  props: ["showMusicList", "alrcollect"],
+
   data() {
     return {
-      navTitle: ['', '操作', '音乐标题', '歌手', '专辑', '时长'],
+      navTitle: ["", "操作", "音乐标题", "歌手", "专辑", "时长"],
     };
   },
+
   computed: {
-    ...mapGetters(['playOneSong', 'resetCollect', 'musicList', 'download']),
+    ...mapGetters(["playOneSong", "resetCollect", "musicList", "download"]),
   },
+
   methods: {
     dbPlay(song, i) {
-      if (!song) return alert('当前歌曲播放出现问题了 /(ㄒoㄒ)/~~');
-
+      if (!song) return alert("当前歌曲播放出现问题了 /(ㄒoㄒ)/~~");
       this.playOneSong(song);
     },
+
     getCell(i, key) {
       switch (i) {
         case 0:
@@ -76,7 +78,7 @@ export default {
     },
 
     downclick(id, name, info) {
-      this.$event.fire('downclick', 1);
+      this.$event.fire("downclick", 1);
       this.download(id, name, info);
     },
   },

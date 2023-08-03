@@ -2,72 +2,95 @@ export default {
   isLoading(state) {
     return state.loadingShow;
   },
+
   localhost(state) {
     return state.localhost;
   },
+
   showContainer(state) {
     return state.showContainer;
   },
+
   host(state) {
     return state.host;
   },
+
   phone(state) {
     return state.phone;
   },
+
   password(state) {
     return state.password;
   },
+
   musicList(state) {
     return state.musicList;
   },
+
   getPlayOrder(state) {
     return state.playOrder;
   },
+
   getAudio(state) {
     return state.audio;
   },
+
   shrinkAnimate(state) {
     return state.shrinkAnimate;
   },
+
   bigAnimate(state) {
     return state.bigAnimate;
   },
+
   audioAjax(state) {
     return state.audioAjax;
   },
+
   playDelay(state) {
     return state.playDelay;
   },
+
   switchDelay(state) {
     return state.switchDelay;
   },
+
   volume(state) {
     return state.volume;
   },
+
   mainProgress(state) {
     return state.mainProgress;
   },
+
   shinkProgress(state) {
     return state.shinkProgress;
   },
+
   next(state) {
     return state.next;
   },
+
   forward(state) {
     return state.forward;
   },
+
   playStop(state) {
     return state.playStop;
   },
+
   collectMusic(state) {
     return state.collectMusic;
   },
+
   lyric(state) {
     return state.lyric;
   },
+
   playMusicList(state) {
     return state.playMusicList;
   },
+
   playOneSong(state) {
     return state.playOneSong;
   },
@@ -76,6 +99,7 @@ export default {
   listId(state) {
     return state.musicListId;
   },
+
   //正在播放歌曲 id
   nowPlayId(state) {
     return state.nowPlayId;
@@ -87,7 +111,7 @@ export default {
       const musicList = state.musicList;
 
       if (!musicList) {
-        alert('播放列表中没有可播放的歌曲');
+        alert("播放列表中没有可播放的歌曲");
       }
 
       let nowInfo = null;
@@ -116,6 +140,7 @@ export default {
   showRouter(state) {
     return state.showRouter;
   },
+
   user(state) {
     return state.user;
   },
@@ -129,12 +154,15 @@ export default {
       });
     };
   },
+
   login(state) {
     return state.login;
   },
+
   download(state) {
     return state.download;
   },
+
   downQueue(state) {
     return state.downQueue;
   },

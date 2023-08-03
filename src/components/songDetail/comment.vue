@@ -27,10 +27,10 @@
 </template>
 
 <script>
-import commentList from './commentList';
-import localComment from './localComment';
-import { util } from '@/common/js/util';
-import Vue from 'vue';
+import commentList from "./commentList";
+import localComment from "./localComment";
+import { util } from "@/common/js/util";
+import Vue from "vue";
 
 export default {
   data() {
@@ -38,8 +38,8 @@ export default {
       showGoUp: false,
       listBtn: 0,
       scroll: 0,
-      nowshow: '云音乐评论',
-      listBtnText: ['云音乐评论', '本地评论'],
+      nowshow: "云音乐评论",
+      listBtnText: ["云音乐评论", "本地评论"],
     };
   },
 
@@ -47,14 +47,15 @@ export default {
     toggle(i, name) {
       this.listBtn = i;
       this.nowshow = name;
-
-      if (name.includes('本地评论')) {
-        this.$event.fire('songLoaclComment');
+      if (name.includes("本地评论")) {
+        this.$event.fire("songLoaclComment");
       }
     },
+
     netComment(total) {
       Vue.set(this.listBtnText, 0, `云音乐评论（${total || 0}）`);
     },
+
     // 歌曲评论的滑动
     scrollTop(el, windowH) {
       windowH > 200 ? (this.showGoUp = true) : (this.showGoUp = false);
@@ -66,8 +67,8 @@ export default {
 
   created() {
     // 点击滑动到顶部
-    this.$event.on('scrollTop', (_) => {
-      const el = util.$('.song-comment');
+    this.$event.on("scrollTop", (_) => {
+      const el = util.$(".song-comment");
       if (!el) return;
 
       let distance = el.scrollTop;
@@ -86,14 +87,16 @@ export default {
     });
 
     // 更改歌曲评论数量
-    this.$event.on('songLocal', ({ data }) => {
+    this.$event.on("songLocal", ({ data }) => {
       Vue.set(this.listBtnText, 1, `本地评论（${data}）`);
     });
   },
+
   beforeDesdroy() {
-    this.$event.off('scrollTop');
-    this.$event.off('songLocal');
+    this.$event.off("scrollTop");
+    this.$event.off("songLocal");
   },
+
   components: {
     commentList,
     localComment,

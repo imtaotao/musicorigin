@@ -5,7 +5,7 @@ export default {
   },
   // 切换歌曲
   forward(id) {
-    console.log('快进', id);
+    console.log("快进", id);
   },
   // true 收藏，false 取消收藏
   collect({ id, status }) {

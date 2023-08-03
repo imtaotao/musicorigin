@@ -6,7 +6,6 @@
         <span>进度</span>
         <span>音乐标题</span>
       </li>
-
       <!-- 下载的歌曲列表 -->
       <li v-for="(key, i) in downQueue">
         <span>{{ i + 1 }}</span>
@@ -21,15 +20,17 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters } from "vuex";
+
 export default {
   data() {
     return {
       downLoadList: [],
     };
   },
+
   computed: {
-    ...mapGetters(['host', 'downQueue']),
+    ...mapGetters(["host", "downQueue"]),
   },
 };
 </script>

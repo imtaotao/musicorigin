@@ -1,15 +1,14 @@
 module.exports = {
   fx: {},
   endFx: {},
+
   // 入队
   on(type, fun) {
     // 入队操作
     if (!this.fx[type]) {
       this.fx[type] = [(next, parm) => fun(next, parm)];
-
       // 进程锁
       this.fx[type].open = false;
-
       // 初始化
       this.fire(type);
     } else {
@@ -19,14 +18,12 @@ module.exports = {
 
   fire(type, parm) {
     if (!this.fx[type]) return;
-
     if (!this.fx[type].open) {
       if (Object.keys(this.fx[type]).length === 1) {
         this.fx[type] = null;
         this.endFx[type]();
         return;
       }
-
       // 下一个队列函数（出栈）
       let first = this.fx[type].shift();
       let self = this;

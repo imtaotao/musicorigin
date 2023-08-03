@@ -9,7 +9,7 @@
 <script>
 export default {
   install: function (Vue) {
-    Vue.component('loading', this);
+    Vue.component("loading", this);
   },
 };
 </script>

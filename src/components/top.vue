@@ -7,11 +7,12 @@
 <script>
 export default {
   install: function (Vue) {
-    Vue.component('go-up', this);
+    Vue.component("go-up", this);
   },
+
   methods: {
     goUp() {
-      this.$event.fire('scrollTop');
+      this.$event.fire("scrollTop");
     },
   },
 };

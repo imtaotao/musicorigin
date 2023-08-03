@@ -28,7 +28,7 @@ export default class Slide {
     this.option = option;
     this.defaultUrl = option.defaultUrl || imgArr[1];
     option.mount = option.mount || 5;
-    option.mode = option.mode || 'circle';
+    option.mode = option.mode || "circle";
 
     this.createImgDOM().then((_) => this.defaultImg((_) => this.move()));
   }
@@ -44,14 +44,14 @@ export default class Slide {
       if (swap) {
         this.toggle = !this.toggle;
         this.toggle
-          ? (this.option.mode = 'circle')
-          : (this.option.mode = 'rect');
+          ? (this.option.mode = "circle")
+          : (this.option.mode = "rect");
       }
 
       // 根据模式选择不同的时间
       const mode = this.option.mode;
       const time = this.option.time || 0;
-      const t = mode === 'circle' ? 0 : 150;
+      const t = mode === "circle" ? 0 : 150;
 
       this.removeCanvas(dom, animate[animate.length - 1]).then((_) => {
         this.animate = [];
@@ -59,7 +59,7 @@ export default class Slide {
           setTimeout(() => {
             if (randomStr !== this.randomStr) return;
             this.animate.push(
-              new banner(dom, { img, mode, mount, speed, index: i + 1 }),
+              new banner(dom, { img, mode, mount, speed, index: i + 1 })
             );
           }, t * i);
         }
@@ -90,8 +90,8 @@ export default class Slide {
                     return;
                   this.move();
                 }, time);
-              },
-            ),
+              }
+            )
           );
         }, t * mount);
       });
@@ -109,7 +109,7 @@ export default class Slide {
     const url = this.defaultUrl;
     const img = this.createImg(url);
     const canvas = this.createCanvas(this.option.dom);
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext("2d");
     img.onload = (_) => {
       ctx.drawImage(img, 0, 0, canvas.offsetWidth, canvas.offsetHeight);
       callback && callback();
@@ -201,15 +201,15 @@ export default class Slide {
   }
 
   createCanvas(dom) {
-    const canvas = document.createElement('canvas');
+    const canvas = document.createElement("canvas");
     dom.appendChild(canvas);
-    canvas.style.width = '100%';
-    canvas.style.height = '100%';
+    canvas.style.width = "100%";
+    canvas.style.height = "100%";
     canvas.width = canvas.offsetWidth;
     canvas.height = canvas.offsetHeight;
-    canvas.style.position = 'absolute';
-    canvas.style.cursor = 'pointer';
-    canvas.addEventListener('click', (e) => {
+    canvas.style.position = "absolute";
+    canvas.style.cursor = "pointer";
+    canvas.addEventListener("click", (e) => {
       this.click(this.option.img.src, e);
     });
     return canvas;
@@ -221,7 +221,7 @@ export default class Slide {
 
   removeCanvas(dom, banner) {
     return new Promise((resolve, reject) => {
-      const canvas = dom.querySelectorAll('canvas');
+      const canvas = dom.querySelectorAll("canvas");
       canvas.forEach((val, i) => {
         i < canvas.length - 1 && dom.removeChild(val);
       });
@@ -241,7 +241,7 @@ export default class Slide {
 class banner extends Slide {
   constructor(dom, option, callback) {
     super();
-    if (!option || typeof option !== 'object' || !option.img) return;
+    if (!option || typeof option !== "object" || !option.img) return;
     const canvas = this.createCanvas(dom);
     const width = (option.width = canvas.offsetWidth);
     const height = (option.height = canvas.offsetHeight);
@@ -249,7 +249,7 @@ class banner extends Slide {
     option.speed = option.speed || option.direct / 200;
     this.dom = dom;
     this.callback = callback;
-    this.ctx = option.ctx = canvas.getContext('2d');
+    this.ctx = option.ctx = canvas.getContext("2d");
     this.option = option;
     this.requestAnimationFrame = null;
     this.init();
@@ -264,12 +264,12 @@ class banner extends Slide {
 
   position() {
     const { width, height, mode, mount, index, direct } = this.option;
-    if (mode === 'circle') {
+    if (mode === "circle") {
       this.option.x = this.random(width);
       this.option.y = this.random(height);
       this.option.raduis = 0;
     }
-    if (mode === 'rect') {
+    if (mode === "rect") {
       const singleBar = (this.option.singleBar = direct / mount);
       this.option.x = singleBar * (index - 1);
       this.option.add = 0;

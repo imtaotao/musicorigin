@@ -1,37 +1,37 @@
-import ripple from './ripple';
-import banner from './banner';
-import drag from '@/common/js/progress';
-import { util } from '@/common/js/util';
-import Ev from '@/common/js/event';
+import ripple from "./ripple";
+import banner from "./banner";
+import drag from "@/common/js/progress";
+import { util } from "@/common/js/util";
+import Ev from "@/common/js/event";
 const event = Ev.install();
 
 export default function (Vue) {
   // 气泡指令
-  Vue.directive('ripple', {
+  Vue.directive("ripple", {
     inserted(el, binding) {
-      const color = binding.value || '#fff';
+      const color = binding.value || "#fff";
       const instance = new ripple(el, color);
       instance.init();
     },
   });
 
   // 滑动条指令
-  Vue.directive('drag', {
+  Vue.directive("drag", {
     inserted(el, binding) {
-      const direct = binding.value || 'X';
-      const bar = new drag(el, 'X');
+      const direct = binding.value || "X";
+      const bar = new drag(el, "X");
       bar.init();
     },
   });
 
   // 轮播指令
-  Vue.directive('banner', {
+  Vue.directive("banner", {
     inserted(el, binding) {
       const data = binding.value;
       if (!data) return;
 
       // 如果是以回调的形式
-      if (typeof data === 'function') {
+      if (typeof data === "function") {
         data((url, option) => {
           option.dom = el;
           return new banner(option, url);
@@ -39,19 +39,19 @@ export default function (Vue) {
       }
 
       // 如果是以对象的形式传入URL
-      if (typeof data === 'object' && data !== null) {
+      if (typeof data === "object" && data !== null) {
         return new banner(data.option, data.urlArr);
       }
     },
   });
 
   // 滚动到顶部标签
-  Vue.directive('scrollTop', {
+  Vue.directive("scrollTop", {
     inserted(el, binding) {
       const fun = binding.value;
       if (!fun) return;
 
-      el.addEventListener('scroll', function (e) {
+      el.addEventListener("scroll", function (e) {
         // 置顶标签
         const windowH = this.scrollTop;
 
@@ -61,7 +61,7 @@ export default function (Vue) {
   });
 
   // 鼠标滚轮事件
-  Vue.directive('mousewheel', {
+  Vue.directive("mousewheel", {
     inserted(el, binding) {
       const [exceptDom, mousewheel] = binding.value;
 

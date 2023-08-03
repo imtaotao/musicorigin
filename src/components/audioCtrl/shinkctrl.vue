@@ -53,13 +53,13 @@
 </template>
 
 <script>
-import { util } from '@/common/js/util';
-import interFace from '@/common/js/audioInterFace';
-import { mapGetters, mapActions } from 'vuex';
-const { $, nowPlay } = util;
+import { mapGetters } from "vuex";
+import { util } from "@/common/js/util";
+
+const { $ } = util;
 
 export default {
-  props: ['img', 'musicInfo'],
+  props: ["img", "musicInfo"],
   data() {
     return {
       animate: true,
@@ -67,61 +67,66 @@ export default {
       rightDeg: 225,
     };
   },
+
   computed: {
     ...mapGetters([
-      'musicList',
-      'getAudio',
-      'getPlayOrder',
-      'playDelay',
-      'switchDelay',
-      'next',
-      'forward',
-      'playStop',
-      'collectMusic',
+      "musicList",
+      "getAudio",
+      "getPlayOrder",
+      "playDelay",
+      "switchDelay",
+      "next",
+      "forward",
+      "playStop",
+      "collectMusic",
     ]),
   },
+
   methods: {
     setCollectMusic(e) {
       if (!this.animate) return;
       const id = this.musicInfo[0].id;
-      this.toggle(e.currentTarget, 'click-effect-bottom');
+      this.toggle(e.currentTarget, "click-effect-bottom");
       this.collectMusic(id);
     },
+
     // 点击效果
     toggle(dom, className) {
       dom.classList.add(className);
-      dom.classList.add('white');
+      dom.classList.add("white");
       setTimeout(() => (this.animate = false));
       setTimeout(() => {
         dom.classList.remove(className);
-        dom.classList.remove('white');
+        dom.classList.remove("white");
         this.animate = true;
       }, 200);
     },
+
     clickToggle(e, type) {
       const target = e.currentTarget;
-      if (type === 'top') {
-        this.toggle(target, 'click-effect-top');
+      if (type === "top") {
+        this.toggle(target, "click-effect-top");
         this.bigAnimate();
       }
 
-      if (type === 'left') {
-        this.toggle(target, 'click-effect-left');
+      if (type === "left") {
+        this.toggle(target, "click-effect-left");
         this.forward();
       }
 
-      if (type === 'right') {
-        this.toggle(target, 'click-effect-right');
+      if (type === "right") {
+        this.toggle(target, "click-effect-right");
         this.next();
       }
     },
+
     setProgress() {
       const audio = this.getAudio;
       const store = this.$store;
       if (!audio) return;
 
       // 开始新的进度条
-      store.dispatch('changeShinkProgress', () => {
+      store.dispatch("changeShinkProgress", () => {
         return setInterval(() => {
           // 左右两边 225 -> 45
           const time = audio.getTime();
@@ -145,9 +150,10 @@ export default {
         }, 20);
       });
     },
-    bigAnimate(dom = $('.Shrink-box')) {
-      const bigDom = $('.audio-controls');
-      const container = $('.all-container');
+
+    bigAnimate(dom = $(".Shrink-box")) {
+      const bigDom = $(".audio-controls");
+      const container = $(".all-container");
       const width = container
         ? parseInt(getComputedStyle(container).width)
         : document.body.clientWidth * 0.85;
@@ -158,11 +164,11 @@ export default {
         },
         500,
         function () {
-          this.style.display = 'none';
-        },
+          this.style.display = "none";
+        }
       );
 
-      bigDom.style.display = 'block';
+      bigDom.style.display = "block";
       bigDom
         .animate(
           {
@@ -171,13 +177,13 @@ export default {
             borderRadius: 0,
             width: width + 130,
           },
-          250,
+          250
         )
         .animate(
           {
             width: width - 40,
           },
-          250,
+          250
         )
         .animate(
           {
@@ -185,28 +191,30 @@ export default {
           },
           400,
           function () {
-            this.style.overflow = 'inherit';
-            const aside = $('#js_aside');
-            const rightBox = $('.right-box');
-            const songDetail = $('#songDetail');
+            this.style.overflow = "inherit";
+            const aside = $("#js_aside");
+            const rightBox = $(".right-box");
+            const songDetail = $("#songDetail");
 
-            aside && (aside.style.height = '92%');
-            rightBox && (rightBox.style.height = 'calc(100% - 73px)');
-            songDetail && (songDetail.style.height = 'calc(100% - 73px)');
-          },
+            aside && (aside.style.height = "92%");
+            rightBox && (rightBox.style.height = "calc(100% - 73px)");
+            songDetail && (songDetail.style.height = "calc(100% - 73px)");
+          }
         );
     },
   },
+
   created() {
     // 把函数传到父组件
-    this.$store.dispatch('bigAnimate', this.bigAnimate);
-    this.$emit('setProgress', this.setProgress);
-    this.$event.on('startNewMusic', (e) => {
+    this.$store.dispatch("bigAnimate", this.bigAnimate);
+    this.$emit("setProgress", this.setProgress);
+    this.$event.on("startNewMusic", (e) => {
       this.leftDeg = this.rightDeg = 225;
     });
   },
 };
 </script>
+
 <style>
 /*动画*/
 @-webkit-keyframes rotate {
@@ -336,7 +344,7 @@ export default {
   left: -4px;
   right: -4px;
   background: linear-gradient(#53fdd6, #0193b9);
-  content: '';
+  content: "";
   z-index: -1;
   border-radius: 50%;
 }

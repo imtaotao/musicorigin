@@ -9,7 +9,6 @@
         <span>大小</span>
         <span>下载时间</span>
       </li>
-
       <!-- 列表 -->
       <li v-for="(key, i) in musiclist" @dblclick="playOneSong(key)">
         <span>{{ i + 1 }}</span>
@@ -17,28 +16,32 @@
         <span>{{ key.artists ? key.artists[0].name : key.ar[0].name }}</span>
         <span>{{ key.album ? key.album.name : key.al.name }}</span>
         <span>{{ musicSize(key) }}</span>
-        <span>{{ new Date(key.downTime).format('-', true) }}</span>
+        <span>{{ new Date(key.downTime).format("-", true) }}</span>
       </li>
     </ul>
   </div>
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters } from "vuex";
+
 export default {
   data() {
     return {};
   },
+
   computed: {
-    ...mapGetters(['user', 'playOneSong']),
+    ...mapGetters(["user", "playOneSong"]),
+
     musiclist() {
       return this.user._id ? this.user.downList : [];
     },
   },
+
   methods: {
     musicSize(key) {
       const size = key.lMusic ? key.lMusic.size : key.l.size;
-      return (size / 1024 / 1024).toFixed(1) + 'M';
+      return (size / 1024 / 1024).toFixed(1) + "M";
     },
   },
 };

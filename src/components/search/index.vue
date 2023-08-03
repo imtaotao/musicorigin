@@ -6,7 +6,6 @@
         <span class="White">{{ name }}</span>
         <span class="Gray">结果有{{ total }}条</span>
       </p>
-
       <ul class="title-ul">
         <li v-for="key in title" class="lf" @click="titleClick(key)">
           <span>{{ key }}</span>
@@ -24,16 +23,14 @@
 </template>
 
 <script>
-import down from '@/common/js/download';
-import Queue from '@/common/js/Queue';
-import { mapGetters, mapActions } from 'vuex';
-import musicList from './musicList';
+import { mapGetters } from "vuex";
+import musicList from "./musicList";
 
 export default {
   data() {
     return {
       // 标题
-      title: ['全部播放', '全部下载'],
+      title: ["全部播放", "全部下载"],
       name: null,
       loadCount: null,
       total: 0,
@@ -42,27 +39,31 @@ export default {
       musicList: [],
     };
   },
+
   computed: {
-    ...mapGetters(['host', 'forward', 'user', 'download', 'resetCollect']),
+    ...mapGetters(["host", "forward", "user", "download", "resetCollect"]),
   },
+
   methods: {
     // 标题点击事件
     titleClick(key) {
-      if (key === '全部播放') this.playAll();
-      if (key === '全部下载') this.downAll();
+      if (key === "全部播放") this.playAll();
+      if (key === "全部下载") this.downAll();
     },
+
     playAll() {
       const { $store, oringeList, forward } = this;
-      $store.dispatch('changeMusicList', oringeList);
+      $store.dispatch("changeMusicList", oringeList);
       forward(0);
     },
+
     downAll() {
       this.musicList.forEach((song) => {
         const { id, name, oringeInfo } = song;
-
         this.download(id, name, oringeInfo);
       });
     },
+
     reset(name) {
       this.name = name;
       (this.loadCount = null),
@@ -71,19 +72,19 @@ export default {
         (this.oringeList = []),
         (this.musicList = []);
     },
+
     // 得到歌曲信息
     loadMore() {
       this.page++;
       this.getInfo();
     },
+
     filter(list) {
       let arr = [];
       const collectId = JSON.stringify(this.user.collectMusic);
-
       list.forEach((val) => {
         // 当前搜索到的歌曲列表有哪些已经被收藏
         const collect = collectId.indexOf(val.id) > 0 ? true : false;
-
         arr.push({
           id: val.id,
           name: val.name,
@@ -96,24 +97,21 @@ export default {
           collect: collect,
         });
       });
-
       return arr;
     },
+
     getInfo() {
       const { $ajax, name, page, oringeList, musicList, filter } = this;
-
       $ajax
         .get(this.host + `/search?keywords=${name}&offset=${30 * page}`)
         .then(({ data }) => {
           const res = data.result;
           if (!res.songs || res.songs.length === 0) {
-            alert('暂无搜索结果');
+            alert("暂无搜索结果");
             this.loadCount = 0;
             return;
           }
-
           const { songCount, songs } = res;
-
           this.total = songCount || 0;
           this.loadCount += songs.length;
           this.oringeList = oringeList.concat(songs);
@@ -121,21 +119,23 @@ export default {
         });
     },
   },
+
   created() {
     this.name = this.$route.params.name;
     this.getInfo();
-    this.$event.on('searchInit', (_) => {
+    this.$event.on("searchInit", (_) => {
       this.reset(this.$route.params.name);
       this.getInfo();
     });
-
-    this.$event.on('resetCollect', (_) => this.resetCollect(this.musicList));
+    this.$event.on("resetCollect", (_) => this.resetCollect(this.musicList));
   },
+
   beforeDestroy() {
     // 销毁注册的事件
-    this.$event.off('searchInit');
-    this.$event.off('resetCollect');
+    this.$event.off("searchInit");
+    this.$event.off("resetCollect");
   },
+
   components: {
     musicList,
   },

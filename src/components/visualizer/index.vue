@@ -30,49 +30,56 @@
 </template>
 
 <script>
-import Vue from 'vue';
-import visView from './view';
-import visLyric from './lyric';
-import { mapGetters, mapActions } from 'vuex';
+import Vue from "vue";
+import visView from "./view";
+import visLyric from "./lyric";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   data() {
     return {
-      btnText: ['进入主页面', '可视化'],
+      btnText: ["进入主页面", "可视化"],
       showVis: true,
       brightness: 0.75,
     };
   },
+
   computed: {
-    ...mapGetters(['nowPlayInfo', 'bigAnimate', 'lyric', 'nowPlayId']),
+    ...mapGetters(["nowPlayInfo", "bigAnimate", "lyric", "nowPlayId"]),
+
     nowInfo() {
       if (!this.nowPlayId) {
-        return { picUrl: 'static/img/music.jpg' };
+        return { picUrl: "static/img/music.jpg" };
       }
       return this.nowPlayInfo(this.nowPlayId);
     },
   },
+
   methods: {
     btnClick(key, i) {
-      key === '进入主页面' && this.bigPage();
+      key === "进入主页面" && this.bigPage();
       i === 1 && this.toggle();
     },
+
     // 放大界面
     bigPage() {
-      this.$store.dispatch('showContainer', true);
+      this.$store.dispatch("showContainer", true);
       this.bigAnimate();
     },
+
     // 切换
     toggle() {
       this.showVis = !this.showVis;
-      const text = this.btnText[1] === '可视化' ? '歌词' : '可视化';
+      const text = this.btnText[1] === "可视化" ? "歌词" : "可视化";
       Vue.set(this.btnText, 1, text);
     },
+
     // 背景透明度
     input(e) {
       this.brightness = e.currentTarget.value || 0;
     },
   },
+
   components: {
     visView,
     visLyric,

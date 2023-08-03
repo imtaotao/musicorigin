@@ -16,6 +16,7 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex';
 import { util } from '@/common/js/util';
 import {
   cicle,
@@ -25,7 +26,6 @@ import {
   setOff,
   animateLine,
 } from '@/common/js/visCanvas';
-import { mapGetters, mapActions } from 'vuex';
 
 export default {
   data() {
@@ -34,19 +34,23 @@ export default {
       canvasInstance: [],
     };
   },
+
   computed: {
     ...mapGetters(['lyric', 'getAudio']),
   },
+
   methods: {
     playTime() {
       if (!this.getAudio) return '0：00';
       return util.conver(this.getAudio.getTime() * 1000);
     },
+
     visualizer() {
       if (!this.getAudio) return [];
       return this.getAudio.getVisualizer();
     },
   },
+
   mounted() {
     const cicleLine = new cicle(util.$('#cicleCanvas'), this.playTime);
     const visC = new visCicle(util.$('#visCicle'), 80, this.visualizer);
@@ -56,12 +60,11 @@ export default {
       48,
       this.visualizer,
     );
-
     const line = new setOff(util.$('#setOff'), util.$('#setOffTwo'));
     const anLine = new animateLine(util.$('#lineAnimate'));
-
     this.canvasInstance = [cicleLine, visC, top, bottom, line, anLine];
   },
+
   beforeDestroy() {
     this.canvasInstance.forEach((val) => {
       val.clearAnimate && val.clearAnimate();

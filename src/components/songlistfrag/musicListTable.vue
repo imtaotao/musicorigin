@@ -6,7 +6,6 @@
         <span class="Gray">{{ key }}</span>
       </li>
     </ul>
-
     <!-- 歌曲内容 -->
     <div>
       <ul
@@ -39,38 +38,40 @@
 </template>
 
 <script>
-import Queue from '@/common/js/Queue';
-import down from '@/common/js/download';
-import { mapGetters, mapActions } from 'vuex';
-import interFace from '@/common/js/audioInterFace';
+import { mapGetters } from "vuex";
+import interFace from "@/common/js/audioInterFace";
 
 export default {
-  props: ['listArr'],
+  props: ["listArr"],
+
   data() {
     return {
-      navTitle: ['', '操作', '音乐标题', '歌手', '专辑', '时长'],
+      navTitle: ["", "操作", "音乐标题", "歌手", "专辑", "时长"],
     };
   },
+
   computed: {
     ...mapGetters([
-      'host',
-      'user',
-      'download',
-      'listId',
-      'playOneSong',
-      'musicList',
-      'resetCollect',
+      "host",
+      "user",
+      "download",
+      "listId",
+      "playOneSong",
+      "musicList",
+      "resetCollect",
     ]),
   },
+
   methods: {
     // 双击播放歌曲
     dbPlay(song, i) {
       if (!song) {
-        alert('当前歌曲播放出现问题了 /(ㄒoㄒ)/~~');
+        alert("当前歌曲播放出现问题了 /(ㄒoㄒ)/~~");
         return;
       }
       this.playOneSong(song);
     },
+
     getCell(i, key) {
       switch (i) {
         case 0:
@@ -83,14 +84,16 @@ export default {
           return key.time;
       }
     },
+
     // 收藏歌曲
     collect(i) {
       interFace.collect(this.listArr[i], (_) => {
         this.resetCollect(this.musicList);
       });
     },
+
     downclick(id, name, info) {
-      this.$event.fire('downclick', 1);
+      this.$event.fire("downclick", 1);
       this.download(id, name, info);
     },
   },

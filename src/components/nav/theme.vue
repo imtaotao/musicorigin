@@ -76,18 +76,18 @@
 </template>
 
 <script>
-import Vue from 'vue';
-import { util } from '@/common/js/util';
-import { mapGetters, mapActions } from 'vuex';
+import Vue from "vue";
+import { util } from "@/common/js/util";
+import { mapGetters, mapActions } from "vuex";
 const { random } = util;
 
 export default {
-  props: ['showSkin'],
+  props: ["showSkin"],
   data() {
     return {
       nowBtn: 0,
       active: [0, 6],
-      titleText: ['主题', '纯色'],
+      titleText: ["主题", "纯色"],
       randomStr: null,
       interval: 20000,
       timeout: null,
@@ -95,56 +95,56 @@ export default {
       // 主题纯色
       skin: [
         [
-          { name: '船', url: '2-3.png' },
-          { name: '金字塔', url: '3-2.png' },
-          { name: '闪电', url: 'c-3-2.png' },
-          { name: '夜晚', url: 'c-1-2.png' },
-          { name: '山水', url: 'c-4-1.png' },
-          { name: '冬', url: 'c-5-2.png' },
-          { name: '主题七', url: '3.jpg' },
-          { name: '主题八', url: '11.jpg' },
-          { name: '主题九', url: '13.jpg' },
+          { name: "船", url: "2-3.png" },
+          { name: "金字塔", url: "3-2.png" },
+          { name: "闪电", url: "c-3-2.png" },
+          { name: "夜晚", url: "c-1-2.png" },
+          { name: "山水", url: "c-4-1.png" },
+          { name: "冬", url: "c-5-2.png" },
+          { name: "主题七", url: "3.jpg" },
+          { name: "主题八", url: "11.jpg" },
+          { name: "主题九", url: "13.jpg" },
         ],
         [
-          { name: '炫酷黑', rgb: '#171c26' },
+          { name: "炫酷黑", rgb: "#171c26" },
           {
-            name: '深沉红',
-            rgb: '-webkit-gradient(linear,left top, right bottom, from(#070000), to(#4C0001))',
+            name: "深沉红",
+            rgb: "-webkit-gradient(linear,left top, right bottom, from(#070000), to(#4C0001))",
           },
           {
-            name: '主题蓝',
-            rgb: '-webkit-gradient(linear,left top, right bottom, from(#0094B9), to(#53FDD6))',
+            name: "主题蓝",
+            rgb: "-webkit-gradient(linear,left top, right bottom, from(#0094B9), to(#53FDD6))",
           },
           {
-            name: '傲娇紫',
-            rgb: '-webkit-gradient(linear,left top, right bottom, from(#20002c), to(#cbb4d4))',
+            name: "傲娇紫",
+            rgb: "-webkit-gradient(linear,left top, right bottom, from(#20002c), to(#cbb4d4))",
           },
           {
-            name: '清新绿',
-            rgb: '-webkit-gradient(linear,left top, right bottom, from(#DCE35B), to(#45b649))',
+            name: "清新绿",
+            rgb: "-webkit-gradient(linear,left top, right bottom, from(#DCE35B), to(#45b649))",
           },
           {
-            name: '金贵黄',
-            rgb: '-webkit-gradient(linear,left top, right bottom, from(#CAC531), to(#F3F9A7))',
+            name: "金贵黄",
+            rgb: "-webkit-gradient(linear,left top, right bottom, from(#CAC531), to(#F3F9A7))",
           },
           {
-            name: '可爱粉',
-            rgb: '-webkit-gradient(linear,left top, right bottom, from(#d9a7c7), to(#fffcdc))',
+            name: "可爱粉",
+            rgb: "-webkit-gradient(linear,left top, right bottom, from(#d9a7c7), to(#fffcdc))",
           },
           {
-            name: '晨光',
-            rgb: 'linear-gradient(to top, rgb(240, 194, 123), rgb(75, 18, 72))',
+            name: "晨光",
+            rgb: "linear-gradient(to top, rgb(240, 194, 123), rgb(75, 18, 72))",
           },
           {
-            name: '暗粉',
-            rgb: '-webkit-gradient(linear,left top, right bottom, from(#EB5757), to(#000))',
+            name: "暗粉",
+            rgb: "-webkit-gradient(linear,left top, right bottom, from(#EB5757), to(#000))",
           },
         ],
       ],
     };
   },
   computed: {
-    ...mapGetters(['nowSkin', 'autoSwith']),
+    ...mapGetters(["nowSkin", "autoSwith"]),
   },
   methods: {
     toggle(i) {
@@ -157,19 +157,19 @@ export default {
 
       // 触发选中皮肤的事件
       gradient((_) => {
-        $store.dispatch('nowSkin', [this.skin[i][j], this.active]);
-        $event.fire('choseskin');
+        $store.dispatch("nowSkin", [this.skin[i][j], this.active]);
+        $event.fire("choseskin");
         if (!auto) {
-          $store.dispatch('autoSwith', false);
+          $store.dispatch("autoSwith", false);
           this.randomStr = null;
         }
       });
-      this.$emit('update:showSkin', false);
+      this.$emit("update:showSkin", false);
     },
 
     // 按钮开关
     toggleSwith() {
-      this.$store.dispatch('autoSwith', !this.autoSwith);
+      this.$store.dispatch("autoSwith", !this.autoSwith);
 
       if (this.autoSwith) {
         this.randomStr = util.randomStr();
@@ -196,7 +196,7 @@ export default {
     },
     // 自动换肤时候，渐变过度
     gradient(callback) {
-      const img = util.$('.bg-pic');
+      const img = util.$(".bg-pic");
 
       if (!img) {
         callback();
@@ -213,8 +213,8 @@ export default {
   created() {
     const [i, j] = this.active;
     const skin = this.nowSkin || [this.skin[i][j], [i, j]];
-    this.$store.dispatch('nowSkin', skin);
-    this.$event.fire('choseskin');
+    this.$store.dispatch("nowSkin", skin);
+    this.$event.fire("choseskin");
 
     // 自动换肤
     this.randomStr = util.randomStr();
@@ -321,7 +321,7 @@ export default {
   height: 30px;
   left: calc(50% - 20px);
   top: calc(50% - 20px);
-  background: url('~static/pageimg/choseskin.png');
+  background: url("~static/pageimg/choseskin.png");
 }
 .auto-toggle {
   width: 80px !important;

@@ -100,7 +100,8 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters } from "vuex";
+
 export default {
   data() {
     return {
@@ -108,22 +109,22 @@ export default {
       openUrl: [],
       bannerActive: 0,
       banner: null,
-
       // 推荐歌单
       songList: [],
       newMusic: [],
-
       // 主播电台
       anchorRadio: [],
     };
   },
+
   computed: {
-    ...mapGetters(['host', 'forward', 'playOneSong', 'playMusicList']),
+    ...mapGetters(["host", "forward", "playOneSong", "playMusicList"]),
   },
+
   methods: {
     // 轮播
     getBannerUrl(callback) {
-      this.$event.on('banner', (url) => {
+      this.$event.on("banner", (url) => {
         if (callback) {
           const banner = (this.banner = callback(url.data, {
             swap: true, // 是否两种模式交替进行
@@ -131,12 +132,11 @@ export default {
             time: 3000, // 图片切换间隔时间
             speed: 8,
           }));
-
           // 打开轮播图片的链接
           banner.__proto__.click = (_) => {
             const url = this.openUrl[banner.getIndex()];
             if (!url) {
-              alert('当前图片没有链接(⊙o⊙)');
+              alert("当前图片没有链接(⊙o⊙)");
               return;
             }
             window.open(url);
@@ -148,25 +148,31 @@ export default {
         }
       });
     },
+
     bannerStop() {
       this.banner && this.banner.stop();
     },
+
     bannerContinue() {
       this.banner && this.banner.continue();
     },
+
     positionActive(i) {
       if (i === this.bannerActive) {
-        return 'banner-active';
+        return "banner-active";
       }
     },
+
     specify(i) {
       const banner = this.banner;
       if (!banner) return;
       banner.specify(i);
     },
+
     preImg() {
       this.banner.preImg();
     },
+
     nextImg() {
       this.banner.nextImg();
     },
@@ -174,9 +180,8 @@ export default {
     // 点击更多跳转路由
     toRouter(name) {
       let url;
-      name === 'songList' && (url = '/findMusic/songList');
-
-      if (name === null) alert('这个功能我还没有写完 /(ㄒoㄒ)/~~');
+      name === "songList" && (url = "/findMusic/songList");
+      if (name === null) alert("这个功能我还没有写完 /(ㄒoㄒ)/~~");
       !!url && this.$router.push(url);
     },
 
@@ -184,53 +189,52 @@ export default {
     musicList(listId) {
       if (!listId && listId != 0) return;
       this.$router.push(`/collectList/${listId}`);
-      this.$event.off('musiclistinit');
+      this.$event.off("musiclistinit");
     },
   },
+
   created() {
     const host = this.host;
     // 请求 banner 图片
-    this.$ajax.get(host + '/banner').then(({ data }) => {
+    this.$ajax.get(host + "/banner").then(({ data }) => {
       if (data.code !== 200) {
         console.error(`code is ${data.code}`);
-        alert('网络不好，banner 图拿不到~~~');
+        alert("网络不好，banner 图拿不到~~~");
         return;
       }
       data.banners.forEach((url) => {
         this.urlArr.push(url.pic);
         this.openUrl.push(url.url);
       });
-      this.$event.fire('banner', this.urlArr);
+      this.$event.fire("banner", this.urlArr);
     });
 
     // 请求推荐歌单
-    this.$ajax.get(host + '/personalized').then(({ data }) => {
+    this.$ajax.get(host + "/personalized").then(({ data }) => {
       if (data.code !== 200) {
         console.error(`code is ${data.code}`);
-        alert('网络不好，改歌单数据拿不到~~~');
+        alert("网络不好，改歌单数据拿不到~~~");
         return;
       }
-
       this.songList = [];
       const { result } = data;
       // 拿到需要的数据
       result.forEach((val) => {
         let { name, picUrl, alg, id, playCount, copywriter } = val;
         if (playCount > 10000) {
-          playCount = parseInt(playCount / 10000) + '万';
+          playCount = parseInt(playCount / 10000) + "万";
         }
         this.songList.push({ name, picUrl, alg, id, playCount, copywriter });
       });
     });
 
     // 请求新音乐
-    this.$ajax.get(host + '/personalized/newsong').then(({ data }) => {
+    this.$ajax.get(host + "/personalized/newsong").then(({ data }) => {
       if (data.code !== 200) {
         console.error(`code is ${data.code}`);
-        alert('网络不好，新音乐数据拿不到~~~');
+        alert("网络不好，新音乐数据拿不到~~~");
         return;
       }
-
       this.newMusic = [];
       const { result } = data;
       result.forEach((val) => {
@@ -242,13 +246,12 @@ export default {
     });
 
     // 请求主播电台
-    this.$ajax.get(host + '/personalized/djprogram').then(({ data }) => {
+    this.$ajax.get(host + "/personalized/djprogram").then(({ data }) => {
       if (data.code !== 200) {
         console.error(`code is ${data.code}`);
-        alert('网络不好，主播电台数据拿不到~~~');
+        alert("网络不好，主播电台数据拿不到~~~");
         return;
       }
-
       this.anchorRadio = [];
       const { result } = data;
       result.forEach((val) => {
@@ -326,11 +329,11 @@ export default {
   background-color: rgba(0, 0, 0, 0.3);
 }
 .banner-pre {
-  background: url('~static/img/banner.png') no-repeat 0 -360px;
+  background: url("~static/img/banner.png") no-repeat 0 -360px;
   left: 5%;
 }
 .banner-next {
-  background: url('~static/img/banner.png') no-repeat 0 -508px;
+  background: url("~static/img/banner.png") no-repeat 0 -508px;
   right: 5%;
 }
 .position-btn {
@@ -385,7 +388,7 @@ export default {
   display: inline-block;
   height: 10px;
   width: 10px;
-  background: url('~static/pageimg/playCount.png') no-repeat;
+  background: url("~static/pageimg/playCount.png") no-repeat;
 }
 .song-list-play {
   position: absolute;
@@ -406,7 +409,7 @@ export default {
   width: 100%;
   height: 100%;
   cursor: pointer;
-  background: url('~static/pageimg/musicPlayIcon.png') no-repeat;
+  background: url("~static/pageimg/musicPlayIcon.png") no-repeat;
 }
 .song-list-img {
   width: 180px;
@@ -535,7 +538,7 @@ export default {
   height: 100%;
   z-index: 9999;
   cursor: pointer;
-  background: url('~static/pageimg/musicPlayIcon.png') no-repeat;
+  background: url("~static/pageimg/musicPlayIcon.png") no-repeat;
 }
 .musicPic:hover span {
   background: rgba(0, 0, 0, 0.8);
@@ -604,7 +607,7 @@ export default {
   height: 100%;
   cursor: pointer;
   z-index: 9999;
-  background: url('~static/pageimg/musicPlayIcon.png') no-repeat;
+  background: url("~static/pageimg/musicPlayIcon.png") no-repeat;
 }
 .radio-discription {
   margin-left: 30px;

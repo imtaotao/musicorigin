@@ -19,9 +19,9 @@
         </div>
         <!-- 评论时间 -->
         <p class="comment-time">
-          <span class="Gray">{{ new Date(key.time).format('/') }}</span>
+          <span class="Gray">{{ new Date(key.time).format("/") }}</span>
           <span class="Gray">{{
-            new Date(key.time).format(':', 'after', true)
+            new Date(key.time).format(":", "after", true)
           }}</span>
           <span v-if="!self" class="rt like-icon" @click="alertWarn"
             >（{{ key.likedCount }}）</span
@@ -45,10 +45,10 @@
 
 <script>
 export default {
-  props: ['comments', 'name', 'self', 'selfCallback'],
+  props: ["comments", "name", "self", "selfCallback"],
   methods: {
     alertWarn() {
-      alert('暂不能对网易云评论进行操作，您可以在本地评论模块留言！');
+      alert("暂不能对网易云评论进行操作，您可以在本地评论模块留言！");
     },
     Placeholder() {},
   },
@@ -99,7 +99,7 @@ export default {
   display: block;
   margin-top: 2.5px;
   cursor: pointer;
-  background: url('~static/pageimg/like.png') no-repeat;
+  background: url("~static/pageimg/like.png") no-repeat;
 }
 .be-replied {
   width: calc(100% - 20px);

@@ -207,13 +207,12 @@
 </template>
 
 <script>
-import Vue from 'vue';
-import shinkCtrl from './shinkctrl';
-import ripples from '@/common/js/ripple';
-import drag from '@/common/js/progress';
-import { util } from '@/common/js/util';
-import interFace from '@/common/js/audioInterFace';
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters } from "vuex";
+import shinkCtrl from "./shinkctrl";
+import ripples from "@/common/js/ripple";
+import drag from "@/common/js/progress";
+import { util } from "@/common/js/util";
+import interFace from "@/common/js/audioInterFace";
 
 const { $, nowPlay } = util;
 
@@ -221,66 +220,61 @@ export default {
   data() {
     return {
       nowInfo: {
-        url: 'static/img/music.jpg',
-        name: '暂无',
+        url: "static/img/music.jpg",
+        name: "暂无",
         duration: 0,
       },
       nowPlay: 0,
-
       // 控制器变量
       equalizer: [
-        '自定义',
-        '慢歌',
-        '爵士',
-        '古典',
-        '蓝调',
-        '舞曲',
-        '流行',
-        '电子乐',
-        '摇滚',
-        '乡村',
+        "自定义",
+        "慢歌",
+        "爵士",
+        "古典",
+        "蓝调",
+        "舞曲",
+        "流行",
+        "电子乐",
+        "摇滚",
+        "乡村",
       ],
       HZ: [
-        '31',
-        '62',
-        '125',
-        '250',
-        '500',
-        '1000',
-        '2000',
-        '4000',
-        '8000',
-        '16000',
+        "31",
+        "62",
+        "125",
+        "250",
+        "500",
+        "1000",
+        "2000",
+        "4000",
+        "8000",
+        "16000",
       ],
       HZData: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
       totalHZ: 28,
       equaAnimate: false,
-      playOrder: ['顺序播放', '随机播放', '单曲循环'],
-      loopIcon: 'icon-Loop',
+      playOrder: ["顺序播放", "随机播放", "单曲循环"],
+      loopIcon: "icon-Loop",
       // 各个共享状态
       playStopStatus: false,
-
       // 各个小组件升起落下的值
       playListSwitch: false,
       volumeSwitch: false,
       equalizerSwitch: false,
       playOrderSwitch: false,
-
       // 加载进度条
       loadProgress: 0,
       // 当期播放的时间
       nowPlayTime: 0,
-
       // 组件件进度条函数
       childProcessFun: null,
-
       // 歌词设置变量
       translateY: 0,
-
       // 每次歌曲都有一个随机字符
       progressStr: util.randomStr,
     };
   },
+
   computed: {
     // 传给子组件的值
     child() {
@@ -291,31 +285,37 @@ export default {
         this.nowPlayTime,
       ];
     },
+
     ...mapGetters([
-      'musicList',
-      'getPlayOrder',
-      'getAudio',
-      'audioAjax',
-      'playDelay',
-      'switchDelay',
-      'mainProgress',
-      'lyric',
+      "musicList",
+      "getPlayOrder",
+      "getAudio",
+      "audioAjax",
+      "playDelay",
+      "switchDelay",
+      "mainProgress",
+      "lyric",
     ]),
   },
+
   methods: {
     // 滑动条的 input 和 change 事件
     volumeInput(e) {
       interFace.volumeInput(e.currentTarget.value);
     },
+
     volumeChange(e) {
       interFace.volumeChange(e.currentTarget.value);
     },
+
     playInput(e) {
       interFace.playInput(e.currentTarget.value);
     },
+
     playChange(e) {
       interFace.playChange(e.currentTarget.value);
     },
+
     equalizerData(i) {
       const data = [];
       const totalHZ = this.totalHZ;
@@ -323,19 +323,19 @@ export default {
         const now = (val += 14);
         val > totalHZ && (val = totalHZ);
         val < 0 && (val = 0);
-        data.push({ height: (now / totalHZ) * 100 + '%' });
+        data.push({ height: (now / totalHZ) * 100 + "%" });
       });
       return data[i];
     },
+
     // 放大当前播放歌曲详情页面
     enlargeDetail() {
       if (!this.nowPlay) {
-        alert('没有正在播放的歌曲~');
+        alert("没有正在播放的歌曲~");
         return;
       }
-
       // 先把控件缩小，然后放大
-      this.$event.fire('enlargeDetail');
+      this.$event.fire("enlargeDetail");
     },
 
     // input 事件和 手动变化高度不能互相影响
@@ -344,7 +344,7 @@ export default {
       const value = e.currentTarget.value * totalHZ - totalHZ / 2;
       this.HZData[i] = value;
       // 只要手动变化就是自定义的
-      util.toggle($('.equalizer-sort span:nth-child(1)'), 'text-gradient');
+      util.toggle($(".equalizer-sort span:nth-child(1)"), "text-gradient");
       interFace.equalizerChange(this.HZ[i], this.HZData[i]);
     },
 
@@ -359,9 +359,10 @@ export default {
       });
       return collect;
     },
+
     // 切换样式
     toggle(e, key) {
-      util.toggle(e.currentTarget, 'text-gradient');
+      util.toggle(e.currentTarget, "text-gradient");
       interFace.equalizer(key, (data) => {
         if (data.length === this.HZ.length) {
           this.equaAnimate = true;
@@ -369,30 +370,32 @@ export default {
           // 去除动画，重新添加事件
           setTimeout((_) => {
             this.equaAnimate = false;
-            $('.equalizer-barBox .equalizer-dots').forEach((val) => {
-              const nowBar = new drag(val, 'Y');
+            $(".equalizer-barBox .equalizer-dots").forEach((val) => {
+              const nowBar = new drag(val, "Y");
               nowBar.init();
             });
           }, 300);
         }
       });
     },
+
     // 报错函数
     throwErr() {
       if (!this.musicList.length) {
-        alert('当前歌曲列表没有歌曲，可能是添加的歌曲资源过大~');
+        alert("当前歌曲列表没有歌曲，可能是添加的歌曲资源过大~");
         return false;
       }
       return true;
     },
+
     // 双击切换歌曲
     dblclick(e, id, info) {
       if (!this.switchDelay.judge || !this.throwErr()) return;
-      this.$store.dispatch('changeSwitchDelay', false);
+      this.$store.dispatch("changeSwitchDelay", false);
 
       const dom = e.currentTarget;
       nowPlay.remove();
-      util.toggle(dom, 'active-play');
+      util.toggle(dom, "active-play");
       nowPlay.add();
       this.nowPlay = id;
       this.nowInfo = info;
@@ -403,17 +406,18 @@ export default {
           this.playConfig();
         },
         (isHave) => {
-          this.$store.dispatch('changeSwitchDelay', true);
+          this.$store.dispatch("changeSwitchDelay", true);
           if (isHave === false) {
-            alert('该歌曲可能因为版权问题已下架，请播放下一首');
+            alert("该歌曲可能因为版权问题已下架，请播放下一首");
           }
-        },
+        }
       );
     },
+
     // 基本操作
     forward(index) {
       if (!this.switchDelay.judge || !this.throwErr()) return;
-      this.$store.dispatch('changeSwitchDelay', false);
+      this.$store.dispatch("changeSwitchDelay", false);
       nowPlay.remove();
       let nowIndex = 0;
       this.musicList.forEach((val, i) => {
@@ -431,9 +435,10 @@ export default {
       // 添加水波纹和接口
       setTimeout((_) => nowPlay.add());
     },
+
     next() {
       if (!this.switchDelay.judge || !this.throwErr()) return;
-      this.$store.dispatch('changeSwitchDelay', false);
+      this.$store.dispatch("changeSwitchDelay", false);
       nowPlay.remove();
       let nowIndex = 0;
       this.musicList.forEach((val, i) => {
@@ -447,11 +452,12 @@ export default {
       // 添加水波纹和接口
       setTimeout((_) => nowPlay.add());
     },
+
     // 更改数据
     infoData(current) {
       if (!current) {
-        alert('没有当前音频信息，请刷新重试~');
-        this.$store.dispatch('changeSwitchDelay', true);
+        alert("没有当前音频信息，请刷新重试~");
+        this.$store.dispatch("changeSwitchDelay", true);
         return;
       }
 
@@ -470,13 +476,14 @@ export default {
           this.playConfig();
         },
         (isHave) => {
-          this.$store.dispatch('changeSwitchDelay', true);
+          this.$store.dispatch("changeSwitchDelay", true);
           if (isHave === false) {
-            alert('该歌曲可能因为版权问题已下架，请播放下一首');
+            alert("该歌曲可能因为版权问题已下架，请播放下一首");
           }
-        },
+        }
       );
     },
+
     // 播放暂停
     playStop() {
       const audio = this.getAudio;
@@ -485,51 +492,54 @@ export default {
       if (!playDelay.judge || !audio) return;
       const state = audio.getState();
 
-      store.dispatch('changePlayDelay', false);
+      store.dispatch("changePlayDelay", false);
 
-      state === 'running'
+      state === "running"
         ? (this.playStopStatus = false)
         : (this.playStopStatus = true);
 
       interFace.play(this.playStopStatus);
       // 延时恢复
       setTimeout(
-        (_) => store.dispatch('changePlayDelay', true),
-        playDelay.time,
+        (_) => store.dispatch("changePlayDelay", true),
+        playDelay.time
       );
     },
+
     loop() {
-      this.toggleHeight('playOrderSwitch');
+      this.toggleHeight("playOrderSwitch");
     },
+
     // 点击音量
     volume(e) {
       if (!this.volumeSwitch) {
-        var volumeBar = new drag($('.volume-dots'), 'Y');
+        var volumeBar = new drag($(".volume-dots"), "Y");
         setTimeout((_) => volumeBar.init(), 300);
       }
-
-      this.toggleHeight('volumeSwitch');
+      this.toggleHeight("volumeSwitch");
     },
     // 点击歌曲列表
     playList() {
-      this.toggleHeight('playListSwitch');
+      this.toggleHeight("playListSwitch");
     },
+
     // 点击均衡器
     equalizerCtrl() {
       if (!this.equalizerSwitch) {
-        $('.equalizer-barBox .equalizer-dots').forEach((val) => {
-          const nowBar = new drag(val, 'Y');
+        $(".equalizer-barBox .equalizer-dots").forEach((val) => {
+          const nowBar = new drag(val, "Y");
           setTimeout((_) => nowBar.init(), 300);
         });
       }
-      this.toggleHeight('equalizerSwitch');
+      this.toggleHeight("equalizerSwitch");
     },
+
     toggleHeight(com) {
       let arr = [
-        'playOrderSwitch',
-        'playListSwitch',
-        'volumeSwitch',
-        'equalizerSwitch',
+        "playOrderSwitch",
+        "playListSwitch",
+        "volumeSwitch",
+        "equalizerSwitch",
       ];
       arr.forEach((val) => {
         com === val
@@ -537,27 +547,29 @@ export default {
           : this[val] && (this[val] = false);
       });
     },
+
     musicOrder(key) {
-      this.toggleHeight('playOrderSwitch');
-      if (key === '随机播放') {
-        this.loopIcon = 'icon-Randommdpi';
-        interFace.loop('随机');
+      this.toggleHeight("playOrderSwitch");
+      if (key === "随机播放") {
+        this.loopIcon = "icon-Randommdpi";
+        interFace.loop("随机");
       }
-      if (key === '顺序播放') {
-        this.loopIcon = 'icon-Loop';
-        interFace.loop('顺序');
+      if (key === "顺序播放") {
+        this.loopIcon = "icon-Loop";
+        interFace.loop("顺序");
       }
-      if (key === '单曲循环') {
-        this.loopIcon = 'icon-Single-cyclemdpi';
-        interFace.loop('单曲');
+      if (key === "单曲循环") {
+        this.loopIcon = "icon-Single-cyclemdpi";
+        interFace.loop("单曲");
       }
     },
+
     // 删除歌曲
     deleteMusic(e, i, id) {
       if (!this.switchDelay.judge) return;
       if (this.musicList.length === 1) return;
       if (this.deleteMusic.open) return;
-      this.$store.dispatch('changeSwitchDelay', false);
+      this.$store.dispatch("changeSwitchDelay", false);
       nowPlay.remove();
 
       if (true) {
@@ -587,33 +599,35 @@ export default {
               },
               (isHave) => {
                 setTimeout(
-                  (_) => this.$store.dispatch('changeSwitchDelay', true),
-                  this.switchDelay.time,
+                  (_) => this.$store.dispatch("changeSwitchDelay", true),
+                  this.switchDelay.time
                 );
                 if (isHave === false) {
-                  alert('该歌曲可能因为版权问题已下架，请播放下一首');
+                  alert("该歌曲可能因为版权问题已下架，请播放下一首");
                 }
-              },
+              }
             );
             setTimeout((_) => nowPlay.add());
             return;
           }
           // 延时恢复
           setTimeout(
-            (_) => this.$store.dispatch('changeSwitchDelay', true),
-            this.switchDelay.time,
+            (_) => this.$store.dispatch("changeSwitchDelay", true),
+            this.switchDelay.time
           );
           setTimeout((_) => nowPlay.add());
         }, 200);
       }
     },
+
     getClass(id, isdelete) {
       // active-play remove
-      let className = '';
-      this.nowPlay === id && (className += 'active-play');
-      isdelete && (className += ' remove');
+      let className = "";
+      this.nowPlay === id && (className += "active-play");
+      isdelete && (className += " remove");
       return className;
     },
+
     // 收藏歌曲
     collectMusic(id) {
       this.musicList.forEach((val) => {
@@ -622,21 +636,23 @@ export default {
         }
       });
     },
+
     // 缩小
     shink(e) {
       this.shrinkAnimate();
     },
-    // 控件缩小动画
-    shrinkAnimate(dom = $('.audio-controls')) {
-      const shinkDom = $('.Shrink-box');
-      const aside = $('#js_aside');
-      const rightBox = $('.right-box');
-      const songDetail = $('#songDetail');
 
-      dom.style.overflow = 'hidden';
-      aside && (aside.style.height = '100%');
-      rightBox && (rightBox.style.height = '100%');
-      songDetail && (songDetail.style.height = '100%');
+    // 控件缩小动画
+    shrinkAnimate(dom = $(".audio-controls")) {
+      const shinkDom = $(".Shrink-box");
+      const aside = $("#js_aside");
+      const rightBox = $(".right-box");
+      const songDetail = $("#songDetail");
+
+      dom.style.overflow = "hidden";
+      aside && (aside.style.height = "100%");
+      rightBox && (rightBox.style.height = "100%");
+      songDetail && (songDetail.style.height = "100%");
 
       dom.animate(
         {
@@ -646,9 +662,9 @@ export default {
         },
         250,
         function () {
-          dom.style.display = 'none';
-          shinkDom.style.display = 'block';
-          shinkDom.style.transform = 'rotate(0)';
+          dom.style.display = "none";
+          shinkDom.style.display = "block";
+          shinkDom.style.transform = "rotate(0)";
           shinkDom.style.opacity = 1;
 
           shinkDom
@@ -656,55 +672,58 @@ export default {
               {
                 width: 220,
               },
-              250,
+              250
             )
             .animate(
               {
                 width: 110,
               },
-              400,
+              400
             )
             .animate(
               {
                 width: 150,
               },
-              450,
+              450
             )
             .animate(
               {
                 width: 130,
               },
-              550,
+              550
             )
             .animate(
               {
                 rotate: 45,
               },
-              400,
+              400
             );
-        },
+        }
       );
     },
+
     // 转换时间格式
     conver(duration, j) {
       if (j != null && j !== 3) return duration;
       return util.conver(duration);
     },
+
     // 转换播放的时间格式
     playConver(time) {
-      if (!time) return '0:0';
+      if (!time) return "0:0";
       return util.conver(time * 1000);
     },
+
     // 设置播放顺序
     setOrder(key) {
       const audio = this.getAudio;
       // 单曲已经不用调用下一曲
       switch (key) {
-        case '顺序':
+        case "顺序":
           if (!audio) return;
           audio.playOver = (_) => this.next();
           break;
-        case '随机':
+        case "随机":
           if (!audio) return;
           const random = util.random(0, this.musicList.length);
           audio.playOver = (_) => {
@@ -716,6 +735,7 @@ export default {
           break;
       }
     },
+
     setProgress() {
       const str = this.progressStr;
       // 进度条
@@ -729,20 +749,22 @@ export default {
         };
       }
     },
+
     setTimeProgress() {
       const { $store, $event, getAudio } = this;
       if (!getAudio) return;
 
       // 开始新的进度条
-      $store.dispatch('changeMainProgress', (_) => {
+      $store.dispatch("changeMainProgress", (_) => {
         return setInterval((_) => {
           const time = getAudio.getTime();
           const width = ((time * 1000) / getAudio.duration) * 100;
-          $('.bar-play').style.width = (width > 100 ? 100 : width) + '%';
+          $(".bar-play").style.width = (width > 100 ? 100 : width) + "%";
           this.nowPlayTime = time;
         }, 70);
       });
     },
+
     // 切换歌曲且播放开始后需要做的操作
     playConfig() {
       this.playStopStatus = true;
@@ -752,19 +774,21 @@ export default {
       this.setTimeProgress();
       !!this.childProcessFun && this.childProcessFun();
     },
+
     // 子组件的 progress
     childProgress(childProgressFun) {
       this.childProcessFun = childProgressFun;
     },
+
     // 歌词设置
     setLyr() {
       const lyr = this.lyric;
       const audio = this.getAudio;
 
-      if (!lyr || !audio) return [{ time: 0, lyr: '......' }]; // 未播放的时候
-      if (!lyr.oriLrc) return [{ time: 0, lyr: '当前音乐为纯音乐，敬请欣赏' }];
+      if (!lyr || !audio) return [{ time: 0, lyr: "......" }]; // 未播放的时候
+      if (!lyr.oriLrc) return [{ time: 0, lyr: "当前音乐为纯音乐，敬请欣赏" }];
       const oriLrc = lyr.oriLrc.content;
-      if (!oriLrc) return [{ time: 0, lyr: '当前音乐暂无歌词' }];
+      if (!oriLrc) return [{ time: 0, lyr: "当前音乐暂无歌词" }];
       const t = audio.getTime();
 
       // 让歌词屏幕动起来
@@ -776,8 +800,8 @@ export default {
           // 会换成最接近当前时间的值，但是会变化很多次，感觉效率很差
           this.translateY = i;
           // 把当前播放时间散发到全局
-          this.$event.fire('nowPlayTime', i);
-          this.$store.dispatch('nowLyrPosition', i);
+          this.$event.fire("nowPlayTime", i);
+          this.$store.dispatch("nowLyrPosition", i);
         }
 
         // 已经过去了的然后重新设置为 true，用于后退操作
@@ -789,16 +813,18 @@ export default {
       return oriLrc;
     },
   },
+
   mounted() {
-    const bar = new drag('#js_playBar', 'X');
+    const bar = new drag("#js_playBar", "X");
     bar.init();
-    Array.from($('.scroll li span:nth-child(5)')).forEach((val) => {
+    Array.from($(".scroll li span:nth-child(5)")).forEach((val) => {
       if (!val) return;
-      const rip = new ripples(val, '#fff');
+      const rip = new ripples(val, "#fff");
       rip.init();
     });
     nowPlay.add();
   },
+
   // 定义音频接口
   created() {
     const store = this.$store;
@@ -807,20 +833,20 @@ export default {
     interFace.loop = (key) => {
       const audio = this.getAudio;
       switch (key) {
-        case '顺序':
-          store.dispatch('changePlayOrder', '顺序');
+        case "顺序":
+          store.dispatch("changePlayOrder", "顺序");
           if (!audio) return;
           audio.playOver = (_) => this.next();
           audio.loop(false);
           break;
-        case '单曲':
-          store.dispatch('changePlayOrder', '单曲');
+        case "单曲":
+          store.dispatch("changePlayOrder", "单曲");
           if (!audio) return;
           audio.loop(true);
           break;
-        case '随机':
+        case "随机":
           const random = util.random(0, this.musicList.length);
-          store.dispatch('changePlayOrder', '随机');
+          store.dispatch("changePlayOrder", "随机");
           if (!audio) return;
           audio.playOver = (_) => {
             const nowMusic = this.musicList[random];
@@ -832,35 +858,37 @@ export default {
           break;
       }
     };
+
     interFace.playInput = (_) => {
-      store.dispatch('changeMainProgress', (_) => {
+      store.dispatch("changeMainProgress", (_) => {
         return null;
       });
     };
+
     interFace.playChange = (precent) => {
       const { getAudio, setTimeProgress, $event } = this;
 
       if (!getAudio) return;
       setTimeProgress();
       if (getAudio.forward(precent) === false) {
-        alert('该时间段的音频资源还未解码完成哦~~');
+        alert("该时间段的音频资源还未解码完成哦~~");
         return;
       }
-
       // 散发快进事件
-      $event.fire('playChange', precent);
+      $event.fire("playChange", precent);
     };
 
     // 把快进后退的方法放到 vuex
-    store.dispatch('changeNext', this.next);
-    store.dispatch('changeForward', this.forward);
-    store.dispatch('changePlayStop', this.playStop);
-    store.dispatch('changeCollectMusic', this.collectMusic);
-    store.dispatch('shrinkAnimate', this.shrinkAnimate);
+    store.dispatch("changeNext", this.next);
+    store.dispatch("changeForward", this.forward);
+    store.dispatch("changePlayStop", this.playStop);
+    store.dispatch("changeCollectMusic", this.collectMusic);
+    store.dispatch("shrinkAnimate", this.shrinkAnimate);
 
     // 注册歌词事件
-    this.$event.on('lyrics', (_) => (this.translateY = 0));
+    this.$event.on("lyrics", (_) => (this.translateY = 0));
   },
+
   components: {
     shinkCtrl,
   },
@@ -1039,7 +1067,7 @@ export default {
   right: 0;
   height: 26px;
   width: 26px;
-  background-image: url('~static/img/Dots.png');
+  background-image: url("~static/img/Dots.png");
   background-size: 26px 26px;
   margin: -10px -10px 0 0;
   cursor: pointer;
@@ -1100,7 +1128,7 @@ export default {
   display: inline-block;
   height: 15px;
   width: 15px;
-  background-image: url('~static/img/Dots.png');
+  background-image: url("~static/img/Dots.png");
   background-size: 15px 15px;
   margin: -5px 0 0 -5px;
   top: 0;
@@ -1254,7 +1282,7 @@ export default {
   position: relative;
   top: -2px;
   padding: 1px 3px;
-  font-family: '微软雅黑';
+  font-family: "微软雅黑";
   background: -webkit-gradient(
     linear,
     0 top,
@@ -1382,11 +1410,11 @@ export default {
   padding-top: 2px;
 }
 .active-play span.playing {
-  background: url('~static/img/playing.gif');
+  background: url("~static/img/playing.gif");
   margin-top: -3px;
 }
 .active-play span.stoping {
-  background: url('~static/img/stoping.png');
+  background: url("~static/img/stoping.png");
   margin-top: -3px;
 }
 .active-play span:nth-child(2) {

@@ -25,44 +25,50 @@
     </div>
   </div>
 </template>
+
 <script>
-import Vue from 'vue';
-import { util } from '@/common/js/util';
-import tableList from './musicListTable';
-import commentList from './musicListComment';
-import localComment from './localComment';
-import { mapGetters, mapActions } from 'vuex';
+import Vue from "vue";
+import { util } from "@/common/js/util";
+import tableList from "./musicListTable";
+import commentList from "./musicListComment";
+import localComment from "./localComment";
+import { mapGetters } from "vuex";
+
 const { conver } = util;
 
 export default {
   data() {
     return {
-      nowshow: '歌曲列表',
+      nowshow: "歌曲列表",
       listBtn: 0,
-      listBtnText: ['歌曲列表', '云音乐评论', '本地评论'],
+      listBtnText: ["歌曲列表", "云音乐评论", "本地评论"],
       listArr: [],
     };
   },
+
   computed: {
-    ...mapGetters(['user', 'resetCollect']),
+    ...mapGetters(["user", "resetCollect"]),
   },
+
   methods: {
     resetData() {
-      this.nowshow = '歌曲列表';
+      this.nowshow = "歌曲列表";
       this.listBtn = 0;
-      this.listBtnText = ['歌曲列表', '云音乐评论', '本地评论'];
+      this.listBtnText = ["歌曲列表", "云音乐评论", "本地评论"];
       this.listArr = [];
     },
+
     toggle(i, name) {
       this.listBtn = i;
       this.nowshow = name;
 
-      name.includes('云音乐评论') && this.$event.fire('netComment');
-      name.includes('本地评论') && this.$event.fire('localComment');
+      name.includes("云音乐评论") && this.$event.fire("netComment");
+      name.includes("本地评论") && this.$event.fire("localComment");
     },
   },
+
   created() {
-    this.$event.on('playList', ({ data }) => {
+    this.$event.on("playList", ({ data }) => {
       this.listBtn = 0;
       this.listArr = [];
       const [list, count] = data;
@@ -91,20 +97,22 @@ export default {
       });
     });
 
-    this.$event.on('resetCollect', (_) => this.resetCollect(this.listArr));
-    this.$event.on('listLocal', ({ data }) => {
+    this.$event.on("resetCollect", (_) => this.resetCollect(this.listArr));
+    this.$event.on("listLocal", ({ data }) => {
       Vue.set(this.listBtnText, 2, `本地评论（${data || 0}）`);
     });
 
-    this.$event.on('musiclistinit', (_) => this.resetData());
+    this.$event.on("musiclistinit", (_) => this.resetData());
   },
+
   beforeDestroy() {
     // 销毁注册的事件
-    this.$event.off('playList');
-    this.$event.off('resetCollect');
-    this.$event.off('listLocal');
-    this.$event.off('musiclistinit');
+    this.$event.off("playList");
+    this.$event.off("resetCollect");
+    this.$event.off("listLocal");
+    this.$event.off("musiclistinit");
   },
+
   components: {
     tableList,
     commentList,
@@ -112,6 +120,7 @@ export default {
   },
 };
 </script>
+
 <style>
 .detail-nav {
   overflow: hidden;

@@ -17,19 +17,18 @@
 </template>
 
 <script>
-import Vue from 'vue';
-import { util } from '@/common/js/util';
 export default {
   data() {
     return {
-      transition: 'slide-left',
+      transition: "slide-left",
       routerCig: [
-        { name: '个性推荐', url: '/findMusic/recommend' },
-        { name: '歌单', url: '/findMusic/songList' },
-        { name: '排行榜', url: '/findMusic/ranking' },
+        { name: "个性推荐", url: "/findMusic/recommend" },
+        { name: "歌单", url: "/findMusic/songList" },
+        { name: "排行榜", url: "/findMusic/ranking" },
       ],
     };
   },
+
   methods: {
     routerChange(defaultPath) {
       const now = this.$router.currentRoute.path;
@@ -38,19 +37,21 @@ export default {
       go && this.$router.replace(now + go);
     },
   },
+
   watch: {
     $route(to, from) {
       this.routerChange();
     },
   },
+
   created() {
     const path = this.$router.currentRoute.path;
     const defaultPath =
-      path.includes('recommend') ||
-      path.includes('songList') ||
-      path.includes('ranking')
-        ? ''
-        : '/recommend';
+      path.includes("recommend") ||
+      path.includes("songList") ||
+      path.includes("ranking")
+        ? ""
+        : "/recommend";
     this.routerChange(defaultPath);
   },
 };

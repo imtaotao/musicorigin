@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters } from "vuex";
 
 export default {
   data() {
@@ -34,29 +34,31 @@ export default {
       songs: [],
     };
   },
+
   computed: {
-    ...mapGetters(['host', 'nowPlayId', 'playOneSong']),
+    ...mapGetters(["host", "nowPlayId", "playOneSong"]),
   },
+
   methods: {
     resetDate() {
       this.songs = [];
     },
+
     getData() {
       const { host, nowPlayId, $ajax } = this;
-
       $ajax.get(host + `/simi/song?id=${nowPlayId}`).then(({ data }) => {
         if (data.code !== 200) {
-          alert('获取相似音乐失败~~');
+          alert("获取相似音乐失败~~");
           return;
         }
-
         this.songs = data.songs || [];
       });
     },
   },
+
   created() {
     const { $event, resetDate, getData } = this;
-    $event.on('songDetailReset', (_) => {
+    $event.on("songDetailReset", (_) => {
       resetDate();
       getData();
     });

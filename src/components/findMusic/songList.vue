@@ -12,7 +12,6 @@
         </li>
       </ul>
     </div>
-
     <!-- 内容 -->
     <div class="song-list">
       <li v-for="(key, i) in songList" class="songList-content lf">
@@ -32,7 +31,6 @@
         </p>
       </li>
     </div>
-
     <!-- 分页 -->
     <div class="Paging-tab">
       <span @click="changeActive('less')" class="left-btn" v-ripple="'#53FDD6'"
@@ -68,23 +66,23 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters } from "vuex";
 
 export default {
   data() {
     return {
-      nowType: '华语',
+      nowType: "华语",
       navTab: [
-        '华语',
-        '流行',
-        '摇滚',
-        '民谣',
-        '电子',
-        '轻音乐',
-        '影视原音',
-        '怀旧',
-        'ACG',
-        '治愈',
+        "华语",
+        "流行",
+        "摇滚",
+        "民谣",
+        "电子",
+        "轻音乐",
+        "影视原音",
+        "怀旧",
+        "ACG",
+        "治愈",
       ],
       listPage: 1,
       nowActive: 1,
@@ -93,28 +91,30 @@ export default {
       songList: [],
     };
   },
+
   computed: {
-    ...mapGetters(['host', 'playMusicList']),
+    ...mapGetters(["host", "playMusicList"]),
   },
+
   methods: {
     toggleTab(name) {
       if (this.nowType === name) return;
       this.nowType = name;
       this.getContent();
     },
+
     getContent(offset = 0) {
       const name = this.nowType;
       const url = `search?keywords=${name}&limit=20&offset=${
         offset * 20
       }&type=1000`;
 
-      this.$ajax.get(this.host + '/' + url).then(({ data }) => {
+      this.$ajax.get(this.host + "/" + url).then(({ data }) => {
         if (data.code !== 200) {
           console.errpr(`code is ${data.code}`);
-          alert('该歌单获取数据失败~');
+          alert("该歌单获取数据失败~");
           return;
         }
-
         this.songList = [];
         const { result } = data;
         const { playlistCount, playlists } = result;
@@ -123,20 +123,22 @@ export default {
         playlists.forEach((val) => {
           let { id, coverImgUrl, playCount, name } = val;
           if (playCount > 10000) {
-            playCount = parseInt(playCount / 10000) + '万';
+            playCount = parseInt(playCount / 10000) + "万";
           }
           this.songList.push({ id, coverImgUrl, playCount, name });
         });
       });
     },
+
     // 分页
     toPage(i) {
       if (i === this.nowActive) return;
       this.nowActive = i;
       this.nowPosition();
     },
+
     changeActive(name) {
-      name === 'add' ? this.nowActive++ : this.nowActive--;
+      name === "add" ? this.nowActive++ : this.nowActive--;
       this.nowActive < 1
         ? (this.nowActive = 1)
         : this.nowActive > this.listPage
@@ -144,6 +146,7 @@ export default {
         : this.nowActive;
       this.nowPosition();
     },
+
     // 判断当前位置
     nowPosition() {
       const now = this.nowActive;
@@ -168,9 +171,10 @@ export default {
     musicList(listId) {
       if (!listId && listId != 0) return;
       this.$router.push(`/collectList/${listId}`);
-      this.$event.off('musiclistinit');
+      this.$event.off("musiclistinit");
     },
   },
+
   created() {
     this.getContent();
   },
@@ -292,7 +296,7 @@ export default {
   width: 100%;
   height: 100%;
   cursor: pointer;
-  background: url('~static/pageimg/musicPlayIcon.png') no-repeat;
+  background: url("~static/pageimg/musicPlayIcon.png") no-repeat;
 }
 .play-count {
   display: inline-block;
@@ -317,7 +321,7 @@ export default {
   display: inline-block;
   height: 10px;
   width: 10px;
-  background: url('~static/pageimg/playCount.png') no-repeat;
+  background: url("~static/pageimg/playCount.png") no-repeat;
 }
 .active-nav-tab span {
   font-weight: bold;
@@ -351,10 +355,10 @@ export default {
   vertical-align: middle;
 }
 .Paging-tab .left-btn {
-  background: url('~static/pageimg/left-btn.png') no-repeat 5px 5px;
+  background: url("~static/pageimg/left-btn.png") no-repeat 5px 5px;
 }
 .Paging-tab .right-btn {
-  background: url('~static/pageimg/right-btn.png') no-repeat 5px 5px;
+  background: url("~static/pageimg/right-btn.png") no-repeat 5px 5px;
 }
 .Paging-tab span:hover {
   background-color: rgba(255, 255, 255, 0.2);

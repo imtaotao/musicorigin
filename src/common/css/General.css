@@ -53,7 +53,7 @@
   height: 100%;
   top: 0;
   right: 0;
-  background: url('~static/img/coverall.png') no-repeat 0 0;
+  background: url("~static/img/coverall.png") no-repeat 0 0;
   background-size: cover;
   border-radius: 10px;
   cursor: pointer !important;

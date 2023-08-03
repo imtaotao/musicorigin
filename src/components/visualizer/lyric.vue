@@ -3,18 +3,15 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters } from "vuex";
+
 export default {
   data() {
     return {};
   },
+
   computed: {
-    ...mapGetters(['lyric']),
+    ...mapGetters(["lyric"]),
   },
-  methods: {},
 };
 </script>
-
-<style>
-.vis-lyric-container {}
-</style>

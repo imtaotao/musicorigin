@@ -143,69 +143,63 @@
 </template>
 
 <script>
-import audio from '@/components/audioCtrl';
-import visualizer from '@/components/visualizer';
-import navCom from '@/components/nav';
-import songDetail from '@/components/songDetail';
-import loginBox from '@/components/nav/login';
-import { util } from '@/common/js/util';
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters } from "vuex";
+import navCom from "@/components/nav";
+import loginBox from "@/components/nav/login";
+import visualizer from "@/components/visualizer";
+import songDetail from "@/components/songDetail";
+import { util } from "@/common/js/util";
+
 const { $ } = util;
 
 export default {
   data() {
     return {
-      transition: 'fade',
+      transition: "fade",
       leftLum: {
         search: {
-          content: [{ name: 'search', url: '/search' }],
+          content: [{ name: "search", url: "/search" }],
         },
         recommend: {
-          title: '推荐',
-          content: [{ name: '发现音乐', url: '/findMusic' }],
+          title: "推荐",
+          content: [{ name: "发现音乐", url: "/findMusic" }],
         },
         myMusic: {
-          title: '我的音乐',
-          content: [{ name: '下载音乐', url: '/download' }],
+          title: "我的音乐",
+          content: [{ name: "下载音乐", url: "/download" }],
         },
         createList: {
-          title: '喜欢的音乐',
-          content: [{ name: '我的音乐', url: '/likeMusic' }],
+          title: "喜欢的音乐",
+          content: [{ name: "我的音乐", url: "/likeMusic" }],
         },
       },
       showGoUp: false,
-
       // 皮肤选择
       bgValue: false,
-
       // 皮肤值
       skinValue: null,
-
       // 显示歌曲详情页面
       showChild: false,
-
       // 跟改的nickname
       inputNick: null,
-
       // 昵称修改条的显示
       nickChangeBar: false,
-
       // 显示下载提示
       showDown: false,
-
       // 当前的下载数量
       downlength: 1,
     };
   },
+
   computed: {
     ...mapGetters([
-      'isLoading',
-      'nowPlayId',
-      'host',
-      'shrinkAnimate',
-      'nowSkin',
-      'user',
-      'showContainer',
+      "isLoading",
+      "nowPlayId",
+      "host",
+      "shrinkAnimate",
+      "nowSkin",
+      "user",
+      "showContainer",
     ]),
 
     // 是否显示歌曲详情页面
@@ -213,48 +207,51 @@ export default {
       get() {
         return this.showChild;
       },
+
       set(newVal) {
         this.showChild = newVal;
       },
     },
   },
+
   methods: {
     bgStyle() {
       const { skinValue, bgValue } = this;
       return !bgValue ? skinValue : `url("static/img/${skinValue}") no-repeat`;
     },
-    exprocent(percent) {
-      return (percent * 100).toFixed(2) + '%';
-    },
-    showColumn(name) {
-      if (name !== '我的音乐') return name !== 'search';
 
+    exprocent(percent) {
+      return (percent * 100).toFixed(2) + "%";
+    },
+
+    showColumn(name) {
+      if (name !== "我的音乐") return name !== "search";
       return this.user._id;
     },
+
     getIcon(title, name) {
-      if (name === '下载音乐') return 'downLoad';
-      if (name === '我喜欢的音乐') return 'likeMusic';
-      if (name === '发现音乐') return 'findMusic';
-      return 'musicList';
+      if (name === "下载音乐") return "downLoad";
+      if (name === "我喜欢的音乐") return "likeMusic";
+      if (name === "发现音乐") return "findMusic";
+      return "musicList";
     },
 
     // scroll 回调
     scroll(el, winH) {
       winH > 200 ? (this.showGoUp = true) : (this.showGoUp = false);
     },
+
     // 点击回到顶部
     goUp() {
-      const el = $('.right-content-details');
+      const el = $(".right-content-details");
       if (!el) return;
       let distance = el.scrollTop;
       const singleMove = distance / 12;
-
       function t() {
         requestAnimationFrame((_) => {
           distance -= singleMove;
           distance < 0 && (distance = 0);
           el.scrollTop = distance;
-
           distance > 0 && t();
         });
       }
@@ -263,62 +260,58 @@ export default {
 
     // 搜索页面触发事件
     searchInit() {
-      this.$event.fire('searchInit');
+      this.$event.fire("searchInit");
     },
 
     // 登录成功后
     login(data) {
       if (!data) return;
       const { $store, $event } = this;
-
       // 把当前用户信息放到全局
-      $store.dispatch('user', data);
+      $store.dispatch("user", data);
       this.userInfo = data;
-      $store.dispatch('resetMusicList', data);
-      $event.fire('loginSuccess');
+      $store.dispatch("resetMusicList", data);
+      $event.fire("loginSuccess");
     },
 
     // 跟改昵称
     changeNick() {
-      if (!this.user._id) return alert('请您先登录');
-
+      if (!this.user._id) return alert("请您先登录");
       this.nickChangeBar = !this.nickChangeBar;
       !this.nickChangeBar && this.submitNick();
     },
+
     submitNick() {
       const { $ajax, $store, $event, host, inputNick, user } = this;
       if (!inputNick || inputNick === this.user.nickname) return;
-
       $ajax
-        .post(host + '/nickname', { nickname: inputNick, name: user.name })
+        .post(host + "/nickname", { nickname: inputNick, name: user.name })
         .then(({ data }) => {
           if (data.msg) return alert(data.msg);
 
           this.user.nickname = data.nickname;
           this.nickChangeBar = false;
-          $event.fire('changeUser');
-          alert('修改成功');
+          $event.fire("changeUser");
+          alert("修改成功");
         });
     },
 
     // 上传头像
     upPic() {
       if (!this.user._id) {
-        this.$event.fire('showLogin', true);
-        return alert('请先登录~');
+        this.$event.fire("showLogin", true);
+        return alert("请先登录~");
       }
-      const file = util.$('#upPic').files[0];
+      const file = util.$("#upPic").files[0];
       if (!file) return;
 
       const fd = new FormData();
-      fd.append('userfile', file);
-      fd.append('name', this.user.name);
-
-      this.$ajax.post(this.host + '/upPic', fd).then(({ data }) => {
+      fd.append("userfile", file);
+      fd.append("name", this.user.name);
+      this.$ajax.post(this.host + "/upPic", fd).then(({ data }) => {
         if (data.msg) return alert(data.msg);
-
         this.user.pic = data;
-        this.$event.fire('changeUser');
+        this.$event.fire("changeUser");
       });
     },
 
@@ -331,49 +324,46 @@ export default {
       }, 1000);
     },
   },
+
   watch: {
     $route(to, from) {
       this.searchInit();
     },
   },
+
   created() {
     // 滑动按钮
     const { $event, goUp, login, downPrompt } = this;
-    $event.on('scrollTop', (_) => goUp());
 
+    $event.on("scrollTop", (_) => goUp());
     // 选择主题
-    $event.on('choseskin', (_) => {
+    $event.on("choseskin", (_) => {
       const data = this.nowSkin[0];
-      const type = data.url ? 'url' : 'rgb';
-
-      if (type === 'url') {
+      const type = data.url ? "url" : "rgb";
+      if (type === "url") {
         this.bgValue = true;
         this.skinValue = data.url;
       }
-
-      if (type === 'rgb') {
+      if (type === "rgb") {
         this.bgValue = false;
         this.skinValue = data.rgb;
       }
     });
-
     // 放大当前播放歌曲详情
-    $event.on('enlargeDetail', (_) => {
+    $event.on("enlargeDetail", (_) => {
       const { nowPlayId, shrinkAnimate } = this;
-      !nowPlayId && alert('没有获得当前播放歌曲的信息~');
+      !nowPlayId && alert("没有获得当前播放歌曲的信息~");
       if (!nowPlayId || this.songDetail) return;
-
       this.songDetail = true;
       setTimeout((_) => shrinkAnimate());
     });
-
     // 登录界面
-    $event.fire('showLogin', this.showLogin);
-    $event.on('login', ({ data }) => login(data));
-
+    $event.fire("showLogin", this.showLogin);
+    $event.on("login", ({ data }) => login(data));
     // 下载信息
-    $event.on('downclick', ({ data }) => downPrompt(data));
+    $event.on("downclick", ({ data }) => downPrompt(data));
   },
+
   components: {
     navCom,
     songDetail,
@@ -490,16 +480,16 @@ aside {
 
 /*侧边栏图标*/
 .downLoad {
-  background: url('~static/pageimg/downMusic.png');
+  background: url("~static/pageimg/downMusic.png");
 }
 .likeMusic {
-  background: url('~static/pageimg/likeMusic.png');
+  background: url("~static/pageimg/likeMusic.png");
 }
 .musicList {
-  background: url('~static/pageimg/musicList.png');
+  background: url("~static/pageimg/musicList.png");
 }
 .findMusic {
-  background: url('~static/pageimg/musicRecommend.png');
+  background: url("~static/pageimg/musicRecommend.png");
 }
 
 /*个人信息栏*/

@@ -10,7 +10,7 @@
       </p>
       <div class="user-info-main">
         <span>{{ user.nickname }}</span>
-        <span>于 {{ new Date(user.birthday).format('-', true) }} 创建</span>
+        <span>于 {{ new Date(user.birthday).format("-", true) }} 创建</span>
       </div>
 
       <ul class="title-ul">
@@ -31,46 +31,51 @@
 </template>
 
 <script>
-import musicList from '@/components/search/musicList';
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters } from "vuex";
+import musicList from "@/components/search/musicList";
 
 export default {
   data() {
     return {
-      // 标题
-      title: ['全部播放', '全部下载'],
+      title: ["全部播放", "全部下载"],
     };
   },
+
   computed: {
-    ...mapGetters(['host', 'user', 'forward', 'download']),
+    ...mapGetters(["host", "user", "forward", "download"]),
+
+    // 在已收藏列表中，所有的歌曲都应该是收藏状态
     filterUser() {
-      // 在已收藏列表中，所有的歌曲都应该是收藏状态
       this.user.collectMusic.forEach((val) => {
         val.collect = true;
       });
       return this.user.collectMusic;
     },
   },
+
   methods: {
     playAll() {
       this.user.collectMusic.forEach((song) => {
-        this.$store.dispatch('addMusicList', song.oringeInfo);
+        this.$store.dispatch("addMusicList", song.oringeInfo);
         this.forward(0);
       });
     },
+
     downloadAll() {
       const list = this.user.collectMusic;
-      this.$event.fire('downclick', list.length);
+      this.$event.fire("downclick", list.length);
       list.forEach((song) => {
         const { id, musicName, oringeInfo } = song;
         this.download(id, musicName, oringeInfo);
       });
     },
+
     titleClick(key) {
-      key === '全部播放' && this.playAll();
-      key === '全部下载' && this.downloadAll();
+      key === "全部播放" && this.playAll();
+      key === "全部下载" && this.downloadAll();
     },
   },
+
   components: {
     musicList,
   },

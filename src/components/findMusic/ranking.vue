@@ -36,7 +36,8 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters } from "vuex";
+
 export default {
   data() {
     return {
@@ -46,177 +47,177 @@ export default {
       isloading: true,
       rankingList: [
         {
-          name: '音乐新歌榜',
+          name: "音乐新歌榜",
           ids: 0,
-          playCount: '',
+          playCount: "",
           listId: null,
           info: [],
           originInfo: [],
         },
         {
-          name: '音乐热歌榜',
+          name: "音乐热歌榜",
           ids: 1,
-          playCount: '',
+          playCount: "",
           listId: null,
           info: [],
           originInfo: {},
         },
         {
-          name: '原创歌曲榜',
+          name: "原创歌曲榜",
           ids: 2,
-          playCount: '',
+          playCount: "",
           listId: null,
           info: [],
           originInfo: {},
         },
         {
-          name: '音乐飙升榜',
+          name: "音乐飙升榜",
           ids: 3,
-          playCount: '',
+          playCount: "",
           listId: null,
           info: [],
           originInfo: {},
         },
         {
-          name: '音乐电音榜',
+          name: "音乐电音榜",
           ids: 4,
-          playCount: '',
+          playCount: "",
           listId: null,
           info: [],
           originInfo: {},
         },
         {
-          name: 'UK排行榜周榜',
+          name: "UK排行榜周榜",
           ids: 5,
-          playCount: '',
+          playCount: "",
           listId: null,
           info: [],
           originInfo: {},
         },
         {
-          name: '美国Billboard周榜',
+          name: "美国Billboard周榜",
           ids: 6,
-          playCount: '',
+          playCount: "",
           listId: null,
           info: [],
           originInfo: {},
         },
         {
-          name: 'KTV嗨榜',
+          name: "KTV嗨榜",
           ids: 7,
-          playCount: '',
+          playCount: "",
           listId: null,
           info: [],
           originInfo: {},
         },
         {
-          name: 'iTunes榜',
+          name: "iTunes榜",
           ids: 8,
-          playCount: '',
+          playCount: "",
           listId: null,
           info: [],
           originInfo: {},
         },
         {
-          name: 'Hit FM Top榜',
+          name: "Hit FM Top榜",
           ids: 9,
-          playCount: '',
+          playCount: "",
           listId: null,
           info: [],
           originInfo: {},
         },
         {
-          name: '日本Oricon周榜',
+          name: "日本Oricon周榜",
           ids: 10,
-          playCount: '',
+          playCount: "",
           listId: null,
           info: [],
           originInfo: {},
         },
         {
-          name: '韩国Melon排行榜周榜',
+          name: "韩国Melon排行榜周榜",
           ids: 11,
-          playCount: '',
+          playCount: "",
           listId: null,
           info: [],
           originInfo: {},
         },
         {
-          name: '韩国Mnet排行榜周榜',
+          name: "韩国Mnet排行榜周榜",
           ids: 12,
-          playCount: '',
+          playCount: "",
           listId: null,
           info: [],
           originInfo: {},
         },
         {
-          name: '韩国Melon原声周榜',
+          name: "韩国Melon原声周榜",
           ids: 13,
-          playCount: '',
+          playCount: "",
           listId: null,
           info: [],
           originInfo: {},
         },
         {
-          name: '中国TOP排行榜(港台榜)',
+          name: "中国TOP排行榜(港台榜)",
           ids: 14,
-          playCount: '',
+          playCount: "",
           listId: null,
           info: [],
           originInfo: {},
         },
         {
-          name: '中国TOP排行榜(内地榜)',
+          name: "中国TOP排行榜(内地榜)",
           ids: 15,
-          playCount: '',
+          playCount: "",
           listId: null,
           info: [],
           originInfo: {},
         },
         {
-          name: '香港电台中文歌曲龙虎榜',
+          name: "香港电台中文歌曲龙虎榜",
           ids: 16,
-          playCount: '',
+          playCount: "",
           listId: null,
           info: [],
           originInfo: {},
         },
         {
-          name: '华语金曲榜',
+          name: "华语金曲榜",
           ids: 17,
-          playCount: '',
+          playCount: "",
           listId: null,
           info: [],
           originInfo: {},
         },
         {
-          name: '中国嘻哈榜',
+          name: "中国嘻哈榜",
           ids: 18,
-          playCount: '',
+          playCount: "",
           listId: null,
           info: [],
           originInfo: {},
         },
         {
-          name: '法国 NRJ EuroHot 30周榜',
+          name: "法国 NRJ EuroHot 30周榜",
           ids: 19,
-          playCount: '',
+          playCount: "",
           listId: null,
           info: [],
           originInfo: {},
         },
         {
-          name: '台湾Hito排行榜',
+          name: "台湾Hito排行榜",
           ids: 20,
-          playCount: '',
+          playCount: "",
           listId: null,
           info: [],
           originInfo: {},
         },
         {
-          name: 'Beatport全球电子舞曲榜',
+          name: "Beatport全球电子舞曲榜",
           ids: 21,
-          playCount: '',
+          playCount: "",
           listId: null,
           info: [],
           originInfo: {},
@@ -224,35 +225,40 @@ export default {
       ],
     };
   },
+
   computed: {
-    ...mapGetters(['host', 'playOneSong', 'playMusicList']),
+    ...mapGetters(["host", "playOneSong", "playMusicList"]),
   },
+
   methods: {
     playMusic(id) {
       if (!this.isload() || !id) return;
       this.playMusicList(id);
     },
+
     playNewSong(song) {
       if (!this.isload() || !song) return;
       this.playOneSong(song);
     },
+
     // 进入歌单详情页面
     musicList(listId) {
       if (!this.isload() && !listId && listId != 0) return;
       this.$router.push(`/collectList/${listId}`);
-      this.$event.off('musiclistinit');
+      this.$event.off("musiclistinit");
     },
 
     isload() {
       if (!this.isloading) {
-        alert('网络不好，请让当前资源加载完吧');
+        alert("网络不好，请让当前资源加载完吧");
       }
       return this.isloading;
     },
+
     // 请求排行榜
     requestRanking() {
       if (!this.isloading) {
-        alert('网络不好，请让当前资源加载完吧');
+        alert("网络不好，请让当前资源加载完吧");
         return;
       }
       this.isloading = false;
@@ -273,11 +279,10 @@ export default {
               alert(`请求${val.name}出现错误啦！！！`);
               return;
             }
-
             const { result } = data;
             let { id, playCount, coverImgUrl, tracks } = result;
             if (playCount > 10000) {
-              playCount = parseInt(playCount / 10000) + '万';
+              playCount = parseInt(playCount / 10000) + "万";
             }
             // 取前三名列出来
             const firstThree = [];
@@ -289,7 +294,6 @@ export default {
                 song: tracks[j],
               });
             }
-
             val.playCount = playCount;
             val.coverImgUrl = coverImgUrl;
             val.listId = id;
@@ -305,10 +309,11 @@ export default {
       }
     },
   },
+
   created() {
     this.requestRanking();
-    this.$event.on('musicLoading', (_) => (this.isloading = false));
-    this.$event.on('musicLoaded', (_) => (this.isloading = true));
+    this.$event.on("musicLoading", (_) => (this.isloading = false));
+    this.$event.on("musicLoaded", (_) => (this.isloading = true));
   },
 };
 </script>
@@ -376,7 +381,7 @@ export default {
   display: inline-block;
   height: 10px;
   width: 10px;
-  background: url('~static/pageimg/playCount.png') no-repeat;
+  background: url("~static/pageimg/playCount.png") no-repeat;
 }
 .song-list-play {
   position: absolute;
@@ -395,7 +400,7 @@ export default {
   height: 100%;
   cursor: pointer;
   z-index: 9999;
-  background: url('~static/pageimg/musicPlayIcon.png') no-repeat;
+  background: url("~static/pageimg/musicPlayIcon.png") no-repeat;
 }
 .song-list-play:hover {
   background: rgba(0, 0, 0, 0.8);

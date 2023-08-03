@@ -32,7 +32,6 @@
             </p>
           </div>
         </div>
-
         <!-- 注册框 -->
         <div class="rigist-insert-box lf">
           <p class="rigist-title lf">Start your</p>
@@ -53,7 +52,6 @@
           </div>
         </div>
       </div>
-
       <!-- 切换柱子 -->
       <p
         class="toggle-bar login-bar animate-five"
@@ -87,47 +85,45 @@
 </template>
 
 <script>
-import { util } from '@/common/js/util';
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters } from "vuex";
+import { util } from "@/common/js/util";
 
 export default {
   data() {
     return {
       showLogin: false,
       translateX: 0,
-      loginBar: '#ffbf74',
-      rigistBar: 'rgba(255,255,255,.3)',
-      rigistWidth: '30%',
-      loginWidth: '40%',
+      loginBar: "#ffbf74",
+      rigistBar: "rgba(255,255,255,.3)",
+      rigistWidth: "30%",
+      loginWidth: "40%",
       loginConfirm: true,
-
       // 背景图片
-      bgpicArr: ['c-5-2.png', 'c-2-3.png', 'c-1-3.png', '1-3.png', '2-3.png'],
-
-      bgpic: '1-3.png',
-
+      bgpicArr: ["c-5-2.png", "c-2-3.png", "c-1-3.png", "1-3.png", "2-3.png"],
+      bgpic: "1-3.png",
       // 账号密码
       loginUP: { name: null, pwd: null },
       rigistUP: { name: null, pwd: null },
     };
   },
+
   computed: {
-    ...mapGetters(['host']),
+    ...mapGetters(["host"]),
   },
+
   methods: {
     loginCl() {
       const { loginBar, rigistBar, rigistWidth, loginWidth, translateX } = this;
       if (translateX === 0) return;
-
       this.translateX = 0;
       this.loginConfirm = !this.loginConfirm;
       this.rigistBar = [loginBar, (this.loginBar = rigistBar)][0];
       this.rigistWidth = [loginWidth, (this.loginWidth = rigistWidth)][0];
     },
+
     rigistCl() {
       const { loginBar, rigistBar, rigistWidth, loginWidth, translateX } = this;
       if (translateX === -50) return;
-
       this.translateX = -50;
       this.loginConfirm = !this.loginConfirm;
       this.loginBar = [rigistBar, (this.rigistBar = loginBar)][0];
@@ -143,17 +139,15 @@ export default {
     login() {
       const { check, loginUP, $ajax, $event, host } = this;
       if (!check(loginUP)) return;
-
-      $ajax.post(host + '/login', loginUP).then(({ data }) => {
+      $ajax.post(host + "/login", loginUP).then(({ data }) => {
         if (!data.data) {
           alert(data.msg);
           return;
         }
-
         // 散发登录成功的事件
-        $event.fire('login', data.data);
-        $event.fire('changeUser');
-        $event.fire('showLogin', false);
+        $event.fire("login", data.data);
+        $event.fire("changeUser");
+        $event.fire("showLogin", false);
       });
     },
 
@@ -161,37 +155,34 @@ export default {
     rigist() {
       const { check, rigistUP, $ajax, host } = this;
       if (!check(rigistUP)) return;
-
-      $ajax.post(host + '/rigist', rigistUP).then(({ data }) => {
+      $ajax.post(host + "/rigist", rigistUP).then(({ data }) => {
         alert(data.msg);
-        if (data.msg === '注册成功') {
+        if (data.msg === "注册成功") {
           this.loginCl();
         }
       });
     },
+
     // 检查表单输入
     check({ name, pwd }) {
       if (!name || !pwd) {
-        alert('请完整填写账号密码');
-        return;
+        alert("请完整填写账号密码");
+        return false;
       }
-
       if (name.length < 6 || pwd < 6) {
-        alert('账号密码位数必须是6位以上');
-        return;
+        alert("账号密码位数必须是6位以上");
+        return false;
       }
-
       return true;
     },
   },
 
   created() {
-    this.$event.on('showLogin', ({ data }) => {
+    this.$event.on("showLogin", ({ data }) => {
       this.showLogin = data;
       data && this.randomPic();
     });
-
-    this.$store.dispatch('login', this.login);
+    this.$store.dispatch("login", this.login);
   },
 };
 </script>
@@ -255,7 +246,7 @@ export default {
   /*background-size: 35% 100% !important;*/
 }
 .login-insert-container {
-  background: url('~static/alltheme/3-2.png') no-repeat;
+  background: url("~static/alltheme/3-2.png") no-repeat;
   background-size: 40% 100%;
   background-position: 50% 0;
 }

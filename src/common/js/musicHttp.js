@@ -1,14 +1,14 @@
 /*	demo: 
-		const ajax = new $http({ ... })
-		ajax.send().then(afterHttp())
-		ajax.callback = function({status, response}) { ... }
-		ajax.progress = function(res, loaded) { ... }
-		ajax.half = function({status, response}) { ... }
-		ajax.end = function() { ... }
+  const ajax = new $http({ ... })
+  ajax.send().then(afterHttp())
+  ajax.callback = function({status, response}) { ... }
+  ajax.progress = function(res, loaded) { ... }
+  ajax.half = function({status, response}) { ... }
+  ajax.end = function() { ... }
  */
 export default class musicHttp {
   // param : url, data, header, dataType
-  constructor({ url, header, dataType = '', data = {}, fileTotal }) {
+  constructor({ url, header, dataType = "", data = {}, fileTotal }) {
     const size = (this.firstSize = 102400);
     this.url = url;
     this.data = data;
@@ -33,7 +33,7 @@ export default class musicHttp {
       url = self.url,
       data = self.data,
       dataType = self.dataType,
-      method = 'GET',
+      method = "GET",
       header = self.header;
 
     // 请求计数
@@ -61,7 +61,7 @@ export default class musicHttp {
   }
 
   serialization(data) {
-    let serializ = '?';
+    let serializ = "?";
     Object.keys(data).forEach((key) => {
       serializ += `${key}=${data[key]}&`;
     });
@@ -72,16 +72,16 @@ export default class musicHttp {
     const headObj = {};
     const header = this.xhr.getAllResponseHeaders();
     if (!header) {
-      console.warn('没有响应头');
-      return alert('网络不好，请刷新重试~');
+      console.warn("没有响应头");
+      return alert("网络不好，请刷新重试~");
     }
     const regBefore = /.+?(?=:)/g;
 
-    header.split('\n').forEach((val) => {
+    header.split("\n").forEach((val) => {
       let key = val.match(regBefore);
       if (!key) return;
-      let value = val.replace(`${key[0]}: `, '');
-      key = key[0].replace(/-/g, '_').toLocaleLowerCase(); // 转义 '-'
+      let value = val.replace(`${key[0]}: `, "");
+      key = key[0].replace(/-/g, "_").toLocaleLowerCase(); // 转义 '-'
       headObj[key] = value;
     });
 
@@ -92,7 +92,7 @@ export default class musicHttp {
   saveChange(header) {
     // 如果有自定义的头部就拿自定义的
     if (!header.X_All_Length && !header.content_range) return;
-    const total = header.X_All_Length || header.content_range.split('/')[1];
+    const total = header.X_All_Length || header.content_range.split("/")[1];
 
     this.saveBox.total = this.saveBox.total || Number(total);
     this.saveBox.already = this.firstSize;
@@ -185,7 +185,7 @@ export default class musicHttp {
 
   procent(now) {
     return (((this.saveBox.already + now) / this.saveBox.total) * 100).toFixed(
-      0,
+      0
     );
   }
 }

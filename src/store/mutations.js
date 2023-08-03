@@ -1,20 +1,22 @@
 import Ev from '@/common/js/event';
+
 const event = Ev.install();
 
 export default {
   changeLoading(state, isChange) {
     state.loadingShow = isChange;
   },
+
   showContainer(state, boole) {
     state.showContainer = boole;
   },
+
   // 更改歌曲列表
   addMusicList(state, data) {
     // 如果歌曲列表没有歌曲，清除默认提示语句
     if (state.musicList.length === 1 && state.musicList[0].id === 0) {
       state.musicList = [];
     }
-
     // 避免重复添加歌曲
     for (let i = 0; i < state.musicList.length; i++) {
       if (data.id === state.musicList[i].id) {
@@ -26,6 +28,7 @@ export default {
     }
     state.musicList.unshift(data);
   },
+
   removeMusic(state, id) {
     for (let i = 0; i < state.musicList.length; i++) {
       if (id === state.musicList[i].id) {
@@ -33,27 +36,35 @@ export default {
       }
     }
   },
+
   changeMusicList(state, musicList) {
     state.musicList = musicList;
   },
+
   changePlayOrder(state, order) {
     state.playOrder = order;
   },
+
   changeAudio(state, audio) {
     state.audio = audio;
   },
+
   changeAudioAjax(state, ajax) {
     state.audioAjax = ajax;
   },
+
   changePlayDelay(state, judge) {
     state.playDelay.judge = judge;
   },
+
   changeSwitchDelay(state, judge) {
     state.switchDelay.judge = judge;
   },
+
   changeVolume(state, volume) {
     state.volume = volume;
   },
+
   changeMainProgress(state, mainProgress) {
     if (state.mainProgress !== null) {
       // 去除上一个定时器
@@ -64,6 +75,7 @@ export default {
     // 添加新的定时器
     state.mainProgress = mainProgress();
   },
+
   changeShinkProgress(state, shinkProgress) {
     if (state.shinkProgress !== null) {
       // 去除上一个定时器
@@ -77,12 +89,15 @@ export default {
   changeNext(state, next) {
     state.next = next;
   },
+
   changeForward(state, forward) {
     state.forward = forward;
   },
+
   changePlayStop(state, playStop) {
     state.playStop = playStop;
   },
+
   changeCollectMusic(state, collectMusic) {
     state.collectMusic = collectMusic;
   },
@@ -91,9 +106,11 @@ export default {
   changelyric(state, lyric) {
     state.lyric = lyric;
   },
+
   playMusicList(state, fun) {
     state.playMusicList = fun;
   },
+
   playOneSong(state, fun) {
     state.playOneSong = fun;
   },
@@ -111,6 +128,7 @@ export default {
   shrinkAnimate(state, fun) {
     state.shrinkAnimate = fun;
   },
+
   bigAnimate(state, fun) {
     state.bigAnimate = fun;
   },

@@ -19,7 +19,6 @@
           />
         </div>
       </li>
-
       <li>
         <span class="shrink-box" @click="shrinkBox" title="可视化窗口" v-ripple>
         </span>
@@ -46,17 +45,16 @@
         </span>
       </li>
     </ul>
-
     <!-- 皮肤窗口 -->
     <theme-box class="theme-box" :showSkin.sync="showSkin"></theme-box>
   </div>
 </template>
 
 <script>
-import themeBox from './theme';
+import { mapGetters } from "vuex";
+import { util } from "@/common/js/util";
+import themeBox from "./theme";
 
-import { util } from '@/common/js/util';
-import { mapGetters, mapActions } from 'vuex';
 const $ = util.$;
 
 export default {
@@ -67,38 +65,44 @@ export default {
       showLogin: false,
     };
   },
+
   computed: {
-    ...mapGetters(['shrinkAnimate']),
+    ...mapGetters(["shrinkAnimate"]),
   },
+
   methods: {
     streamline() {
-      alert('精简模式暂未实现~~');
+      alert("精简模式暂未实现~~");
     },
+
     search() {
-      const name = $('#search').value;
+      const name = $("#search").value;
       name && this.showSearchPage(name);
     },
+
     loginToggle() {
       this.showLogin = !this.showLogin;
-      this.$event.fire('showLogin', this.showLogin);
+      this.$event.fire("showLogin", this.showLogin);
     },
 
     // 显示搜索页面
     showSearchPage(name) {
-      // 显示搜索页面
-      this.$router.push('/search/' + name);
+      this.$router.push("/search/" + name);
     },
+
     // 缩小主界面，显示可视化的地方
     shrinkBox() {
       this.shrinkAnimate();
-      this.$store.dispatch('showContainer', false);
+      this.$store.dispatch("showContainer", false);
     },
   },
+
   created() {
-    this.$event.on('login', (_) => {
+    this.$event.on("login", (_) => {
       this.showLogin = false;
     });
   },
+
   components: {
     themeBox,
   },
@@ -158,16 +162,16 @@ export default {
   cursor: pointer;
 }
 .skin-box {
-  background: url('~static/pageimg/skin.png');
+  background: url("~static/pageimg/skin.png");
 }
 .streamline-box {
-  background: url('~static/pageimg/streamline.png');
+  background: url("~static/pageimg/streamline.png");
 }
 .shrink-box {
-  background: url('~static/pageimg/shrink.png');
+  background: url("~static/pageimg/shrink.png");
 }
 .login-btn {
-  background: url('~static/pageimg/login.png');
+  background: url("~static/pageimg/login.png");
 }
 
 /*皮肤窗口*/

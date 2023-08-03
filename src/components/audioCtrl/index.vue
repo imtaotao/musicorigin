@@ -4,12 +4,12 @@
   </div>
 </template>
 <script>
-import audioCtrl from './main';
-import interFace from '@/common/js/audioInterFace';
-import audioctrl from '@/common/js/audio';
-import musicHttp from '@/common/js/musicHttp';
-import { util } from '@/common/js/util';
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters } from "vuex";
+import audioCtrl from "./main";
+import { util } from "@/common/js/util";
+import musicHttp from "@/common/js/musicHttp";
+import audioctrl from "@/common/js/audio";
+import interFace from "@/common/js/audioInterFace";
 
 export default {
   data() {
@@ -19,60 +19,64 @@ export default {
       equalizerData: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     };
   },
+
   computed: {
     ...mapGetters([
-      'host',
-      'getPlayOrder',
-      'switchDelay',
-      'volume',
-      'next',
-      'lyric',
+      "host",
+      "getPlayOrder",
+      "switchDelay",
+      "volume",
+      "next",
+      "lyric",
     ]),
   },
+
   methods: {
     loading(load) {
       const audio = this.preAudio.audio;
       if (load) {
-        this.$store.dispatch('showLoading');
+        this.$store.dispatch("showLoading");
         audio.ac.suspend();
       } else {
-        this.$store.dispatch('hideLoading');
+        this.$store.dispatch("hideLoading");
         audio.ac.resume();
       }
     },
+
     setPlayOrder(playOrder) {
       switch (playOrder) {
-        case '顺序':
-          this.$store.dispatch('changePlayOrder', '顺序');
+        case "顺序":
+          this.$store.dispatch("changePlayOrder", "顺序");
           this.preAudio.audio.loop(false);
           break;
-        case '单曲':
-          this.$store.dispatch('changePlayOrder', '单曲');
+        case "单曲":
+          this.$store.dispatch("changePlayOrder", "单曲");
           this.preAudio.audio.loop(true);
           break;
-        case '随机':
-          this.$store.dispatch('changePlayOrder', '随机');
+        case "随机":
+          this.$store.dispatch("changePlayOrder", "随机");
           this.preAudio.audio.loop(false);
           break;
       }
     },
+
     // 歌词设置
     setLrc(data, callback) {
       const oriLrc = data.lrc; // 原歌词 lyric
       const cnLrc = data.tlyric; // 翻译为中文的歌词
-
       let oriDecode = null;
       let cnDecode = null;
 
       if (oriLrc) oriDecode = util.astLyrics(oriLrc.lyric); // 解码歌词
       if (cnLrc) cnDecode = util.astLyrics(cnLrc.lyric); // 解码歌词
 
-      this.$store.dispatch('changelyric', {
+      this.$store.dispatch("changelyric", {
         oriLrc: oriDecode,
         cnLrc: cnDecode,
       });
       !!callback && callback();
     },
+
     //开始播放
     startPlay(id, url, duration, callback) {
       const { getPlayOrder, host, setPlayOrder, lyric, $store, $event } = this;
@@ -81,29 +85,28 @@ export default {
       const ajax = new musicHttp({
         url: `${this.host}/getMusic`,
         data: { url },
-        method: 'get',
-        dataType: 'arraybuffer',
+        method: "get",
+        dataType: "arraybuffer",
       });
 
       this.preAudio = { audio, ajax };
-      $store.dispatch('changeAudio', audio);
-      $store.dispatch('changeAudioAjax', ajax);
+      $store.dispatch("changeAudio", audio);
+      $store.dispatch("changeAudioAjax", ajax);
       setPlayOrder(getPlayOrder);
       !!callback && callback();
 
       // 当前歌曲播放id
-      $store.dispatch('nowPlayId', id);
-
+      $store.dispatch("nowPlayId", id);
       // 开始播放新的歌曲前
-      $event.fire('startNewMusic');
-      $event.fire('lyrics', lyric);
+      $event.fire("startNewMusic");
+      $event.fire("lyrics", lyric);
 
       // 发起分段传输请求
       ajax.send().then(ajax.afterHttp());
 
       // 设置当前 audio 对象循环一次播放完毕的回调
       audio.loopPlayOver = (_) => {
-        this.$event.fire('loopPlayOver');
+        this.$event.fire("loopPlayOver");
       };
 
       audio.loading = this.loading;
@@ -158,6 +161,7 @@ export default {
       };
     },
   },
+
   created() {
     // 定义音频接口
     // 切换歌曲
@@ -165,14 +169,14 @@ export default {
       const { $store, preAudio, switchDelay, getUrlLrc } = this;
 
       if (duration > 1000 * 60 * 15) {
-        alert('该资源过大，解码会导致网页崩溃~~~');
-        $store.dispatch('removeMusic', id);
-        $store.dispatch('changeSwitchDelay', true);
+        alert("该资源过大，解码会导致网页崩溃~~~");
+        $store.dispatch("removeMusic", id);
+        $store.dispatch("changeSwitchDelay", true);
         return;
       }
       if (id === 0) {
-        alert('当前播放列表中没有可播放歌曲');
-        $store.dispatch('changeSwitchDelay', true);
+        alert("当前播放列表中没有可播放歌曲");
+        $store.dispatch("changeSwitchDelay", true);
         return;
       }
 
@@ -193,41 +197,46 @@ export default {
 
       // 延时恢复
       setTimeout(() => {
-        $store.dispatch('changeSwitchDelay', true);
+        $store.dispatch("changeSwitchDelay", true);
       }, switchDelay.time);
       // 请求歌曲 url，歌词
       getUrlLrc()(id, duration, callback, isHave);
     };
+
     // 播放暂停
     interFace.play = (status) => {
       if (!this.preAudio || !this.preAudio.audio) return;
       status ? this.preAudio.audio.play() : this.preAudio.audio.stop();
     };
+
     interFace.volumeInput = (precent) => {
       if (!this.preAudio || !this.preAudio.audio) return;
       this.preAudio.audio.volume(precent);
     };
+
     interFace.volumeChange = (precent) => {
-      this.$store.dispatch('changeVolume', precent);
+      this.$store.dispatch("changeVolume", precent);
     };
+
     interFace.equalizer = (name, callback) => {
       if (!this.preAudio || !this.preAudio.audio) return;
       const type = {
-        自定义: 'init',
-        慢歌: 'slowSong',
-        爵士: 'jazz',
-        古典: 'classical',
-        蓝调: 'blues',
-        舞曲: 'dance',
-        流行: 'popular',
-        电子乐: 'electronicMusic',
-        摇滚: 'rocking',
-        乡村: 'rural',
+        自定义: "init",
+        慢歌: "slowSong",
+        爵士: "jazz",
+        古典: "classical",
+        蓝调: "blues",
+        舞曲: "dance",
+        流行: "popular",
+        电子乐: "electronicMusic",
+        摇滚: "rocking",
+        乡村: "rural",
       };
       const data = this.preAudio.audio.filter(type[name]);
       callback(data);
       this.equalizerData = data;
     };
+
     interFace.equalizerChange = (HZ, data) => {
       if (!this.preAudio || !this.preAudio.audio) return;
       const type = {
@@ -246,9 +255,9 @@ export default {
       this.equalizerData[type[HZ]] = data;
     };
   },
+
   components: {
     audioCtrl,
   },
 };
 </script>
-<style></style>
